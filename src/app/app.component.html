@@ -1,0 +1,6 @@
+<!-- app.component.html -->
+<h1>Admin Panel</h1>
+<form (submit)="addWebsite(); $event.preventDefault();">
+  <input type="url" [(ngModel)]="newWebsiteUrl" name="website" placeholder="Enter website URL" required aria-label="Enter website URL" />
+  <button type="submit">Add & Approve Website</button>
+</form>
