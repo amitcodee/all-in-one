@@ -1,5 +1,5 @@
-// --- Firebase Configuration ---
-const firebaseConfig = {
+  // --- Firebase Configuration (inline) ---
+  const firebaseConfig = {
     apiKey: "AIzaSyBbj0s_7tKNgHkyaGpp3yy5PaTeN6m_uHg",
     authDomain: "all-in-one-24dec.firebaseapp.com",
     projectId: "all-in-one-24dec",
@@ -7,21 +7,21 @@ const firebaseConfig = {
     messagingSenderId: "409979618069",
     appId: "1:409979618069:web:43c6cd6a8f645705cfdf1c"
   };
-  
-  // Initialize Firebase (make sure you've included Firebase libraries in your index.html)
+
+  // Initialize Firebase using the compat libraries
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-  
-  // --- Check if the current website is approved ---
+
+  // --- Function: Check if the current website is approved ---
   async function checkWebsiteApproval() {
     const website = window.location.origin;
     console.log("Checking approval for:", website);
     const approvedSitesRef = db.collection("approved_websites");
     const query = approvedSitesRef.where("url", "==", website).where("status", "==", "approved");
-    
+
     try {
       const snapshot = await query.get();
-      console.log("Approval snapshot size:", snapshot.size);
+      console.log("Approval query snapshot size:", snapshot.size);
       if (!snapshot.empty) {
         console.log("Website approved, injecting widget.");
         injectWidget();
@@ -33,11 +33,10 @@ const firebaseConfig = {
       console.error("Error checking website approval:", error);
     }
   }
-  
-  
-  // --- Function to Inject the Accessibility Widget ---
+
+  // --- Function: Inject the Accessibility Widget ---
   function injectWidget() {
-    // Create a floating button
+    // Create a floating accessibility button
     let widgetBtn = document.createElement("button");
     widgetBtn.innerText = "🦾 Accessibility";
     widgetBtn.style.position = "fixed";
@@ -49,14 +48,12 @@ const firebaseConfig = {
     widgetBtn.style.borderRadius = "5px";
     widgetBtn.style.zIndex = "1000";
     widgetBtn.onclick = openSidebar;
-    
     document.body.appendChild(widgetBtn);
   }
-  
-  // --- Function to Open the Full-Width Sidebar ---
+
+  // --- Function: Open the Full-Width Sidebar ---
   function openSidebar() {
     let sidebar = document.getElementById("accessibility-sidebar");
-    
     if (!sidebar) {
       sidebar = document.createElement("div");
       sidebar.id = "accessibility-sidebar";
@@ -71,7 +68,7 @@ const firebaseConfig = {
       sidebar.style.zIndex = "1001";
       sidebar.style.transform = "translateX(100%)";
       sidebar.style.transition = "transform 0.4s ease-in-out";
-      
+
       sidebar.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <h2>Accessibility Options</h2>
@@ -83,25 +80,23 @@ const firebaseConfig = {
         <button onclick="document.body.classList.toggle('grayscale')">Grayscale Mode</button>
         <button onclick="new SpeechSynthesisUtterance(document.body.innerText).speak()">Read Aloud</button>
       `;
-      
       document.body.appendChild(sidebar);
-      
-      // Open the sidebar after a short delay
+
+      // Animate the sidebar in
       setTimeout(() => {
         sidebar.style.transform = "translateX(0)";
       }, 10);
-      
-      // Attach event listener to the close button
+
       document.getElementById("close-sidebar").addEventListener("click", () => {
         sidebar.style.transform = "translateX(100%)";
       });
     } else {
-      // Toggle the sidebar's visibility
+      // Toggle sidebar visibility
       sidebar.style.transform = sidebar.style.transform === "translateX(100%)" ? "translateX(0)" : "translateX(100%)";
     }
   }
-  
-  // --- Function to Show the Registration Form ---
+
+  // --- Function: Show Registration Form if Website Not Approved ---
   function showRegistrationForm() {
     let formDiv = document.createElement("div");
     formDiv.id = "registration-form";
@@ -112,21 +107,19 @@ const firebaseConfig = {
     formDiv.style.padding = "20px";
     formDiv.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
     formDiv.style.zIndex = "1000";
-    
+
     formDiv.innerHTML = `
       <h3>Register Your Website</h3>
       <p>Your website (${window.location.origin}) is not registered to use our Accessibility Widget.</p>
       <button id="register-btn">Register Now</button>
     `;
-    
     document.body.appendChild(formDiv);
-    
+
     document.getElementById("register-btn").addEventListener("click", async () => {
       try {
-        // Add the website with "pending" status (you can change to "approved" for auto-approval)
-        await db.collection("approved_websites").add({ 
-          url: window.location.origin, 
-          status: "pending" 
+        await db.collection("approved_websites").add({
+          url: window.location.origin,
+          status: "pending"  // Change to "approved" if you want auto-approval
         });
         formDiv.innerHTML = "<p>Registration submitted for approval. Please check back later.</p>";
       } catch (error) {
@@ -136,7 +129,5 @@ const firebaseConfig = {
     });
   }
 
-  
-  // --- Run the widget check on script load ---
+  // Run the widget approval check when the script loads
   checkWebsiteApproval();
-  
