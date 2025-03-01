@@ -1,4 +1,46 @@
 (function() {
+    // Global accessibility settings
+    var fontScale = 1; // Base scaling factor
+  
+    // Create a style element for forced font scaling
+    var fontScalingStyle = document.createElement('style');
+    fontScalingStyle.id = 'accessibility-font-scaling';
+    document.head.appendChild(fontScalingStyle);
+  
+    // Function to update the global font scaling style
+    function updateFontScaling() {
+      var percentage = Math.round(fontScale * 100);
+      fontScalingStyle.innerHTML = `
+        body, h1, h2, h3, h4, h5, h6, p, span, a, li, div, button, input, label {
+          font-size: ${percentage}% !important;
+        }
+      `;
+    }
+    updateFontScaling();
+  
+    // Inject base CSS for other accessibility classes
+    var baseStyle = document.createElement('style');
+    baseStyle.innerHTML = `
+      /* High contrast mode */
+      .high-contrast {
+        background-color: black !important;
+        color: white !important;
+      }
+      .high-contrast a { color: #00ffff !important; }
+      
+      /* Dyslexia-friendly font */
+      .dyslexia-font {
+        font-family: 'OpenDyslexic', Arial, sans-serif !important;
+      }
+      
+      /* Reduce motion: disable animations and transitions */
+      .reduce-motion * {
+        transition: none !important;
+        animation: none !important;
+      }
+    `;
+    document.head.appendChild(baseStyle);
+  
     // Create container for the widget
     var container = document.createElement('div');
     container.id = 'my-accessibility-widget';
@@ -35,9 +77,26 @@
     decreaseTextButton.innerText = 'Decrease Text';
     var toggleContrastButton = document.createElement('button');
     toggleContrastButton.innerText = 'Toggle Contrast';
+    var toggleDyslexiaButton = document.createElement('button');
+    toggleDyslexiaButton.innerText = 'Dyslexia Font';
+    var toggleMotionButton = document.createElement('button');
+    toggleMotionButton.innerText = 'Reduce Motion';
+    var readAloudButton = document.createElement('button');
+    readAloudButton.innerText = 'Read Aloud';
+    var stopReadingButton = document.createElement('button');
+    stopReadingButton.innerText = 'Stop Reading';
   
     // Style service buttons uniformly
-    [increaseTextButton, decreaseTextButton, toggleContrastButton].forEach(function(btn) {
+    var serviceButtons = [
+      increaseTextButton,
+      decreaseTextButton,
+      toggleContrastButton,
+      toggleDyslexiaButton,
+      toggleMotionButton,
+      readAloudButton,
+      stopReadingButton
+    ];
+    serviceButtons.forEach(function(btn) {
       btn.style.margin = '5px';
       btn.style.padding = '8px 12px';
       btn.style.border = '1px solid #007BFF';
@@ -51,6 +110,10 @@
     optionsPanel.appendChild(increaseTextButton);
     optionsPanel.appendChild(decreaseTextButton);
     optionsPanel.appendChild(toggleContrastButton);
+    optionsPanel.appendChild(toggleDyslexiaButton);
+    optionsPanel.appendChild(toggleMotionButton);
+    optionsPanel.appendChild(readAloudButton);
+    optionsPanel.appendChild(stopReadingButton);
   
     // Append the toggle button and options panel to the container
     container.appendChild(toggleButton);
@@ -64,16 +127,16 @@
       optionsPanel.style.display = (optionsPanel.style.display === 'none') ? 'block' : 'none';
     });
   
-    // Increase the text size on the page
+    // Increase the text size forcefully
     increaseTextButton.addEventListener('click', function() {
-      var currentSize = parseFloat(window.getComputedStyle(document.body).fontSize);
-      document.body.style.fontSize = (currentSize * 1.1) + 'px';
+      fontScale *= 1.1;
+      updateFontScaling();
     });
   
-    // Decrease the text size on the page
+    // Decrease the text size forcefully
     decreaseTextButton.addEventListener('click', function() {
-      var currentSize = parseFloat(window.getComputedStyle(document.body).fontSize);
-      document.body.style.fontSize = (currentSize * 0.9) + 'px';
+      fontScale *= 0.9;
+      updateFontScaling();
     });
   
     // Toggle high contrast mode on the page
@@ -81,17 +144,36 @@
       document.body.classList.toggle('high-contrast');
     });
   
-    // Inject CSS for high contrast mode
-    var style = document.createElement('style');
-    style.innerHTML = `
-      .high-contrast {
-        background-color: black !important;
-        color: white !important;
+    // Toggle dyslexia-friendly font on the page
+    toggleDyslexiaButton.addEventListener('click', function() {
+      document.body.classList.toggle('dyslexia-font');
+    });
+  
+    // Toggle reduced motion mode on the page
+    toggleMotionButton.addEventListener('click', function() {
+      document.body.classList.toggle('reduce-motion');
+    });
+  
+    // Text-to-Speech functionality using the Web Speech API
+    var synth = window.speechSynthesis;
+    var readingUtterance = null;
+    
+    readAloudButton.addEventListener('click', function() {
+      // If already speaking, do nothing
+      if (synth.speaking) return;
+      // Get the text content from the body
+      var text = document.body.innerText;
+      readingUtterance = new SpeechSynthesisUtterance(text);
+      // Optional: Set voice, rate, and pitch if needed
+      readingUtterance.rate = 1;
+      readingUtterance.pitch = 1;
+      synth.speak(readingUtterance);
+    });
+  
+    stopReadingButton.addEventListener('click', function() {
+      if (synth.speaking) {
+        synth.cancel();
       }
-      .high-contrast a {
-        color: #00ffff !important;
-      }
-    `;
-    document.head.appendChild(style);
+    });
   })();
   
