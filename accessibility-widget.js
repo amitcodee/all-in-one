@@ -1,335 +1,310 @@
-(function() {
+(function () {
     /**
-     * ==================================================
-     *  0. HELPER VARIABLES, FUNCTIONS & FORCE OVERRIDES
-     * ==================================================
+     * =========================================
+     *  0. HELPER FUNCTIONS & GLOBAL STATE
+     * =========================================
      */
-    let isWidgetOpen = false; // tracks panel open/close state
-    let currentFontScaleClass = ""; // track which font-scale class is active
-    let speechSynthesisUtterance = null;
-    const synth = window.speechSynthesis;
   
-    // Remove all forced classes from <body>
+    // Global state for widget open/close
+    let isWidgetOpen = false;
+  
+    // Toggle a CSS class on the <body>
+    function toggleBodyClass(className) {
+      document.body.classList.toggle(className);
+    }
+  
+    // Remove all accessibility classes from <body>
     function resetAllClasses() {
-      document.body.classList.remove(
-        // Text sizes
-        "force-font-scale-100",
-        "force-font-scale-125",
-        "force-font-scale-150",
-        "force-font-scale-175",
-        "force-font-scale-200",
-        // Color modes
-        "force-dark-mode",
-        "force-high-contrast",
-        "force-light-mode",
-        "force-hide-images",
-        "force-monochrome",
-        // Additional overrides
-        "force-reduce-motion",
-        "force-text-color-black",
-        "force-text-color-red",
-        "force-text-color-blue",
-        "force-text-color-white",
-        "force-bg-color-black",
-        "force-bg-color-white",
-        "force-bg-color-gray",
-        "force-bg-color-red",
-        "force-bg-color-blue"
-      );
-      // Also clear inline color or background from previous user picks
-      document.body.style.setProperty("color", "");
-      document.body.style.setProperty("background-color", "");
-      currentFontScaleClass = "";
+      const classesToRemove = [
+        "seizure-safe-profile", "vision-impaired-profile", "adhd-friendly-profile",
+        "cognitive-profile", "keyboard-navigation", "screen-reader-enabled",
+        "content-scaling", "readable-font", "highlight-titles", "highlight-links",
+        "text-magnifier", "bigger-text", "line-height-2", "line-height-3",
+        "letter-spacing-2", "letter-spacing-3", "align-left", "align-center", "align-right",
+        "dark-contrast", "light-contrast", "high-contrast", "high-saturation",
+        "low-saturation", "monochrome", "mute-sounds", "hide-images", "read-mode",
+        "reading-guide", "stop-animations", "reading-mask", "highlight-hover",
+        "highlight-focus", "big-black-cursor", "big-white-cursor",
+        "fixed-text-size-25", "fixed-text-size-50", "fixed-text-size-75", "fixed-text-size-100"
+      ];
+      classesToRemove.forEach(cls => document.body.classList.remove(cls));
+      // Also remove any inline overrides from our dedicated style element:
+      overrideStyleEl.innerHTML = "";
     }
   
-    // Force a specific text-size override (remove old, add new)
-    function setFontScale(scaleClass) {
-      if (currentFontScaleClass) {
-        document.body.classList.remove(currentFontScaleClass);
-      }
-      if (scaleClass) {
-        document.body.classList.add(scaleClass);
-        currentFontScaleClass = scaleClass;
-      } else {
-        currentFontScaleClass = "";
+    // Hide the widget interface entirely
+    function hideWidgetInterface() {
+      widgetContainer.style.display = "none";
+    }
+  
+    // Dictionary search placeholder (for integration with a dictionary API)
+    function dictionarySearch(query) {
+      if (!query) return;
+      alert(`Searching for the definition of: "${query}" (placeholder).`);
+    }
+  
+    // =============================================
+    // 1. SET UP A STYLE ELEMENT FOR OVERRIDES
+    // =============================================
+    // This style block uses !important to force text size and color changes.
+    const overrideStyleEl = document.createElement("style");
+    overrideStyleEl.id = "accessibility-overrides";
+    document.head.appendChild(overrideStyleEl);
+  
+    // Function to update forced text size (via fixed classes)
+    function updateFixedTextSize(sizeClass) {
+      // Remove previously applied fixed text-size classes
+      document.body.classList.remove("fixed-text-size-25", "fixed-text-size-50", "fixed-text-size-75", "fixed-text-size-100");
+      if (sizeClass) {
+        document.body.classList.add(sizeClass);
       }
     }
   
-    // Start reading entire page text
-    function startReading() {
+    // We also inject CSS rules for the fixed text sizes so they override everything.
+    overrideStyleEl.innerHTML += `
+  /* FIXED TEXT SIZE OVERRIDES */
+  body.fixed-text-size-25, body.fixed-text-size-25 * {
+    font-size: 25% !important;
+  }
+  body.fixed-text-size-50, body.fixed-text-size-50 * {
+    font-size: 50% !important;
+  }
+  body.fixed-text-size-75, body.fixed-text-size-75 * {
+    font-size: 75% !important;
+  }
+  body.fixed-text-size-100, body.fixed-text-size-100 * {
+    font-size: 100% !important;
+  }
+  /* COLOR OVERRIDES: These will be appended later if needed */
+  `;
+  
+    // Text-to-Speech functionality using the Web Speech API
+    const synth = window.speechSynthesis;
+    let currentUtterance = null;
+    function speakPage() {
       if (synth.speaking) return;
       const text = document.body.innerText;
-      speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
-      speechSynthesisUtterance.rate = 1;
-      speechSynthesisUtterance.pitch = 1;
-      synth.speak(speechSynthesisUtterance);
+      currentUtterance = new SpeechSynthesisUtterance(text);
+      currentUtterance.rate = 1;
+      currentUtterance.pitch = 1;
+      synth.speak(currentUtterance);
     }
-    // Stop reading
-    function stopReading() {
-      if (synth.speaking) {
-        synth.cancel();
-      }
+    function cancelSpeech() {
+      if (synth.speaking) synth.cancel();
     }
-  
-    // Insert a <style> block with !important overrides
-    const styleEl = document.createElement("style");
-    styleEl.id = "my-accessibility-forced-styles";
-    styleEl.innerHTML = `
-    /* ========================================================
-       1) FORCE OVERRIDES WITH !important
-       ======================================================== */
-    /* A) Font-Scaling (discrete steps) */
-    body.force-font-scale-100 * {
-      font-size: 100% !important;
-      line-height: 1.4 !important;
-    }
-    body.force-font-scale-125 * {
-      font-size: 125% !important;
-      line-height: 1.4 !important;
-    }
-    body.force-font-scale-150 * {
-      font-size: 150% !important;
-      line-height: 1.4 !important;
-    }
-    body.force-font-scale-175 * {
-      font-size: 175% !important;
-      line-height: 1.4 !important;
-    }
-    body.force-font-scale-200 * {
-      font-size: 200% !important;
-      line-height: 1.4 !important;
-    }
-  
-    /* B) Dark Mode (forced) */
-    body.force-dark-mode * {
-      background-color: #000 !important;
-      color: #fff !important;
-    }
-  
-    /* C) High Contrast (forced) */
-    body.force-high-contrast * {
-      background-color: #000 !important;
-      color: #fff !important;
-      filter: contrast(150%) !important;
-    }
-  
-    /* D) Light Mode (forced) */
-    body.force-light-mode * {
-      background-color: #fff !important;
-      color: #000 !important;
-    }
-  
-    /* E) Hide Images */
-    body.force-hide-images img,
-    body.force-hide-images picture,
-    body.force-hide-images figure {
-      display: none !important;
-    }
-  
-    /* F) Monochrome (grayscale) */
-    body.force-monochrome * {
-      filter: grayscale(100%) !important;
-    }
-  
-    /* G) Reduce Motion (disable transitions/animations) */
-    body.force-reduce-motion * {
-      animation: none !important;
-      transition: none !important;
-    }
-  
-    /* H) Specific forced text color classes */
-    body.force-text-color-black * { color: #000 !important; }
-    body.force-text-color-red * { color: #f00 !important; }
-    body.force-text-color-blue * { color: #00f !important; }
-    body.force-text-color-white * { color: #fff !important; }
-  
-    /* I) Specific forced background color classes */
-    body.force-bg-color-black * { background-color: #000 !important; }
-    body.force-bg-color-white * { background-color: #fff !important; }
-    body.force-bg-color-gray * { background-color: #ccc !important; }
-    body.force-bg-color-red * { background-color: #f00 !important; }
-    body.force-bg-color-blue * { background-color: #00f !important; }
-  
-    /* ========================================================
-       2) WIDGET UI STYLING (scoped to .my-acc-widget)
-       ======================================================== */
-    .my-acc-widget {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 999999;
-      font-family: Arial, sans-serif;
-    }
-    .my-acc-widget button,
-    .my-acc-widget select {
-      font-family: inherit;
-    }
-  
-    /* Toggle button */
-    .my-acc-widget .acc-toggle-btn {
-      width: 60px;
-      height: 60px;
-      border: none;
-      border-radius: 50%;
-      background-color: #0057b8;
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  
-    /* Panel container */
-    .my-acc-widget .acc-panel {
-      position: absolute;
-      bottom: 70px;
-      right: 0;
-      width: 360px;
-      max-height: 80vh;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-      display: none; /* hidden by default */
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .my-acc-widget.open .acc-panel {
-      display: flex;
-    }
-  
-    /* Panel header */
-    .my-acc-widget .acc-panel-header {
-      background-color: #f2f2f2;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-    .my-acc-widget .acc-panel-header button {
-      background-color: #eee;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .my-acc-widget .acc-panel-header button:hover {
-      background-color: #ddd;
-    }
-  
-    /* Panel content (scrollable) */
-    .my-acc-widget .acc-panel-content {
-      padding: 10px;
-      overflow-y: auto;
-      flex: 1;
-    }
-  
-    /* Each feature row */
-    .my-acc-widget .feature-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid #eee;
-    }
-    .my-acc-widget .feature-row:last-child {
-      border-bottom: none;
-    }
-    .my-acc-widget .feature-label {
-      font-size: 14px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .my-acc-widget .feature-label i {
-      color: #0057b8;
-      font-size: 16px;
-    }
-  
-    /* Toggle switch */
-    .my-acc-widget .toggle-switch {
-      position: relative;
-      width: 45px;
-      height: 24px;
-    }
-    .my-acc-widget .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .my-acc-widget .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 24px;
-    }
-    .my-acc-widget .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    .my-acc-widget .toggle-switch input:checked + .slider {
-      background-color: #0057b8;
-    }
-    .my-acc-widget .toggle-switch input:checked + .slider:before {
-      transform: translateX(21px);
-    }
-  
-    /* Simple dropdown row styling */
-    .my-acc-widget .dropdown-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .my-acc-widget .dropdown-row select {
-      flex: 1;
-      padding: 4px;
-      font-size: 14px;
-    }
-  
-    /* Color swatches container */
-    .my-acc-widget .swatches {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-    .my-acc-widget .swatch {
-      width: 20px;
-      height: 20px;
-      border-radius: 3px;
-      cursor: pointer;
-      border: 1px solid #ccc;
-    }
-    `;
-    document.head.appendChild(styleEl);
   
     /**
-     * ===============================
-     *  1. CREATE THE WIDGET ELEMENTS
-     * ===============================
+     * =========================================
+     *  2. CREATE THE MAIN CONTAINER & INJECT STYLES
+     * =========================================
      */
     const widgetContainer = document.createElement("div");
-    widgetContainer.className = "my-acc-widget";
+    widgetContainer.className = "my-accessibility-widget";
+    // Positioning and basic styling for the container
+    widgetContainer.style.position = "fixed";
+    widgetContainer.style.bottom = "20px";
+    widgetContainer.style.right = "20px";
+    widgetContainer.style.zIndex = "999999";
+    widgetContainer.style.fontFamily = "Arial, sans-serif";
+    widgetContainer.style.transition = "all 0.3s ease";
   
-    // A) Toggle Button
-    const toggleBtn = document.createElement("button");
-    toggleBtn.className = "acc-toggle-btn";
-    toggleBtn.innerHTML = `<i class="fas fa-universal-access"></i>`;
-    toggleBtn.title = "Open Accessibility Options";
-    toggleBtn.addEventListener("click", () => {
+    // Inject local scoped styles for the widget (high specificity, using !important where needed)
+    const localStyle = document.createElement("style");
+    localStyle.innerHTML = `
+      /* -------------------------------------------------
+         A) Base Container & Toggle Button
+      -------------------------------------------------- */
+      .my-accessibility-widget button,
+      .my-accessibility-widget select {
+        font-family: inherit;
+      }
+      .my-accessibility-widget .widget-toggle-btn {
+        width: 60px;
+        height: 60px;
+        border: none;
+        border-radius: 50%;
+        background-color: #0057b8;
+        color: #fff;
+        font-size: 26px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      /* -------------------------------------------------
+         B) The Panel
+      -------------------------------------------------- */
+      .my-accessibility-widget .widget-panel {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        width: 380px;
+        max-height: 80vh;
+        background-color: #fff;
+        border: 2px solid #0057b8 !important;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .my-accessibility-widget.open .widget-panel {
+        display: flex;
+      }
+      /* -------------------------------------------------
+         C) Top Bar (Reset, Statement, Hide, Search)
+      -------------------------------------------------- */
+      .my-accessibility-widget .panel-top-bar {
+        background-color: #f2f2f2;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .my-accessibility-widget .panel-top-bar button {
+        background-color: #eee;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .my-accessibility-widget .panel-top-bar button:hover {
+        background-color: #ddd;
+      }
+      .my-accessibility-widget .panel-top-bar input[type="text"] {
+        flex: 1;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+      /* -------------------------------------------------
+         D) Tabs (Profiles, Content, Color, Orientation)
+      -------------------------------------------------- */
+      .my-accessibility-widget .tabs {
+        display: flex;
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #ccc;
+      }
+      .my-accessibility-widget .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+        border: none;
+        background-color: #f9f9f9;
+        font-size: 14px;
+        border-right: 1px solid #ccc;
+      }
+      .my-accessibility-widget .tab-btn:last-child {
+        border-right: none;
+      }
+      .my-accessibility-widget .tab-btn.active {
+        background-color: #fff;
+        font-weight: bold;
+        border-bottom: 2px solid #0057b8;
+      }
+      /* -------------------------------------------------
+         E) Tab Content
+      -------------------------------------------------- */
+      .my-accessibility-widget .tab-content {
+        display: none;
+        padding: 10px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .my-accessibility-widget .tab-content.active {
+        display: block;
+      }
+      /* -------------------------------------------------
+         F) Item Row & Toggle Switch Styles
+      -------------------------------------------------- */
+      .my-accessibility-widget .item-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .my-accessibility-widget .item-row:last-child {
+        border-bottom: none;
+      }
+      .my-accessibility-widget .item-label {
+        font-size: 14px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .my-accessibility-widget .item-label i {
+        color: #0057b8;
+      }
+      .my-accessibility-widget .toggle-switch {
+        position: relative;
+        width: 45px;
+        height: 24px;
+      }
+      .my-accessibility-widget .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .my-accessibility-widget .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+      }
+      .my-accessibility-widget .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+      .my-accessibility-widget .toggle-switch input:checked + .slider {
+        background-color: #0057b8;
+      }
+      .my-accessibility-widget .toggle-switch input:checked + .slider:before {
+        transform: translateX(21px);
+      }
+      /* -------------------------------------------------
+         G) Simple Color Swatches
+      -------------------------------------------------- */
+      .my-accessibility-widget .color-swatches {
+        display: flex;
+        gap: 5px;
+      }
+      .my-accessibility-widget .color-swatch {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+      }
+    `;
+    document.head.appendChild(localStyle);
+  
+    /**
+     * =========================================
+     *  3. CREATE THE TOGGLE BUTTON
+     * =========================================
+     */
+    const toggleButton = document.createElement("button");
+    toggleButton.className = "widget-toggle-btn";
+    toggleButton.innerHTML = `<i class="fas fa-universal-access"></i>`;
+    toggleButton.title = "Open Accessibility Options";
+    toggleButton.addEventListener("click", () => {
       isWidgetOpen = !isWidgetOpen;
       if (isWidgetOpen) {
         widgetContainer.classList.add("open");
@@ -337,277 +312,460 @@
         widgetContainer.classList.remove("open");
       }
     });
-  
-    widgetContainer.appendChild(toggleBtn);
-  
-    // B) Panel
-    const panel = document.createElement("div");
-    panel.className = "acc-panel";
-    widgetContainer.appendChild(panel);
-  
-    // B1) Panel Header
-    const panelHeader = document.createElement("div");
-    panelHeader.className = "acc-panel-header";
-    panel.appendChild(panelHeader);
-  
-    // -- Reset Button
-    const resetBtn = document.createElement("button");
-    resetBtn.textContent = "Reset";
-    resetBtn.title = "Reset all overrides";
-    resetBtn.addEventListener("click", () => {
-      resetAllClasses();
-      // Also uncheck toggles or reset dropdowns
-      panel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.checked = false;
-      });
-      panel.querySelectorAll('select').forEach(sel => {
-        sel.value = "";
-      });
-    });
-    panelHeader.appendChild(resetBtn);
-  
-    // -- Hide Widget Button
-    const hideBtn = document.createElement("button");
-    hideBtn.textContent = "Hide Widget";
-    hideBtn.title = "Hide the accessibility widget interface";
-    hideBtn.addEventListener("click", () => {
-      widgetContainer.style.display = "none";
-    });
-    panelHeader.appendChild(hideBtn);
-  
-    // B2) Panel Content
-    const panelContent = document.createElement("div");
-    panelContent.className = "acc-panel-content";
-    panel.appendChild(panelContent);
+    widgetContainer.appendChild(toggleButton);
   
     /**
-     * ==========================
-     *  2. BUILD FEATURE ROWS
-     * ==========================
-     * We'll group them logically:
-     * A) Font Scale
-     * B) Color / Contrast
-     * C) Hide Images / Reduce Motion
-     * D) TTS (Screen Reader)
-     * E) Additional toggles...
+     * =========================================
+     *  4. CREATE THE PANEL
+     * =========================================
      */
+    const widgetPanel = document.createElement("div");
+    widgetPanel.className = "widget-panel";
+    widgetContainer.appendChild(widgetPanel);
   
-    // Helper to create a toggle row with a switch
-    function createToggleRow(iconClass, labelText, onToggle) {
+    // 4A. Top Bar: Reset, Statement, Hide, Dictionary Search
+    const topBar = document.createElement("div");
+    topBar.className = "panel-top-bar";
+    widgetPanel.appendChild(topBar);
+  
+    const resetBtn = document.createElement("button");
+    resetBtn.innerText = "Reset Settings";
+    resetBtn.addEventListener("click", () => {
+      resetAllClasses();
+      widgetPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+      });
+    });
+    topBar.appendChild(resetBtn);
+  
+    const statementBtn = document.createElement("button");
+    statementBtn.innerText = "Statement";
+    statementBtn.addEventListener("click", () => {
+      alert("Open Accessibility Statement (placeholder).");
+    });
+    topBar.appendChild(statementBtn);
+  
+    const hideBtn = document.createElement("button");
+    hideBtn.innerText = "Hide Interface";
+    hideBtn.addEventListener("click", hideWidgetInterface);
+    topBar.appendChild(hideBtn);
+  
+    const searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.placeholder = "Search in dictionary...";
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        dictionarySearch(searchInput.value);
+      }
+    });
+    topBar.appendChild(searchInput);
+  
+    // 4B. Tabs: Profiles, Content, Color, Orientation
+    const tabsContainer = document.createElement("div");
+    tabsContainer.className = "tabs";
+    widgetPanel.appendChild(tabsContainer);
+  
+    const tabNames = ["Profiles", "Content", "Color", "Orientation"];
+    const tabButtons = [];
+    const tabContents = [];
+  
+    function createTab(name) {
+      const btn = document.createElement("button");
+      btn.className = "tab-btn";
+      btn.innerText = name;
+      tabsContainer.appendChild(btn);
+  
+      const content = document.createElement("div");
+      content.className = "tab-content";
+      widgetPanel.appendChild(content);
+  
+      tabButtons.push(btn);
+      tabContents.push(content);
+  
+      btn.addEventListener("click", () => {
+        tabButtons.forEach((b, i) => {
+          b.classList.remove("active");
+          tabContents[i].classList.remove("active");
+        });
+        btn.classList.add("active");
+        content.classList.add("active");
+      });
+    }
+    tabNames.forEach(createTab);
+    // Activate first tab by default
+    tabButtons[0].classList.add("active");
+    tabContents[0].classList.add("active");
+  
+    // 4C. Populate each tab with controls
+    // Helper: Create a toggle row with label and ON/OFF switch
+    function createToggleRow(icon, labelText, onToggle) {
       const row = document.createElement("div");
-      row.className = "feature-row";
+      row.className = "item-row";
   
       const label = document.createElement("div");
-      label.className = "feature-label";
-      label.innerHTML = `<i class="${iconClass}"></i> <span>${labelText}</span>`;
+      label.className = "item-label";
+      label.innerHTML = `<i class="${icon}"></i> <span>${labelText}</span>`;
   
       const toggleWrap = document.createElement("label");
       toggleWrap.className = "toggle-switch";
-  
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       const slider = document.createElement("span");
       slider.className = "slider";
   
+      toggleWrap.appendChild(checkbox);
+      toggleWrap.appendChild(slider);
+  
       checkbox.addEventListener("change", (e) => {
         onToggle(e.target.checked);
       });
   
-      toggleWrap.appendChild(checkbox);
-      toggleWrap.appendChild(slider);
       row.appendChild(label);
       row.appendChild(toggleWrap);
-  
       return row;
     }
   
-    // A) Font Scale (Discrete)
-    const fontScaleRow = document.createElement("div");
-    fontScaleRow.className = "feature-row dropdown-row";
-    fontScaleRow.innerHTML = `
-      <div class="feature-label">
-        <i class="fas fa-text-height"></i>
-        <span>Text Size</span>
-      </div>
-    `;
-    const fontSelect = document.createElement("select");
-    // Options: 100%, 125%, 150%, 175%, 200%
-    const fontOptions = [
-      { value: "", label: "Default (100%)" },
-      { value: "force-font-scale-125", label: "125%" },
-      { value: "force-font-scale-150", label: "150%" },
-      { value: "force-font-scale-175", label: "175%" },
-      { value: "force-font-scale-200", label: "200%" }
+    // TAB 1: Profiles
+    const profilesTab = tabContents[0];
+    profilesTab.appendChild(createToggleRow("fas fa-bolt", "Seizure Safe Profile", (checked) => {
+      toggleBodyClass("seizure-safe-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-eye", "Vision Impaired Profile", (checked) => {
+      toggleBodyClass("vision-impaired-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-brain", "ADHD Friendly Profile", (checked) => {
+      toggleBodyClass("adhd-friendly-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-user-graduate", "Cognitive Disability Profile", (checked) => {
+      toggleBodyClass("cognitive-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-keyboard", "Keyboard Navigation (Motor)", (checked) => {
+      toggleBodyClass("keyboard-navigation");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-blind", "Blind Users (Screen Reader)", (checked) => {
+      toggleBodyClass("screen-reader-enabled");
+    }));
+  
+    // TAB 2: Content Adjustments
+    const contentTab = tabContents[1];
+  
+    // Fixed Text Size Dropdown (only allow 25%, 50%, 75%, 100%)
+    const textSizeHeader = document.createElement("div");
+    textSizeHeader.className = "section-header";
+    textSizeHeader.innerText = "Fixed Text Size";
+    contentTab.appendChild(textSizeHeader);
+  
+    const textSizeSelect = document.createElement("select");
+    const textSizeOptions = [
+      { value: "fixed-text-size-25", label: "25%" },
+      { value: "fixed-text-size-50", label: "50%" },
+      { value: "fixed-text-size-75", label: "75%" },
+      { value: "fixed-text-size-100", label: "100%" }
     ];
-    fontOptions.forEach(opt => {
+    textSizeOptions.forEach(opt => {
       const optionEl = document.createElement("option");
       optionEl.value = opt.value;
       optionEl.textContent = opt.label;
-      fontSelect.appendChild(optionEl);
+      textSizeSelect.appendChild(optionEl);
     });
-    fontSelect.addEventListener("change", () => {
-      setFontScale(fontSelect.value);
+    textSizeSelect.value = "fixed-text-size-100"; // default to 100%
+    textSizeSelect.addEventListener("change", (e) => {
+      updateFixedTextSize(e.target.value);
     });
-    fontScaleRow.appendChild(fontSelect);
+    contentTab.appendChild(textSizeSelect);
   
-    panelContent.appendChild(fontScaleRow);
-  
-    // B) Dark Mode
-    panelContent.appendChild(createToggleRow("fas fa-moon", "Dark Mode", (checked) => {
-      document.body.classList.toggle("force-dark-mode", checked);
+    // Additional Content Toggles
+    contentTab.appendChild(createToggleRow("fas fa-expand", "Content Scaling", (checked) => {
+      toggleBodyClass("content-scaling");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-font", "Readable Font", (checked) => {
+      toggleBodyClass("readable-font");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-heading", "Highlight Titles", (checked) => {
+      toggleBodyClass("highlight-titles");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-link", "Highlight Links", (checked) => {
+      toggleBodyClass("highlight-links");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-search-plus", "Text Magnifier", (checked) => {
+      toggleBodyClass("text-magnifier");
     }));
   
-    // C) High Contrast
-    panelContent.appendChild(createToggleRow("fas fa-adjust", "High Contrast", (checked) => {
-      document.body.classList.toggle("force-high-contrast", checked);
-    }));
-  
-    // D) Light Mode
-    panelContent.appendChild(createToggleRow("fas fa-sun", "Light Mode", (checked) => {
-      document.body.classList.toggle("force-light-mode", checked);
-    }));
-  
-    // E) Hide Images
-    panelContent.appendChild(createToggleRow("far fa-image", "Hide Images", (checked) => {
-      document.body.classList.toggle("force-hide-images", checked);
-    }));
-  
-    // F) Monochrome
-    panelContent.appendChild(createToggleRow("fas fa-tint-slash", "Monochrome", (checked) => {
-      document.body.classList.toggle("force-monochrome", checked);
-    }));
-  
-    // G) Reduce Motion
-    panelContent.appendChild(createToggleRow("fas fa-wave-square", "Reduce Motion", (checked) => {
-      document.body.classList.toggle("force-reduce-motion", checked);
-    }));
-  
-    // H) Forced Text Color Swatches
-    const textColorRow = document.createElement("div");
-    textColorRow.className = "feature-row";
-    const textColorLabel = document.createElement("div");
-    textColorLabel.className = "feature-label";
-    textColorLabel.innerHTML = `<i class="fas fa-palette"></i> <span>Text Color</span>`;
-  
-    const textColorSwatches = document.createElement("div");
-    textColorSwatches.className = "swatches";
-  
-    // We'll provide black, red, blue, white
-    const textColors = [
-      { colorClass: "force-text-color-black", colorName: "Black", colorValue: "#000" },
-      { colorClass: "force-text-color-red", colorName: "Red", colorValue: "#f00" },
-      { colorClass: "force-text-color-blue", colorName: "Blue", colorValue: "#00f" },
-      { colorClass: "force-text-color-white", colorName: "White", colorValue: "#fff" }
-    ];
-  
-    textColors.forEach(tc => {
-      const swatch = document.createElement("div");
-      swatch.className = "swatch";
-      swatch.style.backgroundColor = tc.colorValue;
-      swatch.title = tc.colorName;
-      swatch.addEventListener("click", () => {
-        // Remove any text color overrides
-        document.body.classList.remove("force-text-color-black", "force-text-color-red", "force-text-color-blue", "force-text-color-white");
-        document.body.classList.add(tc.colorClass);
-      });
-      textColorSwatches.appendChild(swatch);
-    });
-  
-    // A button to revert text color
-    const resetTextColorBtn = document.createElement("button");
-    resetTextColorBtn.textContent = "Reset";
-    resetTextColorBtn.style.fontSize = "12px";
-    resetTextColorBtn.addEventListener("click", () => {
-      document.body.classList.remove("force-text-color-black", "force-text-color-red", "force-text-color-blue", "force-text-color-white");
-      // Also clear inline color
-      document.body.style.setProperty("color", "");
-    });
-    textColorSwatches.appendChild(resetTextColorBtn);
-  
-    textColorRow.appendChild(textColorLabel);
-    textColorRow.appendChild(textColorSwatches);
-    panelContent.appendChild(textColorRow);
-  
-    // I) Forced Background Color Swatches
-    const bgColorRow = document.createElement("div");
-    bgColorRow.className = "feature-row";
-    const bgColorLabel = document.createElement("div");
-    bgColorLabel.className = "feature-label";
-    bgColorLabel.innerHTML = `<i class="fas fa-fill-drip"></i> <span>Background</span>`;
-  
-    const bgColorSwatches = document.createElement("div");
-    bgColorSwatches.className = "swatches";
-  
-    // We'll provide black, white, gray, red, blue
-    const bgColors = [
-      { colorClass: "force-bg-color-black", colorName: "Black", colorValue: "#000" },
-      { colorClass: "force-bg-color-white", colorName: "White", colorValue: "#fff" },
-      { colorClass: "force-bg-color-gray", colorName: "Gray", colorValue: "#ccc" },
-      { colorClass: "force-bg-color-red", colorName: "Red", colorValue: "#f00" },
-      { colorClass: "force-bg-color-blue", colorName: "Blue", colorValue: "#00f" }
-    ];
-  
-    bgColors.forEach(bgc => {
-      const swatch = document.createElement("div");
-      swatch.className = "swatch";
-      swatch.style.backgroundColor = bgc.colorValue;
-      swatch.title = bgc.colorName;
-      swatch.addEventListener("click", () => {
-        // Remove any background color overrides
-        document.body.classList.remove("force-bg-color-black", "force-bg-color-white", "force-bg-color-gray", "force-bg-color-red", "force-bg-color-blue");
-        document.body.classList.add(bgc.colorClass);
-      });
-      bgColorSwatches.appendChild(swatch);
-    });
-  
-    // A button to revert background color
-    const resetBgColorBtn = document.createElement("button");
-    resetBgColorBtn.textContent = "Reset";
-    resetBgColorBtn.style.fontSize = "12px";
-    resetBgColorBtn.addEventListener("click", () => {
-      document.body.classList.remove("force-bg-color-black", "force-bg-color-white", "force-bg-color-gray", "force-bg-color-red", "force-bg-color-blue");
-      // Also clear inline background
-      document.body.style.setProperty("background-color", "");
-    });
-    bgColorSwatches.appendChild(resetBgColorBtn);
-  
-    bgColorRow.appendChild(bgColorLabel);
-    bgColorRow.appendChild(bgColorSwatches);
-    panelContent.appendChild(bgColorRow);
-  
-    // J) Screen Reader (Text-to-Speech)
-    //    1) Read Aloud, 2) Stop Reading
-    const screenReaderRow = document.createElement("div");
-    screenReaderRow.className = "feature-row";
-    screenReaderRow.innerHTML = `
-      <div class="feature-label">
-        <i class="fas fa-volume-up"></i>
-        <span>Screen Reader</span>
+    // Adjust Line Height via Dropdown
+    const lineHeightRow = document.createElement("div");
+    lineHeightRow.className = "item-row";
+    lineHeightRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-text-height"></i>
+        <span>Adjust Line Height</span>
       </div>
     `;
-    const srButtons = document.createElement("div");
-    srButtons.style.display = "flex";
-    srButtons.style.gap = "5px";
+    const lineHeightSelect = document.createElement("select");
+    const lhOptions = [
+      { value: "", label: "Default" },
+      { value: "line-height-2", label: "1.8" },
+      { value: "line-height-3", label: "2.0" }
+    ];
+    lhOptions.forEach(opt => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      lineHeightSelect.appendChild(optionEl);
+    });
+    lineHeightSelect.addEventListener("change", () => {
+      document.body.classList.remove("line-height-2", "line-height-3");
+      if (lineHeightSelect.value) {
+        document.body.classList.add(lineHeightSelect.value);
+      }
+    });
+    lineHeightRow.appendChild(lineHeightSelect);
+    contentTab.appendChild(lineHeightRow);
   
-    const readBtn = document.createElement("button");
-    readBtn.textContent = "Read Aloud";
-    readBtn.style.fontSize = "12px";
-    readBtn.addEventListener("click", startReading);
-    srButtons.appendChild(readBtn);
+    // Adjust Letter Spacing via Dropdown
+    const letterSpacingRow = document.createElement("div");
+    letterSpacingRow.className = "item-row";
+    letterSpacingRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-arrows-alt-h"></i>
+        <span>Adjust Letter Spacing</span>
+      </div>
+    `;
+    const letterSpacingSelect = document.createElement("select");
+    const lsOptions = [
+      { value: "", label: "Default" },
+      { value: "letter-spacing-2", label: "+1px" },
+      { value: "letter-spacing-3", label: "+2px" }
+    ];
+    lsOptions.forEach(opt => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      letterSpacingSelect.appendChild(optionEl);
+    });
+    letterSpacingSelect.addEventListener("change", () => {
+      document.body.classList.remove("letter-spacing-2", "letter-spacing-3");
+      if (letterSpacingSelect.value) {
+        document.body.classList.add(letterSpacingSelect.value);
+      }
+    });
+    letterSpacingRow.appendChild(letterSpacingSelect);
+    contentTab.appendChild(letterSpacingRow);
   
-    const stopBtn = document.createElement("button");
-    stopBtn.textContent = "Stop";
-    stopBtn.style.fontSize = "12px";
-    stopBtn.addEventListener("click", stopReading);
-    srButtons.appendChild(stopBtn);
+    // Text Alignment Dropdown
+    const alignRow = document.createElement("div");
+    alignRow.className = "item-row";
+    alignRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-align-left"></i>
+        <span>Text Alignment</span>
+      </div>
+    `;
+    const alignSelect = document.createElement("select");
+    const alignOptions = [
+      { value: "", label: "Default" },
+      { value: "align-left", label: "Left" },
+      { value: "align-center", label: "Center" },
+      { value: "align-right", label: "Right" }
+    ];
+    alignOptions.forEach(opt => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      alignSelect.appendChild(optionEl);
+    });
+    alignSelect.addEventListener("change", () => {
+      document.body.classList.remove("align-left", "align-center", "align-right");
+      if (alignSelect.value) {
+        document.body.classList.add(alignSelect.value);
+      }
+    });
+    alignRow.appendChild(alignSelect);
+    contentTab.appendChild(alignRow);
   
-    screenReaderRow.appendChild(srButtons);
-    panelContent.appendChild(screenReaderRow);
+    // TAB 3: Color Adjustments
+    const colorTab = tabContents[2];
+    colorTab.appendChild(createToggleRow("fas fa-moon", "Dark Contrast", (checked) => {
+      toggleBodyClass("dark-contrast");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-sun", "Light Contrast", (checked) => {
+      toggleBodyClass("light-contrast");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-adjust", "High Contrast", (checked) => {
+      toggleBodyClass("high-contrast");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-tint", "High Saturation", (checked) => {
+      toggleBodyClass("high-saturation");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-tint-slash", "Low Saturation", (checked) => {
+      toggleBodyClass("low-saturation");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-eye-dropper", "Monochrome", (checked) => {
+      toggleBodyClass("monochrome");
+    }));
+  
+    // Text Colors via Swatches
+    const textColorsRow = document.createElement("div");
+    textColorsRow.className = "item-row";
+    textColorsRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-palette"></i>
+        <span>Adjust Text Colors</span>
+      </div>
+    `;
+    const textSwatches = document.createElement("div");
+    textSwatches.className = "color-swatches";
+    ["#000", "#333", "#f00", "#0f0", "#00f", "#fff"].forEach(color => {
+      const swatch = document.createElement("div");
+      swatch.className = "color-swatch";
+      swatch.style.backgroundColor = color;
+      swatch.addEventListener("click", () => {
+        document.body.style.color = color;
+      });
+      textSwatches.appendChild(swatch);
+    });
+    const cancelTextColor = document.createElement("button");
+    cancelTextColor.textContent = "Cancel";
+    cancelTextColor.style.marginLeft = "5px";
+    cancelTextColor.style.fontSize = "12px";
+    cancelTextColor.addEventListener("click", () => {
+      document.body.style.color = "";
+    });
+    textSwatches.appendChild(cancelTextColor);
+    textColorsRow.appendChild(textSwatches);
+    colorTab.appendChild(textColorsRow);
+  
+    // Background Colors via Swatches
+    const bgColorsRow = document.createElement("div");
+    bgColorsRow.className = "item-row";
+    bgColorsRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-fill-drip"></i>
+        <span>Adjust Background Colors</span>
+      </div>
+    `;
+    const bgSwatches = document.createElement("div");
+    bgSwatches.className = "color-swatches";
+    ["#fff", "#eee", "#ccc", "#f00", "#0f0", "#00f"].forEach(color => {
+      const swatch = document.createElement("div");
+      swatch.className = "color-swatch";
+      swatch.style.backgroundColor = color;
+      swatch.addEventListener("click", () => {
+        document.body.style.backgroundColor = color;
+      });
+      bgSwatches.appendChild(swatch);
+    });
+    const cancelBgColor = document.createElement("button");
+    cancelBgColor.textContent = "Cancel";
+    cancelBgColor.style.marginLeft = "5px";
+    cancelBgColor.style.fontSize = "12px";
+    cancelBgColor.addEventListener("click", () => {
+      document.body.style.backgroundColor = "";
+    });
+    bgSwatches.appendChild(cancelBgColor);
+    bgColorsRow.appendChild(bgSwatches);
+    colorTab.appendChild(bgColorsRow);
+  
+    // TAB 4: Orientation Adjustments
+    const orientationTab = tabContents[3];
+    orientationTab.appendChild(createToggleRow("fas fa-volume-mute", "Mute Sounds", (checked) => {
+      toggleBodyClass("mute-sounds");
+      // Add logic to mute audio/video if needed
+    }));
+    orientationTab.appendChild(createToggleRow("far fa-image", "Hide Images", (checked) => {
+      toggleBodyClass("hide-images");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-book", "Read Mode", (checked) => {
+      toggleBodyClass("read-mode");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-grip-lines", "Reading Guide", (checked) => {
+      toggleBodyClass("reading-guide");
+    }));
+  
+    // Useful Links Dropdown (placeholder)
+    const usefulLinksRow = document.createElement("div");
+    usefulLinksRow.className = "item-row";
+    usefulLinksRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-external-link-alt"></i>
+        <span>Useful Links</span>
+      </div>
+    `;
+    const linksSelect = document.createElement("select");
+    const linkItems = [
+      { label: "Select an option", url: "" },
+      { label: "Google", url: "https://google.com" },
+      { label: "W3C Accessibility", url: "https://www.w3.org/WAI/" }
+    ];
+    linkItems.forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item.url;
+      opt.textContent = item.label;
+      linksSelect.appendChild(opt);
+    });
+    linksSelect.addEventListener("change", () => {
+      if (linksSelect.value) {
+        window.open(linksSelect.value, "_blank");
+        linksSelect.value = "";
+      }
+    });
+    usefulLinksRow.appendChild(linksSelect);
+    orientationTab.appendChild(usefulLinksRow);
+  
+    orientationTab.appendChild(createToggleRow("fas fa-stop", "Stop Animations", (checked) => {
+      toggleBodyClass("stop-animations");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mask", "Reading Mask", (checked) => {
+      toggleBodyClass("reading-mask");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mouse-pointer", "Highlight Hover", (checked) => {
+      toggleBodyClass("highlight-hover");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-crosshairs", "Highlight Focus", (checked) => {
+      toggleBodyClass("highlight-focus");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mouse-pointer", "Big Black Cursor", (checked) => {
+      toggleBodyClass("big-black-cursor");
+      if (checked) document.body.classList.remove("big-white-cursor");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mouse-pointer", "Big White Cursor", (checked) => {
+      toggleBodyClass("big-white-cursor");
+      if (checked) document.body.classList.remove("big-black-cursor");
+    }));
+  
+    // Additional Screen Reader Controls in a dedicated section
+    const screenReaderHeader = document.createElement("div");
+    screenReaderHeader.className = "section-header";
+    screenReaderHeader.innerText = "Screen Reader";
+    orientationTab.appendChild(screenReaderHeader);
+  
+    const readAloudBtn = document.createElement("button");
+    readAloudBtn.className = "access-btn";
+    readAloudBtn.innerHTML = `<i class="fas fa-volume-up"></i> Read Aloud`;
+    readAloudBtn.addEventListener("click", speakPage);
+    orientationTab.appendChild(readAloudBtn);
+  
+    const stopReadingBtn = document.createElement("button");
+    stopReadingBtn.className = "access-btn";
+    stopReadingBtn.innerHTML = `<i class="fas fa-stop"></i> Stop Reading`;
+    stopReadingBtn.addEventListener("click", cancelSpeech);
+    orientationTab.appendChild(stopReadingBtn);
+  
+    // "See All Options" Button for future expansion
+    const moreOptionsBtn = document.createElement("button");
+    moreOptionsBtn.className = "access-btn";
+    moreOptionsBtn.innerHTML = `<i class="fas fa-ellipsis-h"></i> See All Options`;
+    moreOptionsBtn.addEventListener("click", () => {
+      widgetContainer.classList.toggle("show-all");
+      moreOptionsBtn.innerText = widgetContainer.classList.contains("show-all")
+        ? "Hide Extra Options"
+        : "See All Options";
+    });
+    orientationTab.appendChild(moreOptionsBtn);
   
     /**
-     * ==============================
-     *  3. ATTACH THE WIDGET TO BODY
-     * ==============================
+     * =========================================
+     *  5. ATTACH THE WIDGET TO THE DOCUMENT
+     * =========================================
      */
     document.body.appendChild(widgetContainer);
   })();
