@@ -1,257 +1,754 @@
-(function () {
-    /* =========================================
-     * 1. CREATE THE WIDGET ELEMENTS & STYLES
-     * ========================================= */
+(function() {
+    /**
+     * ==============================
+     *  0. HELPER FUNCTIONS & STATE
+     * ==============================
+     */
+    let isWidgetOpen = false;
   
-    // Container for everything
+    // Utility: Toggle any CSS class on <body>
+    function toggleBodyClass(className) {
+      document.body.classList.toggle(className);
+    }
+  
+    // Utility: Remove all accessibility classes from <body>
+    function resetAllClasses() {
+      const classesToRemove = [
+        "seizure-safe-profile", "vision-impaired-profile", "adhd-friendly-profile",
+        "cognitive-profile", "keyboard-navigation", "screen-reader-enabled",
+        "content-scaling", "readable-font", "highlight-titles", "highlight-links",
+        "text-magnifier", "bigger-text", "line-height-2", "line-height-3",
+        "letter-spacing-2", "letter-spacing-3", "align-left", "align-center", "align-right",
+        "dark-contrast", "light-contrast", "high-contrast", "high-saturation",
+        "low-saturation", "monochrome", "mute-sounds", "hide-images", "read-mode",
+        "reading-guide", "stop-animations", "reading-mask", "highlight-hover",
+        "highlight-focus", "big-black-cursor", "big-white-cursor"
+        // Add more if needed
+      ];
+      classesToRemove.forEach((cls) => document.body.classList.remove(cls));
+    }
+  
+    // Utility: Hide the entire widget
+    function hideWidgetInterface() {
+      widgetContainer.style.display = "none";
+    }
+  
+    // Dictionary search placeholder (you can integrate a real dictionary API)
+    function dictionarySearch(query) {
+      if (!query) return;
+      alert(`Searching for definition of: "${query}" (placeholder).`);
+    }
+  
+    /**
+     * ===========================
+     *  1. CREATE MAIN CONTAINER
+     * ===========================
+     */
     const widgetContainer = document.createElement("div");
     widgetContainer.className = "my-accessibility-widget";
   
-    // Floating toggle button
-    const widgetToggleBtn = document.createElement("button");
-    widgetToggleBtn.className = "widget-toggle-btn";
-    widgetToggleBtn.innerHTML = '<i class="fas fa-universal-access"></i>';
-  
-    // Panel with all accessibility options
-    const widgetPanel = document.createElement("div");
-    widgetPanel.className = "widget-panel";
-  
-    // Create a style element to avoid polluting global CSS
-    const style = document.createElement("style");
-    style.innerHTML = `
-      /* Container styling */
+    // We'll inject <style> to keep everything scoped
+    const styleEl = document.createElement("style");
+    styleEl.innerHTML = `
+      /* -------------------------------------------------
+         A) Base Container & Toggle Button
+      -------------------------------------------------- */
       .my-accessibility-widget {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        z-index: 999999; 
+        z-index: 999999;
         font-family: Arial, sans-serif;
+        transition: all 0.3s ease;
       }
-  
-      /* Toggle button styling */
+      .my-accessibility-widget button,
+      .my-accessibility-widget select {
+        font-family: inherit;
+      }
+      /* Floating button to open/close the panel */
       .my-accessibility-widget .widget-toggle-btn {
-        background-color: #004a99;
-        color: #fff;
+        width: 60px;
+        height: 60px;
         border: none;
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
+        background-color: #0057b8;
+        color: #fff;
+        font-size: 26px;
         cursor: pointer;
-        font-size: 22px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-      }
-  
-      /* The panel that appears on toggle */
-      .my-accessibility-widget .widget-panel {
-        display: none; /* hidden by default */
-        position: absolute;
-        bottom: 60px; /* just above the toggle button */
-        right: 0;
-        background-color: #fff;
-        width: 300px;
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      }
-  
-      /* Panel open state */
-      .my-accessibility-widget.open .widget-panel {
-        display: block;
-      }
-  
-      /* Grid of feature buttons */
-      .my-accessibility-widget .widget-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-      }
-  
-      /* Each feature button */
-      .my-accessibility-widget .widget-feature-btn {
-        background-color: #f9f9f9;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        text-align: center;
-        padding: 10px;
-        cursor: pointer;
-        font-size: 14px;
-        color: #333;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
       }
-      .my-accessibility-widget .widget-feature-btn:hover {
-        background-color: #e8e8e8;
+  
+      /* -------------------------------------------------
+         B) The Panel
+      -------------------------------------------------- */
+      .my-accessibility-widget .widget-panel {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        width: 380px;
+        max-height: 80vh;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        overflow: hidden;
       }
-      .my-accessibility-widget .widget-feature-btn i {
-        font-size: 20px;
-        margin-bottom: 5px;
+      .my-accessibility-widget.open .widget-panel {
+        display: flex;
       }
   
-      /* =============== Accessibility Classes =============== */
-      /* High contrast */
-      body.high-contrast {
-        background-color: #000 !important;
-        color: #fff !important;
+      /* -------------------------------------------------
+         C) Top Bar (Reset, Statement, Hide, Search)
+      -------------------------------------------------- */
+      .my-accessibility-widget .panel-top-bar {
+        background-color: #f2f2f2;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: space-between;
       }
-      body.high-contrast a {
-        color: #0ff !important;
+      .my-accessibility-widget .panel-top-bar button {
+        background-color: #eee;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
       }
-  
-      /* Dyslexia-friendly font (placeholder: you can load a real dyslexia font) */
-      body.dyslexia-font {
-        font-family: 'OpenDyslexic', Arial, sans-serif !important;
+      .my-accessibility-widget .panel-top-bar button:hover {
+        background-color: #ddd;
       }
-  
-      /* Bigger text */
-      body.bigger-text * {
-        font-size: 120% !important;
-        line-height: 1.4 !important;
-      }
-  
-      /* Highlight links */
-      body.highlight-links a {
-        outline: 2px dashed red !important;
-        background-color: yellow !important;
-      }
-  
-      /* Pause animations */
-      body.pause-animations * {
-        animation: none !important;
-        transition: none !important;
+      .my-accessibility-widget .panel-top-bar input[type="text"] {
+        flex: 1;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 13px;
       }
   
-      /* Hide images */
+      /* -------------------------------------------------
+         D) Tabs (Profiles, Content, Color, Orientation)
+      -------------------------------------------------- */
+      .my-accessibility-widget .tabs {
+        display: flex;
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #ccc;
+      }
+      .my-accessibility-widget .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+        border: none;
+        background-color: #f9f9f9;
+        font-size: 14px;
+        border-right: 1px solid #ccc;
+      }
+      .my-accessibility-widget .tab-btn:last-child {
+        border-right: none;
+      }
+      .my-accessibility-widget .tab-btn.active {
+        background-color: #fff;
+        font-weight: bold;
+        border-bottom: 2px solid #0057b8;
+      }
+  
+      /* -------------------------------------------------
+         E) Tab Content
+      -------------------------------------------------- */
+      .my-accessibility-widget .tab-content {
+        display: none;
+        padding: 10px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .my-accessibility-widget .tab-content.active {
+        display: block;
+      }
+  
+      /* Each item row with ON/OFF toggle or other controls */
+      .my-accessibility-widget .item-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .my-accessibility-widget .item-row:last-child {
+        border-bottom: none;
+      }
+      .my-accessibility-widget .item-label {
+        font-size: 14px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .my-accessibility-widget .item-label i {
+        color: #0057b8;
+      }
+  
+      /* Toggle switch style */
+      .my-accessibility-widget .toggle-switch {
+        position: relative;
+        width: 45px;
+        height: 24px;
+      }
+      .my-accessibility-widget .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .my-accessibility-widget .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+      }
+      .my-accessibility-widget .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+      .my-accessibility-widget .toggle-switch input:checked + .slider {
+        background-color: #0057b8;
+      }
+      .my-accessibility-widget .toggle-switch input:checked + .slider:before {
+        transform: translateX(21px);
+      }
+  
+      /* Simple color swatches */
+      .my-accessibility-widget .color-swatches {
+        display: flex;
+        gap: 5px;
+      }
+      .my-accessibility-widget .color-swatch {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+      }
+  
+      /* -------------------------------------------------
+         F) Example Classes for Accessibility Features
+         (You can expand or refine these)
+      -------------------------------------------------- */
+      /* 1) Profiles (example placeholders) */
+      body.seizure-safe-profile { /* e.g. reduce flashy elements */ }
+      body.vision-impaired-profile { /* e.g. bigger fonts, higher contrast */ }
+      body.adhd-friendly-profile { /* e.g. reduced distractions */ }
+      body.cognitive-profile { /* e.g. simpler UI, maybe highlight focus */ }
+      body.keyboard-navigation { outline: 2px dashed #0057b8 !important; }
+      body.screen-reader-enabled { /* e.g. start TTS or focus announcements */ }
+  
+      /* 2) Content Adjustments */
+      body.content-scaling { /* e.g. scale content by 110% */ transform: scale(1.1); transform-origin: 0 0; }
+      body.readable-font { font-family: "OpenDyslexic", Arial, sans-serif !important; }
+      body.highlight-titles h1, 
+      body.highlight-titles h2, 
+      body.highlight-titles h3, 
+      body.highlight-titles h4, 
+      body.highlight-titles h5 { outline: 2px solid orange; }
+      body.highlight-links a { outline: 2px dotted red; }
+      body.text-magnifier { /* placeholder for text magnifier logic */ }
+      body.bigger-text * { font-size: 120% !important; line-height: 1.4 !important; }
+      body.line-height-2 * { line-height: 1.8 !important; }
+      body.line-height-3 * { line-height: 2 !important; }
+      body.letter-spacing-2 * { letter-spacing: 1px !important; }
+      body.letter-spacing-3 * { letter-spacing: 2px !important; }
+      body.align-left { text-align: left !important; }
+      body.align-center { text-align: center !important; }
+      body.align-right { text-align: right !important; }
+  
+      /* 3) Color Adjustments */
+      body.dark-contrast { background-color: #111 !important; color: #eee !important; }
+      body.light-contrast { background-color: #fff !important; color: #000 !important; }
+      body.high-contrast { filter: contrast(150%) !important; }
+      body.high-saturation { filter: saturate(150%) !important; }
+      body.low-saturation { filter: saturate(50%) !important; }
+      body.monochrome { filter: grayscale(100%) !important; }
+  
+      /* 4) Orientation Adjustments */
+      body.mute-sounds { /* e.g. mute audio/video tags via JS */ }
       body.hide-images img, 
       body.hide-images picture, 
-      body.hide-images figure {
-        display: none !important;
-      }
+      body.hide-images figure { display: none !important; }
+      body.read-mode { /* e.g. show only main text, hide sidebars? */ }
+      body.reading-guide { /* e.g. highlight a single line or region? */ }
+      body.stop-animations * { animation: none !important; transition: none !important; }
+      body.reading-mask { /* e.g. dark overlay except for line of text? */ }
+      body.highlight-hover *:hover { outline: 2px solid #0057b8; }
+      body.highlight-focus *:focus { outline: 2px solid #ff9900; }
+      body.big-black-cursor { cursor: url('https://cdn-icons-png.flaticon.com/512/892/892693.png'), auto; }
+      body.big-white-cursor { cursor: url('https://cdn-icons-png.flaticon.com/512/892/892709.png'), auto; }
     `;
-    document.head.appendChild(style);
+    document.head.appendChild(styleEl);
   
-    /* =========================================
-     * 2. BUILD THE GRID OF FEATURE BUTTONS
-     * ========================================= */
-    const grid = document.createElement("div");
-    grid.className = "widget-grid";
-    widgetPanel.appendChild(grid);
+    /**
+     * ===========================
+     *  2. CREATE THE TOGGLE BUTTON
+     * ===========================
+     */
+    const toggleButton = document.createElement("button");
+    toggleButton.className = "widget-toggle-btn";
+    toggleButton.innerHTML = `<i class="fas fa-universal-access"></i>`;
+    toggleButton.title = "Open Accessibility Options";
   
-    // Helper to create each feature button
-    function createFeatureButton(iconClass, label, onClick) {
-      const btn = document.createElement("div");
-      btn.className = "widget-feature-btn";
-      btn.innerHTML = `<i class="${iconClass}"></i><span>${label}</span>`;
-      btn.addEventListener("click", onClick);
-      return btn;
+    toggleButton.addEventListener("click", () => {
+      isWidgetOpen = !isWidgetOpen;
+      if (isWidgetOpen) {
+        widgetContainer.classList.add("open");
+      } else {
+        widgetContainer.classList.remove("open");
+      }
+    });
+  
+    widgetContainer.appendChild(toggleButton);
+  
+    /**
+     * ===========================
+     *  3. CREATE THE PANEL
+     * ===========================
+     */
+    const widgetPanel = document.createElement("div");
+    widgetPanel.className = "widget-panel";
+    widgetContainer.appendChild(widgetPanel);
+  
+    /**
+     *  3A. Top Bar with Reset, Statement, Hide, Search
+     */
+    const topBar = document.createElement("div");
+    topBar.className = "panel-top-bar";
+    widgetPanel.appendChild(topBar);
+  
+    // Reset Button
+    const resetBtn = document.createElement("button");
+    resetBtn.innerText = "Reset Settings";
+    resetBtn.addEventListener("click", () => {
+      resetAllClasses();
+      // Also uncheck all toggles
+      widgetPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+      });
+    });
+    topBar.appendChild(resetBtn);
+  
+    // Accessibility Statement (placeholder)
+    const statementBtn = document.createElement("button");
+    statementBtn.innerText = "Statement";
+    statementBtn.addEventListener("click", () => {
+      alert("Open Accessibility Statement (placeholder).");
+    });
+    topBar.appendChild(statementBtn);
+  
+    // Hide Interface
+    const hideBtn = document.createElement("button");
+    hideBtn.innerText = "Hide Interface";
+    hideBtn.addEventListener("click", hideWidgetInterface);
+    topBar.appendChild(hideBtn);
+  
+    // Dictionary Search
+    const searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.placeholder = "Search in dictionary...";
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        dictionarySearch(searchInput.value);
+      }
+    });
+    topBar.appendChild(searchInput);
+  
+    /**
+     *  3B. Tabs (Profiles, Content, Color, Orientation)
+     */
+    const tabsContainer = document.createElement("div");
+    tabsContainer.className = "tabs";
+    widgetPanel.appendChild(tabsContainer);
+  
+    const tabNames = ["Profiles", "Content", "Color", "Orientation"];
+    const tabButtons = [];
+    const tabContents = [];
+  
+    function createTab(name) {
+      const btn = document.createElement("button");
+      btn.className = "tab-btn";
+      btn.innerText = name;
+      tabsContainer.appendChild(btn);
+  
+      const content = document.createElement("div");
+      content.className = "tab-content";
+      widgetPanel.appendChild(content);
+  
+      tabButtons.push(btn);
+      tabContents.push(content);
+  
+      btn.addEventListener("click", () => {
+        // Activate this tab
+        tabButtons.forEach((b, i) => {
+          b.classList.remove("active");
+          tabContents[i].classList.remove("active");
+        });
+        btn.classList.add("active");
+        content.classList.add("active");
+      });
     }
   
-    /* ========== Feature: Contrast + (Toggle High Contrast) ========== */
-    const contrastBtn = createFeatureButton("fas fa-adjust", "Contrast +", () => {
-      document.body.classList.toggle("high-contrast");
-    });
-    grid.appendChild(contrastBtn);
+    tabNames.forEach(createTab);
   
-    /* ========== Feature: Screen Reader (Text-to-Speech) ========== */
-    const synth = window.speechSynthesis;
-    let readingUtterance = null;
-    const screenReaderBtn = createFeatureButton("fas fa-volume-up", "Screen Reader", () => {
-      if (synth.speaking) return; // If already speaking, do nothing
-      const text = document.body.innerText;
-      readingUtterance = new SpeechSynthesisUtterance(text);
-      readingUtterance.rate = 1;
-      readingUtterance.pitch = 1;
-      synth.speak(readingUtterance);
-    });
-    grid.appendChild(screenReaderBtn);
+    // Activate the first tab by default
+    tabButtons[0].classList.add("active");
+    tabContents[0].classList.add("active");
   
-    /* ========== Feature: Smart Contrast (placeholder logic) ========== */
-    // Could be a second type of contrast or color inversion
-    const smartContrastBtn = createFeatureButton("fas fa-adjust", "Smart Contrast", () => {
-      // Example: invert colors or toggle a different class
-      // For demonstration, we'll just toggle a second 'high-contrast' variant
-      document.body.classList.toggle("high-contrast-2");
-    });
-    // We haven't defined "high-contrast-2" in the style, so you can customize
-    grid.appendChild(smartContrastBtn);
+    /**
+     *  3C. Populate each tab with items
+     */
+    // Helper to create a toggle row: label + ON/OFF
+    function createToggleRow(icon, labelText, onToggle) {
+      const row = document.createElement("div");
+      row.className = "item-row";
   
-    /* ========== Feature: Highlight Links ========== */
-    const highlightLinksBtn = createFeatureButton("fas fa-link", "Highlight Links", () => {
-      document.body.classList.toggle("highlight-links");
-    });
-    grid.appendChild(highlightLinksBtn);
+      const label = document.createElement("div");
+      label.className = "item-label";
+      label.innerHTML = `<i class="${icon}"></i> <span>${labelText}</span>`;
   
-    /* ========== Feature: Bigger Text ========== */
-    const biggerTextBtn = createFeatureButton("fas fa-text-height", "Bigger Text", () => {
-      document.body.classList.toggle("bigger-text");
-    });
-    grid.appendChild(biggerTextBtn);
+      const toggleWrap = document.createElement("label");
+      toggleWrap.className = "toggle-switch";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      const slider = document.createElement("span");
+      slider.className = "slider";
   
-    /* ========== Feature: Text Spacing ========== */
-    // Example: Increase letter spacing or line-height
-    const textSpacingBtn = createFeatureButton("fas fa-text-width", "Text Spacing", () => {
-      // Toggle a class that modifies spacing
-      document.body.classList.toggle("text-spacing");
-      // You can define .text-spacing in your CSS with letter-spacing or line-height
-    });
-    grid.appendChild(textSpacingBtn);
+      toggleWrap.appendChild(checkbox);
+      toggleWrap.appendChild(slider);
   
-    /* ========== Feature: Pause Animations ========== */
-    const pauseAnimationsBtn = createFeatureButton("fas fa-pause-circle", "Pause Animations", () => {
-      document.body.classList.toggle("pause-animations");
-    });
-    grid.appendChild(pauseAnimationsBtn);
+      checkbox.addEventListener("change", (e) => {
+        onToggle(e.target.checked);
+      });
   
-    /* ========== Feature: Hide Images ========== */
-    const hideImagesBtn = createFeatureButton("far fa-image", "Hide Images", () => {
-      document.body.classList.toggle("hide-images");
-    });
-    grid.appendChild(hideImagesBtn);
+      row.appendChild(label);
+      row.appendChild(toggleWrap);
   
-    /* ========== Feature: Dyslexia Friendly ========== */
-    const dyslexiaBtn = createFeatureButton("fas fa-font", "Dyslexia Friendly", () => {
-      document.body.classList.toggle("dyslexia-font");
-    });
-    grid.appendChild(dyslexiaBtn);
+      return row;
+    }
   
-    /* ========== Feature: Cursor (placeholder) ========== */
-    // Could toggle a large cursor or custom cursor
-    const cursorBtn = createFeatureButton("fas fa-mouse-pointer", "Cursor", () => {
-      // Example: toggle a big cursor
-      document.body.classList.toggle("big-cursor");
-      if (document.body.classList.contains("big-cursor")) {
-        document.body.style.cursor = "url('https://cdn-icons-png.flaticon.com/512/892/892693.png'), auto";
-      } else {
-        document.body.style.cursor = "auto";
+    /**
+     * ========== TAB 1: Profiles ==========
+     */
+    const profilesTab = tabContents[0];
+  
+    profilesTab.appendChild(createToggleRow("fas fa-bolt", "Seizure Safe Profile", (checked) => {
+      toggleBodyClass("seizure-safe-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-eye", "Vision Impaired Profile", (checked) => {
+      toggleBodyClass("vision-impaired-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-brain", "ADHD Friendly Profile", (checked) => {
+      toggleBodyClass("adhd-friendly-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-user-graduate", "Cognitive Disability Profile", (checked) => {
+      toggleBodyClass("cognitive-profile");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-keyboard", "Keyboard Navigation (Motor)", (checked) => {
+      toggleBodyClass("keyboard-navigation");
+    }));
+    profilesTab.appendChild(createToggleRow("fas fa-blind", "Blind Users (Screen Reader)", (checked) => {
+      toggleBodyClass("screen-reader-enabled");
+    }));
+  
+    /**
+     * ========== TAB 2: Content Adjustments ==========
+     */
+    const contentTab = tabContents[1];
+  
+    contentTab.appendChild(createToggleRow("fas fa-expand", "Content Scaling", (checked) => {
+      toggleBodyClass("content-scaling");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-font", "Readable Font", (checked) => {
+      toggleBodyClass("readable-font");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-heading", "Highlight Titles", (checked) => {
+      toggleBodyClass("highlight-titles");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-link", "Highlight Links", (checked) => {
+      toggleBodyClass("highlight-links");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-search-plus", "Text Magnifier", (checked) => {
+      toggleBodyClass("text-magnifier");
+    }));
+    contentTab.appendChild(createToggleRow("fas fa-text-height", "Bigger Text", (checked) => {
+      toggleBodyClass("bigger-text");
+    }));
+  
+    // Example: Adjust line height with a simple dropdown
+    const lineHeightRow = document.createElement("div");
+    lineHeightRow.className = "item-row";
+    lineHeightRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-text-height"></i>
+        <span>Adjust Line Height</span>
+      </div>
+    `;
+    const lineHeightSelect = document.createElement("select");
+    const lhOptions = [
+      { value: "", label: "Default" },
+      { value: "line-height-2", label: "Line Height 1.8" },
+      { value: "line-height-3", label: "Line Height 2.0" }
+    ];
+    lhOptions.forEach(opt => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      lineHeightSelect.appendChild(optionEl);
+    });
+    lineHeightSelect.addEventListener("change", () => {
+      // Remove any existing line-height classes
+      document.body.classList.remove("line-height-2", "line-height-3");
+      if (lineHeightSelect.value) {
+        document.body.classList.add(lineHeightSelect.value);
       }
     });
-    grid.appendChild(cursorBtn);
+    lineHeightRow.appendChild(lineHeightSelect);
+    contentTab.appendChild(lineHeightRow);
   
-    /* ========== Feature: Tooltips (placeholder) ========== */
-    const tooltipsBtn = createFeatureButton("fas fa-comment-dots", "Tooltips", () => {
-      // Could toggle tooltips on focusable elements
-      alert("Tooltips toggled (placeholder). Implement custom logic here.");
+    // Adjust letter spacing
+    const letterSpacingRow = document.createElement("div");
+    letterSpacingRow.className = "item-row";
+    letterSpacingRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-arrows-alt-h"></i>
+        <span>Adjust Letter Spacing</span>
+      </div>
+    `;
+    const letterSpacingSelect = document.createElement("select");
+    const lsOptions = [
+      { value: "", label: "Default" },
+      { value: "letter-spacing-2", label: "Spacing +1px" },
+      { value: "letter-spacing-3", label: "Spacing +2px" }
+    ];
+    lsOptions.forEach(opt => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      letterSpacingSelect.appendChild(optionEl);
     });
-    grid.appendChild(tooltipsBtn);
-  
-    /* ========== Feature: Page Structure (placeholder) ========== */
-    const pageStructureBtn = createFeatureButton("fas fa-sitemap", "Page Structure", () => {
-      // Could highlight headings, landmarks, etc.
-      alert("Page Structure toggled (placeholder). Implement custom logic here.");
+    letterSpacingSelect.addEventListener("change", () => {
+      document.body.classList.remove("letter-spacing-2", "letter-spacing-3");
+      if (letterSpacingSelect.value) {
+        document.body.classList.add(letterSpacingSelect.value);
+      }
     });
-    grid.appendChild(pageStructureBtn);
+    letterSpacingRow.appendChild(letterSpacingSelect);
+    contentTab.appendChild(letterSpacingRow);
   
-    /* =========================================
-     * 3. ASSEMBLE & ATTACH TO DOCUMENT
-     * ========================================= */
-    widgetContainer.appendChild(widgetToggleBtn);
-    widgetContainer.appendChild(widgetPanel);
+    // Align text
+    const alignRow = document.createElement("div");
+    alignRow.className = "item-row";
+    alignRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-align-left"></i>
+        <span>Text Alignment</span>
+      </div>
+    `;
+    const alignSelect = document.createElement("select");
+    const alignOptions = [
+      { value: "", label: "Default" },
+      { value: "align-left", label: "Align Left" },
+      { value: "align-center", label: "Align Center" },
+      { value: "align-right", label: "Align Right" }
+    ];
+    alignOptions.forEach(opt => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      alignSelect.appendChild(optionEl);
+    });
+    alignSelect.addEventListener("change", () => {
+      document.body.classList.remove("align-left", "align-center", "align-right");
+      if (alignSelect.value) {
+        document.body.classList.add(alignSelect.value);
+      }
+    });
+    alignRow.appendChild(alignSelect);
+    contentTab.appendChild(alignRow);
+  
+    /**
+     * ========== TAB 3: Color Adjustments ==========
+     */
+    const colorTab = tabContents[2];
+  
+    colorTab.appendChild(createToggleRow("fas fa-moon", "Dark Contrast", (checked) => {
+      toggleBodyClass("dark-contrast");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-sun", "Light Contrast", (checked) => {
+      toggleBodyClass("light-contrast");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-adjust", "High Contrast", (checked) => {
+      toggleBodyClass("high-contrast");
+    }));
+  
+    colorTab.appendChild(createToggleRow("fas fa-tint", "High Saturation", (checked) => {
+      toggleBodyClass("high-saturation");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-tint-slash", "Low Saturation", (checked) => {
+      toggleBodyClass("low-saturation");
+    }));
+    colorTab.appendChild(createToggleRow("fas fa-eye-dropper", "Monochrome", (checked) => {
+      toggleBodyClass("monochrome");
+    }));
+  
+    // Adjust Text Colors (swatches)
+    const textColorsRow = document.createElement("div");
+    textColorsRow.className = "item-row";
+    textColorsRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-palette"></i>
+        <span>Adjust Text Colors</span>
+      </div>
+    `;
+    const textSwatches = document.createElement("div");
+    textSwatches.className = "color-swatches";
+    ["#000","#333","#f00","#0f0","#00f","#fff"].forEach(color => {
+      const swatch = document.createElement("div");
+      swatch.className = "color-swatch";
+      swatch.style.backgroundColor = color;
+      swatch.addEventListener("click", () => {
+        document.body.style.color = color;
+      });
+      textSwatches.appendChild(swatch);
+    });
+    const cancelTextColor = document.createElement("button");
+    cancelTextColor.textContent = "Cancel";
+    cancelTextColor.style.marginLeft = "5px";
+    cancelTextColor.style.fontSize = "12px";
+    cancelTextColor.addEventListener("click", () => {
+      document.body.style.color = "";
+    });
+    textSwatches.appendChild(cancelTextColor);
+    textColorsRow.appendChild(textSwatches);
+    colorTab.appendChild(textColorsRow);
+  
+    // Adjust Background Colors
+    const bgColorsRow = document.createElement("div");
+    bgColorsRow.className = "item-row";
+    bgColorsRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-fill-drip"></i>
+        <span>Adjust Background Colors</span>
+      </div>
+    `;
+    const bgSwatches = document.createElement("div");
+    bgSwatches.className = "color-swatches";
+    ["#fff","#eee","#ccc","#f00","#0f0","#00f"].forEach(color => {
+      const swatch = document.createElement("div");
+      swatch.className = "color-swatch";
+      swatch.style.backgroundColor = color;
+      swatch.addEventListener("click", () => {
+        document.body.style.backgroundColor = color;
+      });
+      bgSwatches.appendChild(swatch);
+    });
+    const cancelBgColor = document.createElement("button");
+    cancelBgColor.textContent = "Cancel";
+    cancelBgColor.style.marginLeft = "5px";
+    cancelBgColor.style.fontSize = "12px";
+    cancelBgColor.addEventListener("click", () => {
+      document.body.style.backgroundColor = "";
+    });
+    bgSwatches.appendChild(cancelBgColor);
+    bgColorsRow.appendChild(bgSwatches);
+    colorTab.appendChild(bgColorsRow);
+  
+    /**
+     * ========== TAB 4: Orientation Adjustments ==========
+     */
+    const orientationTab = tabContents[3];
+  
+    orientationTab.appendChild(createToggleRow("fas fa-volume-mute", "Mute Sounds", (checked) => {
+      toggleBodyClass("mute-sounds");
+      // Real logic might pause/mute all audio/video
+    }));
+    orientationTab.appendChild(createToggleRow("far fa-image", "Hide Images", (checked) => {
+      toggleBodyClass("hide-images");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-book", "Read Mode", (checked) => {
+      toggleBodyClass("read-mode");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-grip-lines", "Reading Guide", (checked) => {
+      toggleBodyClass("reading-guide");
+    }));
+  
+    // Useful Links (placeholder dropdown)
+    const usefulLinksRow = document.createElement("div");
+    usefulLinksRow.className = "item-row";
+    usefulLinksRow.innerHTML = `
+      <div class="item-label">
+        <i class="fas fa-external-link-alt"></i>
+        <span>Useful Links</span>
+      </div>
+    `;
+    const linksSelect = document.createElement("select");
+    const linkItems = [
+      { label: "Select an option", url: "" },
+      { label: "Google", url: "https://google.com" },
+      { label: "W3C Accessibility", url: "https://www.w3.org/WAI/" }
+    ];
+    linkItems.forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item.url;
+      opt.textContent = item.label;
+      linksSelect.appendChild(opt);
+    });
+    linksSelect.addEventListener("change", () => {
+      if (linksSelect.value) {
+        window.open(linksSelect.value, "_blank");
+        linksSelect.value = "";
+      }
+    });
+    usefulLinksRow.appendChild(linksSelect);
+    orientationTab.appendChild(usefulLinksRow);
+  
+    orientationTab.appendChild(createToggleRow("fas fa-stop", "Stop Animations", (checked) => {
+      toggleBodyClass("stop-animations");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mask", "Reading Mask", (checked) => {
+      toggleBodyClass("reading-mask");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mouse-pointer", "Highlight Hover", (checked) => {
+      toggleBodyClass("highlight-hover");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-crosshairs", "Highlight Focus", (checked) => {
+      toggleBodyClass("highlight-focus");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mouse-pointer", "Big Black Cursor", (checked) => {
+      toggleBodyClass("big-black-cursor");
+      // If toggled on, ensure big-white-cursor is off, etc.
+      if (checked) document.body.classList.remove("big-white-cursor");
+    }));
+    orientationTab.appendChild(createToggleRow("fas fa-mouse-pointer", "Big White Cursor", (checked) => {
+      toggleBodyClass("big-white-cursor");
+      if (checked) document.body.classList.remove("big-black-cursor");
+    }));
+  
+    /**
+     * ===========================
+     *  4. ATTACH THE WIDGET
+     * ===========================
+     */
     document.body.appendChild(widgetContainer);
-  
-    // Toggle the panel on button click
-    widgetToggleBtn.addEventListener("click", () => {
-      widgetContainer.classList.toggle("open");
-    });
   })();
   
