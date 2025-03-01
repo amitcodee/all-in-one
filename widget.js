@@ -132,6 +132,26 @@ const firebaseConfig = {
       }
     });
   }
+  async function checkWebsiteApproval() {
+    const website = window.location.origin;
+    console.log("Checking approval for:", website);
+    const approvedSitesRef = db.collection("approved_websites");
+    const query = approvedSitesRef.where("url", "==", website).where("status", "==", "approved");
+    
+    try {
+      const snapshot = await query.get();
+      console.log("Approval snapshot size:", snapshot.size);
+      if (!snapshot.empty) {
+        console.log("Website approved, injecting widget.");
+        injectWidget();
+      } else {
+        console.log("Website not approved, showing registration form.");
+        showRegistrationForm();
+      }
+    } catch (error) {
+      console.error("Error checking website approval:", error);
+    }
+  }
   
   // --- Run the widget check on script load ---
   checkWebsiteApproval();
