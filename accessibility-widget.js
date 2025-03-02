@@ -1,230 +1,386 @@
-(function() {
-    /**
-     * ==========================================
-     *  0. HELPER FUNCTIONS & BASIC SETUP
-     * ==========================================
-     */
-    // Toggle a CSS class on <body>
-    function toggleBodyClass(className) {
-      document.body.classList.toggle(className);
+(function () {
+    /***************************************************************
+     *  0. HELPER FUNCTIONS & GLOBAL STATE
+     ***************************************************************/
+    let isWidgetOpen = false;
+  
+    // Toggle any body class
+    function toggleBodyClass(cls) {
+      document.body.classList.toggle(cls);
     }
   
-    // We'll store the descriptions in a simple object
-    const profileData = {
-      "seizure-safe-profile": {
-        label: "Seizure Safe Profile",
-        icon: "fas fa-bolt",
-        description: `
-          <strong>Seizure Safe Profile</strong><br>
-          This profile enables epileptic and seizure prone users to browse safely by eliminating 
-          the risk of seizures that result from flashing or blinking animations and risky color combinations.
-        `
-      },
-      "vision-impaired-profile": {
-        label: "Vision Impaired Profile",
-        icon: "fas fa-eye",
-        description: `
-          <strong>Vision Impaired Profile</strong><br>
-          This profile adjusts the website so that it is accessible to the majority of visual impairments 
-          such as Degrading Eyesight, Tunnel Vision, Cataract, Glaucoma, and others.
-        `
-      },
-      "adhd-friendly-profile": {
-        label: "ADHD Friendly Profile",
-        icon: "fas fa-brain",
-        description: `
-          <strong>ADHD Friendly Profile</strong><br>
-          This profile significantly reduces distractions, to help people with ADHD and 
-          Neurodevelopmental disorders browse, read, and focus on essential elements of the website more easily.
-        `
-      },
-      "cognitive-profile": {
-        label: "Cognitive Disability Profile",
-        icon: "fas fa-user-graduate",
-        description: `
-          <strong>Cognitive Disability Profile</strong><br>
-          This profile provides various assistive features to help users with cognitive disabilities 
-          such as Autism, Dyslexia, CVA, and others, to focus on the essential elements of the website more easily.
-        `
-      },
-      "keyboard-navigation": {
-        label: "Keyboard Navigation (Motor)",
-        icon: "fas fa-keyboard",
-        description: `
-          <strong>Keyboard Navigation (Motor)</strong><br>
-          This profile enables motor-impaired persons to operate the website using the keyboard Tab, 
-          Shift+Tab, and the Enter keys. Users can also use shortcuts such as “M” (menus), “H” (headings), 
-          “F” (forms), “B” (buttons), and “G” (graphics) to jump to specific elements.
-        `
-      },
-      "screen-reader-enabled": {
-        label: "Blind Users (Screen Reader)",
-        icon: "fas fa-blind",
-        description: `
-          <strong>Blind Users (Screen Reader)</strong><br>
-          This profile adjusts the website to be compatible with screen-readers such as JAWS, NVDA, VoiceOver, and TalkBack. 
-          A screen-reader is software that is installed on the blind user’s computer and smartphone, and websites 
-          should ensure compatibility with it.
-        `
-      }
-    };
+    // Remove all classes for the 6 profiles
+    function resetAllClasses() {
+      const classesToRemove = [
+        "seizure-safe-profile", 
+        "vision-impaired-profile", 
+        "adhd-friendly-profile",
+        "cognitive-profile", 
+        "keyboard-navigation", 
+        "screen-reader-enabled"
+      ];
+      classesToRemove.forEach((c) => document.body.classList.remove(c));
   
-    // Basic container for the demo
-    const container = document.createElement("div");
-    container.style.maxWidth = "600px";
-    container.style.margin = "20px auto";
-    container.style.fontFamily = "Arial, sans-serif";
+      // Also uncheck toggles & hide descriptions
+      widgetPanel.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+        cb.checked = false;
+      });
+      widgetPanel.querySelectorAll(".profile-description").forEach((desc) => {
+        desc.classList.remove("active");
+      });
+    }
   
-    // We'll inject some minimal CSS for toggles + layout
-    const styleEl = document.createElement("style");
-    styleEl.innerHTML = `
-      .profile-toggle-row {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #ddd;
+    // Dictionary search placeholder
+    function dictionarySearch(query) {
+      if (!query.trim()) return;
+      alert(`Searching dictionary for: "${query}" (placeholder).`);
+    }
+  
+    // Hide the widget entirely
+    function hideWidget() {
+      widgetContainer.style.display = "none";
+    }
+  
+    /***************************************************************
+     *  1. FORCED OVERRIDES FOR THE 6 PROFILES (DEMO)
+     ***************************************************************/
+    const overrideStyle = document.createElement("style");
+    overrideStyle.id = "override-styles";
+    overrideStyle.innerHTML = `
+      /* Seizure Safe: remove animations/transitions */
+      body.seizure-safe-profile * {
+        animation: none !important;
+        transition: none !important;
       }
-      .profile-toggle-left {
+  
+      /* Vision Impaired: enlarge text, high contrast, etc. */
+      body.vision-impaired-profile * {
+        font-size: 120% !important;
+        line-height: 1.5 !important;
+        color: #000 !important;
+        background-color: #fff !important;
+      }
+  
+      /* ADHD Friendly: highlight focus or reduce distractions */
+      body.adhd-friendly-profile *:focus {
+        outline: 2px dashed #ff00ff !important;
+        outline-offset: 3px !important;
+      }
+  
+      /* Cognitive Profile: simpler fonts, maybe increased spacing */
+      body.cognitive-profile * {
+        letter-spacing: 0.5px !important;
+      }
+  
+      /* Keyboard Navigation: highlight focus more strongly */
+      body.keyboard-navigation *:focus {
+        outline: 3px solid #0057b8 !important;
+        outline-offset: 3px !important;
+      }
+  
+      /* Screen Reader: placeholder */
+      body.screen-reader-enabled {
+        /* Possibly reveal skip links or ARIA attributes in real usage */
+      }
+    `;
+    document.head.appendChild(overrideStyle);
+  
+    /***************************************************************
+     *  2. CREATE THE WIDGET CONTAINER & SCOPED STYLES
+     ***************************************************************/
+    const widgetContainer = document.createElement("div");
+    widgetContainer.className = "my-access-widget";
+    widgetContainer.style.position = "fixed";
+    widgetContainer.style.bottom = "20px";
+    widgetContainer.style.right = "20px";
+    widgetContainer.style.zIndex = "999999";
+    widgetContainer.style.fontFamily = "Arial, sans-serif";
+  
+    // Local CSS for the widget
+    const localCSS = document.createElement("style");
+    localCSS.innerHTML = `
+      .my-access-widget .toggle-btn {
+        width: 60px;
+        height: 60px;
+        border: none;
+        border-radius: 50%;
+        background-color: #0057b8;
+        color: #fff;
+        font-size: 26px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         display: flex;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
       }
-      .profile-toggle-left i {
-        color: #0057b8;
-        font-size: 20px;
+      .my-access-widget .widget-panel {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        width: 360px;
+        max-height: 80vh;
+        background-color: #fff;
+        border: 2px solid #0057b8;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
       }
-      .profile-toggle-left .profile-label {
-        font-size: 16px;
-        font-weight: bold;
+      .my-access-widget.open .widget-panel {
+        display: flex;
+      }
+  
+      /* Top Bar */
+      .my-access-widget .panel-top-bar {
+        background-color: #f9f9f9;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .my-access-widget .panel-top-bar button {
+        background-color: #eee;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .my-access-widget .panel-top-bar button:hover {
+        background-color: #ddd;
+      }
+      .my-access-widget .panel-top-bar input[type="text"] {
+        flex: 1;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+  
+      /* Profile Rows */
+      .profile-row {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      .profile-row:last-child {
+        border-bottom: none;
+      }
+      .profile-row-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .profile-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
         color: #333;
       }
-      .toggle-switch {
+      .profile-label i {
+        color: #0057b8;
+        font-size: 18px;
+      }
+      .switch-wrap {
         position: relative;
         width: 45px;
         height: 24px;
-        margin-right: 10px;
       }
-      .toggle-switch input {
+      .switch-wrap input {
         opacity: 0;
-        width: 0;
+        width: 0; 
         height: 0;
       }
       .slider {
         position: absolute;
-        cursor: pointer;
         top: 0; left: 0; right: 0; bottom: 0;
         background-color: #ccc;
         transition: .4s;
         border-radius: 24px;
+        cursor: pointer;
       }
       .slider:before {
         position: absolute;
         content: "";
         height: 18px;
         width: 18px;
-        left: 3px;
-        bottom: 3px;
+        left: 3px; bottom: 3px;
         background-color: #fff;
         transition: .4s;
         border-radius: 50%;
       }
-      .toggle-switch input:checked + .slider {
+      .switch-wrap input:checked + .slider {
         background-color: #0057b8;
       }
-      .toggle-switch input:checked + .slider:before {
+      .switch-wrap input:checked + .slider:before {
         transform: translateX(21px);
       }
+      /* Description */
       .profile-description {
-        margin-top: 8px;
-        font-size: 14px;
+        font-size: 13px;
         color: #444;
+        margin-top: 8px;
+        display: none;
         line-height: 1.4;
-        display: none; /* hidden by default */
-        background-color: #f9f9f9;
-        padding: 10px;
-        border-radius: 4px;
       }
       .profile-description.active {
-        display: block; /* shown when toggle is ON */
+        display: block;
       }
     `;
-    document.head.appendChild(styleEl);
+    document.head.appendChild(localCSS);
   
-    /**
-     * A helper function to create a single toggle row
-     * with an icon, label, and a description that shows
-     * when toggled ON.
-     */
-    function createProfileToggleRow(profileKey) {
-      const { label, icon, description } = profileData[profileKey];
+    /***************************************************************
+     *  3. TOGGLE BUTTON
+     ***************************************************************/
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "toggle-btn";
+    toggleBtn.innerHTML = `<i class="fas fa-universal-access"></i>`;
+    toggleBtn.title = "Open Accessibility Options";
+    toggleBtn.addEventListener("click", () => {
+      isWidgetOpen = !isWidgetOpen;
+      widgetContainer.classList.toggle("open", isWidgetOpen);
+    });
+    widgetContainer.appendChild(toggleBtn);
   
-      // Row container
+    /***************************************************************
+     *  4. WIDGET PANEL
+     ***************************************************************/
+    const widgetPanel = document.createElement("div");
+    widgetPanel.className = "widget-panel";
+    widgetContainer.appendChild(widgetPanel);
+  
+    /* 4A. TOP BAR */
+    const topBar = document.createElement("div");
+    topBar.className = "panel-top-bar";
+    widgetPanel.appendChild(topBar);
+  
+    // Reset
+    const resetBtn = document.createElement("button");
+    resetBtn.textContent = "Reset Settings";
+    resetBtn.addEventListener("click", resetAllClasses);
+    topBar.appendChild(resetBtn);
+  
+    // Statement
+    const statementBtn = document.createElement("button");
+    statementBtn.textContent = "Statement";
+    statementBtn.addEventListener("click", () => {
+      alert("Accessibility Statement (placeholder).");
+    });
+    topBar.appendChild(statementBtn);
+  
+    // Hide
+    const hideBtn = document.createElement("button");
+    hideBtn.textContent = "Hide Interface";
+    hideBtn.addEventListener("click", hideWidget);
+    topBar.appendChild(hideBtn);
+  
+    // Dictionary Search
+    const searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.placeholder = "Dictionary search...";
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        dictionarySearch(searchInput.value);
+      }
+    });
+    topBar.appendChild(searchInput);
+  
+    /* 4B. PROFILES (6) */
+    // We'll define the 6 profiles in an array
+    const profiles = [
+      {
+        key: "seizure-safe-profile",
+        icon: "fas fa-bolt",
+        label: "Seizure Safe Profile",
+        description: `This profile enables epileptic and seizure prone users to browse safely by eliminating the risk of seizures that result from flashing or blinking animations and risky color combinations.`
+      },
+      {
+        key: "vision-impaired-profile",
+        icon: "fas fa-eye",
+        label: "Vision Impaired Profile",
+        description: `This profile adjusts the website so that it is accessible to the majority of visual impairments such as Degrading Eyesight, Tunnel Vision, Cataract, Glaucoma, and others.`
+      },
+      {
+        key: "adhd-friendly-profile",
+        icon: "fas fa-brain",
+        label: "ADHD Friendly Profile",
+        description: `This profile significantly reduces distractions, to help people with ADHD and Neurodevelopmental disorders browse, read, and focus on essential elements more easily.`
+      },
+      {
+        key: "cognitive-profile",
+        icon: "fas fa-user-graduate",
+        label: "Cognitive Disability Profile",
+        description: `This profile provides various assistive features to help users with cognitive disabilities such as Autism, Dyslexia, CVA, and others, to focus on the essential elements more easily.`
+      },
+      {
+        key: "keyboard-navigation",
+        icon: "fas fa-keyboard",
+        label: "Keyboard Navigation (Motor)",
+        description: `This profile enables motor-impaired persons to operate the website using the keyboard Tab, Shift+Tab, and the Enter keys. It also allows shortcuts (e.g. “M” for menus, “H” for headings) to jump to specific elements.`
+      },
+      {
+        key: "screen-reader-enabled",
+        icon: "fas fa-blind",
+        label: "Blind Users (Screen Reader)",
+        description: `This profile adjusts the website to be compatible with screen-readers such as JAWS, NVDA, VoiceOver, and TalkBack. A screen-reader is software installed on the blind user’s computer and smartphone.`
+      }
+    ];
+  
+    profiles.forEach(p => {
+      widgetPanel.appendChild(createProfileRow(p.key, p.icon, p.label, p.description));
+    });
+  
+    // Helper to create a row for each profile
+    function createProfileRow(key, iconClass, labelText, descText) {
       const row = document.createElement("div");
-      row.className = "profile-toggle-row";
+      row.className = "profile-row";
   
-      // Left side: icon + label
-      const leftDiv = document.createElement("div");
-      leftDiv.className = "profile-toggle-left";
-      leftDiv.innerHTML = `
-        <i class="${icon}"></i>
-        <div class="profile-label">${label}</div>
-      `;
+      const rowHeader = document.createElement("div");
+      rowHeader.className = "profile-row-header";
   
-      // Right side: toggle switch
-      const toggleWrap = document.createElement("label");
-      toggleWrap.className = "toggle-switch";
+      const labelDiv = document.createElement("div");
+      labelDiv.className = "profile-label";
+      labelDiv.innerHTML = `<i class="${iconClass}"></i> <span>${labelText}</span>`;
+  
+      // Switch
+      const switchWrap = document.createElement("label");
+      switchWrap.className = "switch-wrap";
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       const slider = document.createElement("span");
       slider.className = "slider";
   
-      toggleWrap.appendChild(checkbox);
-      toggleWrap.appendChild(slider);
+      switchWrap.appendChild(checkbox);
+      switchWrap.appendChild(slider);
   
-      // Description paragraph
-      const descEl = document.createElement("div");
-      descEl.className = "profile-description";
-      descEl.innerHTML = description;
+      rowHeader.appendChild(labelDiv);
+      rowHeader.appendChild(switchWrap);
+  
+      const desc = document.createElement("div");
+      desc.className = "profile-description";
+      desc.innerHTML = descText;
   
       // Toggle logic
       checkbox.addEventListener("change", (e) => {
-        // Add/remove the body class
-        toggleBodyClass(profileKey);
-        // Show/hide the description
+        toggleBodyClass(key);
         if (e.target.checked) {
-          descEl.classList.add("active");
+          desc.classList.add("active");
         } else {
-          descEl.classList.remove("active");
+          desc.classList.remove("active");
         }
       });
   
-      // Assemble the row
-      row.appendChild(leftDiv);
-      row.appendChild(toggleWrap);
-      row.appendChild(descEl);
-  
+      row.appendChild(rowHeader);
+      row.appendChild(desc);
       return row;
     }
   
-    /**
-     * Build the interface by appending each profile row.
-     * (You can omit any profiles you don't need.)
-     */
-    const profileKeys = [
-      "seizure-safe-profile",
-      "vision-impaired-profile",
-      "adhd-friendly-profile",
-      "cognitive-profile",
-      "keyboard-navigation",
-      "screen-reader-enabled"
-    ];
-    profileKeys.forEach((key) => {
-      container.appendChild(createProfileToggleRow(key));
-    });
-  
-    // Finally, attach the container to the page
-    document.body.appendChild(container);
+    /***************************************************************
+     *  5. ATTACH WIDGET
+     ***************************************************************/
+    document.body.appendChild(widgetContainer);
   })();
   
