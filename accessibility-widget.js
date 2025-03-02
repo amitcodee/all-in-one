@@ -3,29 +3,128 @@
      * 0. HELPER FUNCTIONS & GLOBAL STATE
      ************************************************************/
     let isWidgetOpen = false;
-    
-    // Toggle a CSS class on the <body>
-    function toggleBodyClass(className) {
-      document.body.classList.toggle(className);
+    let isVoiceNavActive = false;
+    let recognition; // for SpeechRecognition
+  
+    // Toggle a class on <body>
+    function toggleBodyClass(cls) {
+      document.body.classList.toggle(cls);
     }
-    
-    // Reset all accessibility classes (for our features)
+  
+    // Remove profile classes (for reset)
     function resetAllClasses() {
-      const classes = [
+      const classesToRemove = [
         "high-contrast", "dyslexia-font", "bigger-text",
         "highlight-links", "pause-animations", "hide-images",
         "big-cursor", "tooltips-enabled", "page-structure-active"
       ];
-      classes.forEach((cls) => document.body.classList.remove(cls));
+      classesToRemove.forEach((cls) => document.body.classList.remove(cls));
+  
+      // Also reset toggles in the panel (if applicable)
+      widgetPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+      });
+      widgetPanel.querySelectorAll(".feature-description").forEach(desc => {
+        desc.classList.remove("active");
+      });
     }
-    
+  
+    // Dictionary search placeholder
+    function dictionarySearch(query) {
+      if (!query.trim()) return;
+      alert(`Searching dictionary for: "${query}" (placeholder).`);
+    }
+  
+    // Hide widget completely
+    function hideWidget() {
+      widgetContainer.style.display = "none";
+    }
+  
+    // Text-to-Speech: Read entire page text
+    const synth = window.speechSynthesis;
+    let readingUtterance = null;
+    function speakPage() {
+      if (!("speechSynthesis" in window)) {
+        alert("Sorry, your browser doesn't support text-to-speech.");
+        return;
+      }
+      if (synth.speaking) return;
+      const text = document.body.innerText || "";
+      if (!text.trim()) return alert("No text available to read.");
+      readingUtterance = new SpeechSynthesisUtterance(text);
+      readingUtterance.lang = "en-US";
+      readingUtterance.rate = 1;
+      readingUtterance.pitch = 1;
+      synth.speak(readingUtterance);
+    }
+    function cancelSpeech() {
+      if (synth.speaking) synth.cancel();
+    }
+  
     /************************************************************
-     * 1. FORCED OVERRIDES CSS (Using !important)
+     *  Voice Navigation Feature (using SpeechRecognition)
+     ************************************************************/
+    // Initialize speech recognition if available
+    function initVoiceNavigation() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("Sorry, your browser doesn't support voice navigation.");
+        return;
+      }
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+  
+      recognition.addEventListener("result", (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        handleVoiceCommand(command);
+      });
+  
+      recognition.addEventListener("end", () => {
+        // Restart if voice navigation is still active
+        if (isVoiceNavActive) recognition.start();
+      });
+    }
+  
+    // Process voice commands
+    function handleVoiceCommand(command) {
+      console.log("Voice Command:", command);
+      if (command.includes("scroll up")) {
+        window.scrollBy({ top: -200, behavior: "smooth" });
+      } else if (command.includes("scroll down")) {
+        window.scrollBy({ top: 200, behavior: "smooth" });
+      } else if (command.includes("go to top")) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (command.includes("go to bottom")) {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      } else if (command.includes("close panel")) {
+        isWidgetOpen = false;
+        widgetContainer.classList.remove("open");
+      } else if (command.includes("voice off")) {
+        stopVoiceNavigation();
+      }
+      // You can add more commands as needed.
+    }
+  
+    function startVoiceNavigation() {
+      if (!recognition) initVoiceNavigation();
+      isVoiceNavActive = true;
+      recognition.start();
+    }
+  
+    function stopVoiceNavigation() {
+      isVoiceNavActive = false;
+      if (recognition) recognition.stop();
+    }
+  
+    /************************************************************
+     * 1. FORCED OVERRIDES (Using !important)
      ************************************************************/
     const overrideStyleEl = document.createElement("style");
     overrideStyleEl.id = "accessibility-overrides";
     overrideStyleEl.innerHTML = `
-      /* High Contrast Mode */
+      /* High Contrast */
       body.high-contrast {
         background-color: #000 !important;
         color: #fff !important;
@@ -34,7 +133,7 @@
         color: #0ff !important;
       }
       
-      /* Dyslexia-Friendly Font */
+      /* Dyslexia-Friendly */
       body.dyslexia-font {
         font-family: 'OpenDyslexic', Arial, sans-serif !important;
       }
@@ -64,70 +163,92 @@
         display: none !important;
       }
       
-      /* Big Cursor (example using a custom icon URL) */
+      /* Big Cursor */
       body.big-cursor {
         cursor: url('https://cdn-icons-png.flaticon.com/512/892/892693.png'), auto !important;
       }
     `;
     document.head.appendChild(overrideStyleEl);
-    
+  
     /************************************************************
-     * 2. CREATE WIDGET CONTAINER & SCOPED STYLES
+     * 2. CREATE WIDGET CONTAINER & LOCAL STYLES
      ************************************************************/
     const widgetContainer = document.createElement("div");
-    widgetContainer.className = "my-accessibility-widget";
+    widgetContainer.className = "my-access-widget";
     widgetContainer.style.position = "fixed";
     widgetContainer.style.bottom = "20px";
     widgetContainer.style.right = "20px";
     widgetContainer.style.zIndex = "999999";
     widgetContainer.style.fontFamily = "Arial, sans-serif";
   
-    // Local widget CSS (scoped)
-    const localStyle = document.createElement("style");
-    localStyle.innerHTML = `
-      /* Container & Floating Button */
-      .my-accessibility-widget {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 999999;
-        font-family: Arial, sans-serif;
-      }
-      .my-accessibility-widget .widget-toggle-btn {
-        background-color: #004a99;
-        color: #fff;
+    const localStyleEl = document.createElement("style");
+    localStyleEl.innerHTML = `
+      /* Floating Toggle Button */
+      .my-access-widget .toggle-btn {
+        width: 60px;
+        height: 60px;
         border: none;
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
+        background-color: #004a99;
+        color: #fff;
+        font-size: 26px;
         cursor: pointer;
-        font-size: 22px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      
-      /* Panel */
-      .my-accessibility-widget .widget-panel {
+      /* Widget Panel */
+      .my-access-widget .widget-panel {
         display: none;
         position: absolute;
-        bottom: 60px;
+        bottom: 70px;
         right: 0;
         background-color: #fff;
-        width: 300px;
+        width: 360px;
         padding: 15px;
         border-radius: 5px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       }
-      .my-accessibility-widget.open .widget-panel {
+      .my-access-widget.open .widget-panel {
         display: block;
       }
-      
-      /* Grid Layout for Features */
-      .my-accessibility-widget .widget-grid {
+      /* Top Bar */
+      .my-access-widget .panel-top-bar {
+        background-color: #f9f9f9;
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .my-access-widget .panel-top-bar button {
+        background-color: #eee;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .my-access-widget .panel-top-bar button:hover {
+        background-color: #ddd;
+      }
+      .my-access-widget .panel-top-bar input[type="text"] {
+        flex: 1;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+      /* Grid Layout for Feature Buttons */
+      .my-access-widget .widget-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
       }
-      .my-accessibility-widget .widget-feature-btn {
+      .my-access-widget .widget-feature-btn {
         background-color: #f9f9f9;
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -141,61 +262,64 @@
         align-items: center;
         justify-content: center;
       }
-      .my-accessibility-widget .widget-feature-btn:hover {
+      .my-access-widget .widget-feature-btn:hover {
         background-color: #e8e8e8;
       }
-      .my-accessibility-widget .widget-feature-btn i {
+      .my-access-widget .widget-feature-btn i {
         font-size: 20px;
         margin-bottom: 5px;
       }
+      /* Additional button for Voice Navigation */
+      .my-access-widget .voice-nav-btn {
+        grid-column: span 3;
+        background-color: #008000;
+        color: #fff;
+      }
     `;
-    document.head.appendChild(localStyle);
-    
+    document.head.appendChild(localStyleEl);
+  
     /************************************************************
      * 3. CREATE THE TOGGLE BUTTON
      ************************************************************/
-    const widgetToggleBtn = document.createElement("button");
-    widgetToggleBtn.className = "widget-toggle-btn";
-    widgetToggleBtn.innerHTML = `<i class="fas fa-universal-access"></i>`;
-    widgetToggleBtn.title = "Open Accessibility Options";
-    widgetToggleBtn.addEventListener("click", () => {
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "toggle-btn";
+    toggleBtn.innerHTML = `<i class="fas fa-universal-access"></i>`;
+    toggleBtn.title = "Open Accessibility Options";
+    toggleBtn.addEventListener("click", () => {
       isWidgetOpen = !isWidgetOpen;
       widgetContainer.classList.toggle("open", isWidgetOpen);
     });
-    widgetContainer.appendChild(widgetToggleBtn);
-    
+    widgetContainer.appendChild(toggleBtn);
+  
     /************************************************************
-     * 4. CREATE THE WIDGET PANEL
+     * 4. CREATE THE WIDGET PANEL (Top Bar + Grid of Features)
      ************************************************************/
     const widgetPanel = document.createElement("div");
     widgetPanel.className = "widget-panel";
     widgetContainer.appendChild(widgetPanel);
-    
-    // Top Bar (Reset, Statement, Hide, Dictionary Search)
+  
+    // Top Bar: Reset, Statement, Hide, Dictionary Search
     const topBar = document.createElement("div");
     topBar.className = "panel-top-bar";
-    topBar.style.marginBottom = "10px";
     widgetPanel.appendChild(topBar);
-    
+  
     const resetBtn = document.createElement("button");
     resetBtn.textContent = "Reset Settings";
     resetBtn.addEventListener("click", resetAllClasses);
     topBar.appendChild(resetBtn);
-    
+  
     const statementBtn = document.createElement("button");
     statementBtn.textContent = "Statement";
     statementBtn.addEventListener("click", () => {
       alert("Accessibility Statement (placeholder).");
     });
     topBar.appendChild(statementBtn);
-    
+  
     const hideBtn = document.createElement("button");
     hideBtn.textContent = "Hide Interface";
-    hideBtn.addEventListener("click", () => {
-      widgetContainer.style.display = "none";
-    });
+    hideBtn.addEventListener("click", hideWidget);
     topBar.appendChild(hideBtn);
-    
+  
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.placeholder = "Dictionary search...";
@@ -205,12 +329,12 @@
       }
     });
     topBar.appendChild(searchInput);
-    
+  
     // Grid of Feature Buttons
     const grid = document.createElement("div");
     grid.className = "widget-grid";
     widgetPanel.appendChild(grid);
-    
+  
     // Helper to create each feature button
     function createFeatureButton(iconClass, label, onClick) {
       const btn = document.createElement("div");
@@ -219,16 +343,14 @@
       btn.addEventListener("click", onClick);
       return btn;
     }
-    
-    // Feature: High Contrast (Toggle)
+  
+    // Feature 1: High Contrast Toggle
     const contrastBtn = createFeatureButton("fas fa-adjust", "High Contrast", () => {
       toggleBodyClass("high-contrast");
     });
     grid.appendChild(contrastBtn);
-    
-    // Feature: Screen Reader (Text-to-Speech)
-    const synth = window.speechSynthesis;
-    let readingUtterance = null;
+  
+    // Feature 2: Screen Reader (Text-to-Speech)
     const screenReaderBtn = createFeatureButton("fas fa-volume-up", "Screen Reader", () => {
       if (synth.speaking) return;
       const text = document.body.innerText;
@@ -238,50 +360,44 @@
       synth.speak(readingUtterance);
     });
     grid.appendChild(screenReaderBtn);
-    
-    // Feature: Smart Contrast (Alternate Toggle)
+  
+    // Feature 3: Smart Contrast (Alternate)
     const smartContrastBtn = createFeatureButton("fas fa-adjust", "Smart Contrast", () => {
       document.body.classList.toggle("high-contrast-2");
     });
     grid.appendChild(smartContrastBtn);
-    
-    // Feature: Highlight Links
+  
+    // Feature 4: Highlight Links
     const highlightLinksBtn = createFeatureButton("fas fa-link", "Highlight Links", () => {
       toggleBodyClass("highlight-links");
     });
     grid.appendChild(highlightLinksBtn);
-    
-    // Feature: Bigger Text
+  
+    // Feature 5: Bigger Text
     const biggerTextBtn = createFeatureButton("fas fa-text-height", "Bigger Text", () => {
       toggleBodyClass("bigger-text");
     });
     grid.appendChild(biggerTextBtn);
-    
-    // Feature: Text Spacing (Placeholder)
-    const textSpacingBtn = createFeatureButton("fas fa-text-width", "Text Spacing", () => {
-      toggleBodyClass("text-spacing");
-    });
-    grid.appendChild(textSpacingBtn);
-    
-    // Feature: Pause Animations
+  
+    // Feature 6: Pause Animations
     const pauseAnimationsBtn = createFeatureButton("fas fa-pause-circle", "Pause Animations", () => {
       toggleBodyClass("pause-animations");
     });
     grid.appendChild(pauseAnimationsBtn);
-    
-    // Feature: Hide Images
+  
+    // Feature 7: Hide Images
     const hideImagesBtn = createFeatureButton("far fa-image", "Hide Images", () => {
       toggleBodyClass("hide-images");
     });
     grid.appendChild(hideImagesBtn);
-    
-    // Feature: Dyslexia-Friendly Font
+  
+    // Feature 8: Dyslexia Friendly Font
     const dyslexiaBtn = createFeatureButton("fas fa-font", "Dyslexia Friendly", () => {
       toggleBodyClass("dyslexia-font");
     });
     grid.appendChild(dyslexiaBtn);
-    
-    // Feature: Cursor (Custom)
+  
+    // Feature 9: Custom Cursor (Big Cursor)
     const cursorBtn = createFeatureButton("fas fa-mouse-pointer", "Custom Cursor", () => {
       toggleBodyClass("big-cursor");
       if (document.body.classList.contains("big-cursor")) {
@@ -291,22 +407,87 @@
       }
     });
     grid.appendChild(cursorBtn);
-    
-    // Feature: Tooltips (Placeholder)
+  
+    // Feature 10: Tooltips (Placeholder)
     const tooltipsBtn = createFeatureButton("fas fa-comment-dots", "Tooltips", () => {
       alert("Tooltips toggled (placeholder).");
     });
     grid.appendChild(tooltipsBtn);
-    
-    // Feature: Page Structure (Placeholder)
+  
+    // Feature 11: Page Structure (Placeholder)
     const pageStructureBtn = createFeatureButton("fas fa-sitemap", "Page Structure", () => {
       alert("Page Structure toggled (placeholder).");
     });
     grid.appendChild(pageStructureBtn);
+  
+    // Feature 12: Voice Navigation
+    const voiceNavBtn = createFeatureButton("fas fa-microphone", "Voice Navigation", () => {
+      if (!isVoiceNavActive) {
+        startVoiceNavigation();
+        voiceNavBtn.innerHTML = `<i class="fas fa-microphone-slash"></i><span>Voice Off</span>`;
+      } else {
+        stopVoiceNavigation();
+        voiceNavBtn.innerHTML = `<i class="fas fa-microphone"></i><span>Voice Navigation</span>`;
+      }
+    });
+    voiceNavBtn.classList.add("voice-nav-btn");
+    grid.appendChild(voiceNavBtn);
+  
+    /************************************************************
+     * 4B. Voice Navigation Functions
+     ************************************************************/
+    function initVoiceNavigation() {
+      if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
+        alert("Sorry, your browser doesn't support voice navigation.");
+        return;
+      }
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      
+      recognition.addEventListener("result", (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        handleVoiceCommand(command);
+      });
+      
+      recognition.addEventListener("end", () => {
+        if (isVoiceNavActive) recognition.start();
+      });
+    }
     
-    /***************************************************************
-     * 5. ATTACH THE WIDGET CONTAINER TO THE DOCUMENT
-     ***************************************************************/
+    function handleVoiceCommand(command) {
+      console.log("Voice Command:", command);
+      if (command.includes("scroll up")) {
+        window.scrollBy({ top: -200, behavior: "smooth" });
+      } else if (command.includes("scroll down")) {
+        window.scrollBy({ top: 200, behavior: "smooth" });
+      } else if (command.includes("go to top")) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (command.includes("go to bottom")) {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      } else if (command.includes("close panel")) {
+        isWidgetOpen = false;
+        widgetContainer.classList.remove("open");
+      }
+      // Add further commands as needed
+    }
+    
+    function startVoiceNavigation() {
+      if (!recognition) initVoiceNavigation();
+      isVoiceNavActive = true;
+      recognition.start();
+    }
+    
+    function stopVoiceNavigation() {
+      isVoiceNavActive = false;
+      if (recognition) recognition.stop();
+    }
+  
+    /************************************************************
+     * 5. ATTACH THE WIDGET TO THE DOCUMENT
+     ************************************************************/
     document.body.appendChild(widgetContainer);
   })();
   
