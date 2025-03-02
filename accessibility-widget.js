@@ -4,24 +4,24 @@
      ***************************************************************/
     let isWidgetOpen = false;
   
-    // Toggle any body class
+    // Toggle a CSS class on <body>
     function toggleBodyClass(cls) {
       document.body.classList.toggle(cls);
     }
   
-    // Remove all classes for the 6 profiles
+    // Remove all profile classes and reset toggles/descriptions
     function resetAllClasses() {
       const classesToRemove = [
-        "seizure-safe-profile", 
-        "vision-impaired-profile", 
+        "seizure-safe-profile",
+        "vision-impaired-profile",
         "adhd-friendly-profile",
-        "cognitive-profile", 
-        "keyboard-navigation", 
+        "cognitive-profile",
+        "keyboard-navigation",
         "screen-reader-enabled"
       ];
-      classesToRemove.forEach((c) => document.body.classList.remove(c));
+      classesToRemove.forEach((cls) => document.body.classList.remove(cls));
   
-      // Also uncheck toggles & hide descriptions
+      // Reset toggles and hide descriptions
       widgetPanel.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
         cb.checked = false;
       });
@@ -30,7 +30,7 @@
       });
     }
   
-    // Dictionary search placeholder
+    // Dictionary search placeholder function
     function dictionarySearch(query) {
       if (!query.trim()) return;
       alert(`Searching dictionary for: "${query}" (placeholder).`);
@@ -42,45 +42,40 @@
     }
   
     /***************************************************************
-     *  1. FORCED OVERRIDES FOR THE 6 PROFILES (DEMO)
+     *  1. FORCED OVERRIDES (Customize these in your project)
      ***************************************************************/
     const overrideStyle = document.createElement("style");
     overrideStyle.id = "override-styles";
     overrideStyle.innerHTML = `
-      /* Seizure Safe: remove animations/transitions */
+      /* Seizure Safe Profile: disable animations/transitions */
       body.seizure-safe-profile * {
         animation: none !important;
         transition: none !important;
       }
-  
-      /* Vision Impaired: enlarge text, high contrast, etc. */
+      /* Vision Impaired Profile: enlarge text and high contrast */
       body.vision-impaired-profile * {
         font-size: 120% !important;
         line-height: 1.5 !important;
         color: #000 !important;
         background-color: #fff !important;
       }
-  
-      /* ADHD Friendly: highlight focus or reduce distractions */
+      /* ADHD Friendly Profile: highlight focus */
       body.adhd-friendly-profile *:focus {
         outline: 2px dashed #ff00ff !important;
         outline-offset: 3px !important;
       }
-  
-      /* Cognitive Profile: simpler fonts, maybe increased spacing */
+      /* Cognitive Disability Profile: simpler fonts, increased spacing */
       body.cognitive-profile * {
         letter-spacing: 0.5px !important;
       }
-  
-      /* Keyboard Navigation: highlight focus more strongly */
+      /* Keyboard Navigation: strong focus outlines */
       body.keyboard-navigation *:focus {
         outline: 3px solid #0057b8 !important;
         outline-offset: 3px !important;
       }
-  
-      /* Screen Reader: placeholder */
+      /* Screen Reader Profile: placeholder for additional adjustments */
       body.screen-reader-enabled {
-        /* Possibly reveal skip links or ARIA attributes in real usage */
+        /* Additional styles for screen-reader compatibility */
       }
     `;
     document.head.appendChild(overrideStyle);
@@ -96,9 +91,10 @@
     widgetContainer.style.zIndex = "999999";
     widgetContainer.style.fontFamily = "Arial, sans-serif";
   
-    // Local CSS for the widget
+    // Local CSS for widget appearance
     const localCSS = document.createElement("style");
     localCSS.innerHTML = `
+      /* Floating toggle button */
       .my-access-widget .toggle-btn {
         width: 60px;
         height: 60px;
@@ -113,6 +109,7 @@
         align-items: center;
         justify-content: center;
       }
+      /* Widget panel container */
       .my-access-widget .widget-panel {
         position: absolute;
         bottom: 70px;
@@ -130,7 +127,6 @@
       .my-access-widget.open .widget-panel {
         display: flex;
       }
-  
       /* Top Bar */
       .my-access-widget .panel-top-bar {
         background-color: #f9f9f9;
@@ -159,8 +155,7 @@
         border-radius: 4px;
         font-size: 13px;
       }
-  
-      /* Profile Rows */
+      /* Profile row styling */
       .profile-row {
         padding: 10px;
         border-bottom: 1px solid #eee;
@@ -191,7 +186,7 @@
       }
       .switch-wrap input {
         opacity: 0;
-        width: 0; 
+        width: 0;
         height: 0;
       }
       .slider {
@@ -207,7 +202,8 @@
         content: "";
         height: 18px;
         width: 18px;
-        left: 3px; bottom: 3px;
+        left: 3px;
+        bottom: 3px;
         background-color: #fff;
         transition: .4s;
         border-radius: 50%;
@@ -218,7 +214,7 @@
       .switch-wrap input:checked + .slider:before {
         transform: translateX(21px);
       }
-      /* Description */
+      /* Profile description */
       .profile-description {
         font-size: 13px;
         color: #444;
@@ -246,24 +242,22 @@
     widgetContainer.appendChild(toggleBtn);
   
     /***************************************************************
-     *  4. WIDGET PANEL
+     *  4. WIDGET PANEL (Top Bar + Profiles)
      ***************************************************************/
     const widgetPanel = document.createElement("div");
     widgetPanel.className = "widget-panel";
     widgetContainer.appendChild(widgetPanel);
   
-    /* 4A. TOP BAR */
+    // 4A. Top Bar: Reset, Statement, Hide, Dictionary Search
     const topBar = document.createElement("div");
     topBar.className = "panel-top-bar";
     widgetPanel.appendChild(topBar);
   
-    // Reset
     const resetBtn = document.createElement("button");
     resetBtn.textContent = "Reset Settings";
     resetBtn.addEventListener("click", resetAllClasses);
     topBar.appendChild(resetBtn);
   
-    // Statement
     const statementBtn = document.createElement("button");
     statementBtn.textContent = "Statement";
     statementBtn.addEventListener("click", () => {
@@ -271,13 +265,11 @@
     });
     topBar.appendChild(statementBtn);
   
-    // Hide
     const hideBtn = document.createElement("button");
     hideBtn.textContent = "Hide Interface";
     hideBtn.addEventListener("click", hideWidget);
     topBar.appendChild(hideBtn);
   
-    // Dictionary Search
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.placeholder = "Dictionary search...";
@@ -288,8 +280,7 @@
     });
     topBar.appendChild(searchInput);
   
-    /* 4B. PROFILES (6) */
-    // We'll define the 6 profiles in an array
+    // 4B. Profiles (6 toggles)
     const profiles = [
       {
         key: "seizure-safe-profile",
@@ -307,25 +298,25 @@
         key: "adhd-friendly-profile",
         icon: "fas fa-brain",
         label: "ADHD Friendly Profile",
-        description: `This profile significantly reduces distractions, to help people with ADHD and Neurodevelopmental disorders browse, read, and focus on essential elements more easily.`
+        description: `This profile significantly reduces distractions to help people with ADHD and Neurodevelopmental disorders browse, read, and focus on essential elements more easily.`
       },
       {
         key: "cognitive-profile",
         icon: "fas fa-user-graduate",
         label: "Cognitive Disability Profile",
-        description: `This profile provides various assistive features to help users with cognitive disabilities such as Autism, Dyslexia, CVA, and others, to focus on the essential elements more easily.`
+        description: `This profile provides various assistive features to help users with cognitive disabilities such as Autism, Dyslexia, CVA, and others focus on essential elements more easily.`
       },
       {
         key: "keyboard-navigation",
         icon: "fas fa-keyboard",
         label: "Keyboard Navigation (Motor)",
-        description: `This profile enables motor-impaired persons to operate the website using the keyboard Tab, Shift+Tab, and the Enter keys. It also allows shortcuts (e.g. “M” for menus, “H” for headings) to jump to specific elements.`
+        description: `This profile enables motor-impaired persons to operate the website using the keyboard Tab, Shift+Tab, and Enter keys. It also allows shortcuts (e.g. “M” for menus, “H” for headings) to jump to specific elements.`
       },
       {
         key: "screen-reader-enabled",
         icon: "fas fa-blind",
         label: "Blind Users (Screen Reader)",
-        description: `This profile adjusts the website to be compatible with screen-readers such as JAWS, NVDA, VoiceOver, and TalkBack. A screen-reader is software installed on the blind user’s computer and smartphone.`
+        description: `This profile adjusts the website to be compatible with screen-readers such as JAWS, NVDA, VoiceOver, and TalkBack.`
       }
     ];
   
@@ -333,7 +324,7 @@
       widgetPanel.appendChild(createProfileRow(p.key, p.icon, p.label, p.description));
     });
   
-    // Helper to create a row for each profile
+    // Helper: Create a profile row (toggle + description)
     function createProfileRow(key, iconClass, labelText, descText) {
       const row = document.createElement("div");
       row.className = "profile-row";
@@ -345,7 +336,7 @@
       labelDiv.className = "profile-label";
       labelDiv.innerHTML = `<i class="${iconClass}"></i> <span>${labelText}</span>`;
   
-      // Switch
+      // Toggle switch
       const switchWrap = document.createElement("label");
       switchWrap.className = "switch-wrap";
       const checkbox = document.createElement("input");
@@ -359,11 +350,12 @@
       rowHeader.appendChild(labelDiv);
       rowHeader.appendChild(switchWrap);
   
+      // Description paragraph
       const desc = document.createElement("div");
       desc.className = "profile-description";
       desc.innerHTML = descText;
   
-      // Toggle logic
+      // Toggle logic: add body class and show/hide description
       checkbox.addEventListener("change", (e) => {
         toggleBodyClass(key);
         if (e.target.checked) {
@@ -379,7 +371,7 @@
     }
   
     /***************************************************************
-     *  5. ATTACH WIDGET
+     *  5. ATTACH THE WIDGET TO THE DOCUMENT
      ***************************************************************/
     document.body.appendChild(widgetContainer);
   })();
