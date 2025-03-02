@@ -5,22 +5,25 @@
     let isWidgetOpen = false;
     let isVoiceNavActive = false;
     let recognition; // for SpeechRecognition
+    const synth = window.speechSynthesis;
+    let readingUtterance = null;
   
     // Toggle a class on <body>
     function toggleBodyClass(cls) {
       document.body.classList.toggle(cls);
     }
   
-    // Remove profile classes (for reset)
+    // Remove accessibility profile classes (for reset)
     function resetAllClasses() {
       const classesToRemove = [
         "high-contrast", "dyslexia-font", "bigger-text",
         "highlight-links", "pause-animations", "hide-images",
-        "big-cursor", "tooltips-enabled", "page-structure-active"
+        "big-cursor", "tooltips-enabled", "page-structure-active",
+        "high-contrast-2"
       ];
       classesToRemove.forEach((cls) => document.body.classList.remove(cls));
   
-      // Also reset toggles in the panel (if applicable)
+      // Reset toggles within the panel if applicable
       widgetPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
         cb.checked = false;
       });
@@ -29,7 +32,7 @@
       });
     }
   
-    // Dictionary search placeholder
+    // Dictionary search (placeholder)
     function dictionarySearch(query) {
       if (!query.trim()) return;
       alert(`Searching dictionary for: "${query}" (placeholder).`);
@@ -41,8 +44,6 @@
     }
   
     // Text-to-Speech: Read entire page text
-    const synth = window.speechSynthesis;
-    let readingUtterance = null;
     function speakPage() {
       if (!("speechSynthesis" in window)) {
         alert("Sorry, your browser doesn't support text-to-speech.");
@@ -62,11 +63,10 @@
     }
   
     /************************************************************
-     *  Voice Navigation Feature (using SpeechRecognition)
+     * 1. VOICE NAVIGATION (using SpeechRecognition)
      ************************************************************/
-    // Initialize speech recognition if available
     function initVoiceNavigation() {
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
         alert("Sorry, your browser doesn't support voice navigation.");
         return;
       }
@@ -82,12 +82,10 @@
       });
   
       recognition.addEventListener("end", () => {
-        // Restart if voice navigation is still active
         if (isVoiceNavActive) recognition.start();
       });
     }
   
-    // Process voice commands
     function handleVoiceCommand(command) {
       console.log("Voice Command:", command);
       if (command.includes("scroll up")) {
@@ -104,7 +102,7 @@
       } else if (command.includes("voice off")) {
         stopVoiceNavigation();
       }
-      // You can add more commands as needed.
+      // Additional voice commands can be added here.
     }
   
     function startVoiceNavigation() {
@@ -119,7 +117,7 @@
     }
   
     /************************************************************
-     * 1. FORCED OVERRIDES (Using !important)
+     * 2. FORCED OVERRIDES (Using !important)
      ************************************************************/
     const overrideStyleEl = document.createElement("style");
     overrideStyleEl.id = "accessibility-overrides";
@@ -167,11 +165,16 @@
       body.big-cursor {
         cursor: url('https://cdn-icons-png.flaticon.com/512/892/892693.png'), auto !important;
       }
+      
+      /* Smart Contrast (Alternate) */
+      body.high-contrast-2 {
+        filter: contrast(150%) brightness(90%);
+      }
     `;
     document.head.appendChild(overrideStyleEl);
   
     /************************************************************
-     * 2. CREATE WIDGET CONTAINER & LOCAL STYLES
+     * 3. CREATE WIDGET CONTAINER & LOCAL STYLES
      ************************************************************/
     const widgetContainer = document.createElement("div");
     widgetContainer.className = "my-access-widget";
@@ -279,7 +282,7 @@
     document.head.appendChild(localStyleEl);
   
     /************************************************************
-     * 3. CREATE THE TOGGLE BUTTON
+     * 4. CREATE THE TOGGLE BUTTON
      ************************************************************/
     const toggleBtn = document.createElement("button");
     toggleBtn.className = "toggle-btn";
@@ -292,7 +295,7 @@
     widgetContainer.appendChild(toggleBtn);
   
     /************************************************************
-     * 4. CREATE THE WIDGET PANEL (Top Bar + Grid of Features)
+     * 5. CREATE THE WIDGET PANEL (Top Bar + Grid of Features)
      ************************************************************/
     const widgetPanel = document.createElement("div");
     widgetPanel.className = "widget-panel";
@@ -352,18 +355,19 @@
   
     // Feature 2: Screen Reader (Text-to-Speech)
     const screenReaderBtn = createFeatureButton("fas fa-volume-up", "Screen Reader", () => {
-      if (synth.speaking) return;
-      const text = document.body.innerText;
-      readingUtterance = new SpeechSynthesisUtterance(text);
-      readingUtterance.rate = 1;
-      readingUtterance.pitch = 1;
-      synth.speak(readingUtterance);
+      if (!synth.speaking) {
+        const text = document.body.innerText;
+        readingUtterance = new SpeechSynthesisUtterance(text);
+        readingUtterance.rate = 1;
+        readingUtterance.pitch = 1;
+        synth.speak(readingUtterance);
+      }
     });
     grid.appendChild(screenReaderBtn);
   
     // Feature 3: Smart Contrast (Alternate)
     const smartContrastBtn = createFeatureButton("fas fa-adjust", "Smart Contrast", () => {
-      document.body.classList.toggle("high-contrast-2");
+      toggleBodyClass("high-contrast-2");
     });
     grid.appendChild(smartContrastBtn);
   
@@ -401,7 +405,8 @@
     const cursorBtn = createFeatureButton("fas fa-mouse-pointer", "Custom Cursor", () => {
       toggleBodyClass("big-cursor");
       if (document.body.classList.contains("big-cursor")) {
-        document.body.style.cursor = "url('https://cdn-icons-png.flaticon.com/512/892/892693.png'), auto";
+        document.body.style.cursor = "url(//s3-us-west-2.amazonaws.com/s.cdpn.io/3174/cursor.png), auto";
+   
       } else {
         document.body.style.cursor = "auto";
       }
@@ -434,59 +439,7 @@
     grid.appendChild(voiceNavBtn);
   
     /************************************************************
-     * 4B. Voice Navigation Functions
-     ************************************************************/
-    function initVoiceNavigation() {
-      if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
-        alert("Sorry, your browser doesn't support voice navigation.");
-        return;
-      }
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-      
-      recognition.addEventListener("result", (event) => {
-        const command = event.results[0][0].transcript.toLowerCase();
-        handleVoiceCommand(command);
-      });
-      
-      recognition.addEventListener("end", () => {
-        if (isVoiceNavActive) recognition.start();
-      });
-    }
-    
-    function handleVoiceCommand(command) {
-      console.log("Voice Command:", command);
-      if (command.includes("scroll up")) {
-        window.scrollBy({ top: -200, behavior: "smooth" });
-      } else if (command.includes("scroll down")) {
-        window.scrollBy({ top: 200, behavior: "smooth" });
-      } else if (command.includes("go to top")) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (command.includes("go to bottom")) {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      } else if (command.includes("close panel")) {
-        isWidgetOpen = false;
-        widgetContainer.classList.remove("open");
-      }
-      // Add further commands as needed
-    }
-    
-    function startVoiceNavigation() {
-      if (!recognition) initVoiceNavigation();
-      isVoiceNavActive = true;
-      recognition.start();
-    }
-    
-    function stopVoiceNavigation() {
-      isVoiceNavActive = false;
-      if (recognition) recognition.stop();
-    }
-  
-    /************************************************************
-     * 5. ATTACH THE WIDGET TO THE DOCUMENT
+     * 6. ATTACH THE WIDGET TO THE DOCUMENT
      ************************************************************/
     document.body.appendChild(widgetContainer);
   })();
