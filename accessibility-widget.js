@@ -7,12 +7,12 @@
   
     // Global state for widget open/close
     let isWidgetOpen = false;
-    
+  
     // Toggle a CSS class on the <body>
     function toggleBodyClass(className) {
       document.body.classList.toggle(className);
     }
-    
+  
     // Remove all accessibility classes from <body>
     function resetAllClasses() {
       const classesToRemove = [
@@ -28,49 +28,45 @@
         "fixed-text-size-125", "fixed-text-size-150", "fixed-text-size-175", "fixed-text-size-200"
       ];
       classesToRemove.forEach(cls => document.body.classList.remove(cls));
-      // Also clear any inline overrides from our dedicated style element:
-      overrideStyleEl.innerHTML = `
-        /* FIXED TEXT SIZE OVERRIDES */
-        body.fixed-text-size-125, body.fixed-text-size-125 * {
-          font-size: 125% !important;
-        }
-        body.fixed-text-size-150, body.fixed-text-size-150 * {
-          font-size: 150% !important;
-        }
-        body.fixed-text-size-175, body.fixed-text-size-175 * {
-          font-size: 175% !important;
-        }
-        body.fixed-text-size-200, body.fixed-text-size-200 * {
-          font-size: 200% !important;
-        }
-        /* COLOR OVERRIDES: These will be appended later if needed */
-      `;
+      // Also remove any inline overrides from our dedicated style element:
+      overrideStyleEl.innerHTML = "";
     }
-    
+  
     // Hide the widget interface entirely with a fade-out effect
     function hideWidgetInterface() {
+      // Add a class to trigger CSS fade-out transition
       widgetContainer.classList.add("fade-out");
+      // After the transition duration (e.g., 300ms), set display to none
       setTimeout(() => {
         widgetContainer.style.display = "none";
       }, 300);
     }
-    
+  
     // Dictionary search placeholder (for integration with a dictionary API)
     function dictionarySearch(query) {
       if (!query) return;
       alert(`Searching for the definition of: "${query}" (placeholder).`);
     }
-    
-    /**
-     * =============================================
-     *  1. SET UP A STYLE ELEMENT FOR OVERRIDES
-     * =============================================
-     */
-    // Create a style element that will hold forced override CSS rules
+  
+    // =============================================
+    // 1. SET UP A STYLE ELEMENT FOR OVERRIDES
+    // =============================================
+    // This style block uses !important to force text size and color changes.
     const overrideStyleEl = document.createElement("style");
     overrideStyleEl.id = "accessibility-overrides";
-    // Initialize with fixed text size overrides
-    overrideStyleEl.innerHTML = `
+    document.head.appendChild(overrideStyleEl);
+  
+    // Function to update forced text size (via fixed classes)
+    function updateFixedTextSize(sizeClass) {
+      // Remove previously applied fixed text-size classes
+      document.body.classList.remove("fixed-text-size-125", "fixed-text-size-150", "fixed-text-size-175", "fixed-text-size-200");
+      if (sizeClass) {
+        document.body.classList.add(sizeClass);
+      }
+    }
+  
+    // We also inject CSS rules for the fixed text sizes so they override everything.
+    overrideStyleEl.innerHTML += `
       /* FIXED TEXT SIZE OVERRIDES */
       body.fixed-text-size-125, body.fixed-text-size-125 * {
         font-size: 125% !important;
@@ -86,24 +82,11 @@
       }
       /* COLOR OVERRIDES: These will be appended later if needed */
     `;
-    document.head.appendChild(overrideStyleEl);
-    
-    // Function to update forced text size (via fixed classes)
-    function updateFixedTextSize(sizeClass) {
-      document.body.classList.remove("fixed-text-size-125", "fixed-text-size-150", "fixed-text-size-175", "fixed-text-size-200");
-      if (sizeClass) {
-        document.body.classList.add(sizeClass);
-      }
-    }
-    
-    /**
-     * =========================================
-     *  2. TEXT-TO-SPEECH FUNCTIONS
-     * =========================================
-     */
+  
+    // Text-to-Speech functionality using the Web Speech API
     const synth = window.speechSynthesis;
     let currentUtterance = null;
-    
+  
     function speakPage() {
       if (!("speechSynthesis" in window)) {
         alert("Sorry, your browser doesn't support text-to-speech.");
@@ -119,33 +102,34 @@
         return;
       }
       currentUtterance = new SpeechSynthesisUtterance(text);
-      currentUtterance.lang = "en-US";
+      currentUtterance.lang = "en-US"; // Set default language
       currentUtterance.rate = 1;
       currentUtterance.pitch = 1;
       synth.speak(currentUtterance);
     }
-    
+  
     function cancelSpeech() {
       if (synth.speaking) {
         synth.cancel();
       }
     }
-    
+  
     /**
      * =========================================
-     *  3. CREATE THE MAIN CONTAINER & INJECT LOCAL STYLES
+     *  2. CREATE THE MAIN CONTAINER & INJECT STYLES
      * =========================================
      */
     const widgetContainer = document.createElement("div");
     widgetContainer.className = "my-accessibility-widget";
+    // Positioning and basic styling for the container
     widgetContainer.style.position = "fixed";
     widgetContainer.style.bottom = "20px";
     widgetContainer.style.right = "20px";
     widgetContainer.style.zIndex = "999999";
     widgetContainer.style.fontFamily = "Arial, sans-serif";
     widgetContainer.style.transition = "all 0.3s ease";
-    
-    // Inject local scoped styles for the widget
+  
+    // Inject local scoped styles for the widget (high specificity, using !important where needed)
     const localStyle = document.createElement("style");
     localStyle.innerHTML = `
       /* -------------------------------------------------
@@ -168,11 +152,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-      /* Fade-out effect for hiding the widget */
-      .my-accessibility-widget.fade-out {
-        opacity: 0 !important;
-        transition: opacity 0.3s ease !important;
       }
       /* -------------------------------------------------
          B) The Panel
@@ -336,10 +315,10 @@
       }
     `;
     document.head.appendChild(localStyle);
-    
+  
     /**
      * =========================================
-     *  4. CREATE THE TOGGLE BUTTON
+     *  3. CREATE THE TOGGLE BUTTON
      * =========================================
      */
     const toggleButton = document.createElement("button");
@@ -347,6 +326,7 @@
     toggleButton.innerHTML = `<i class="fas fa-universal-access"></i>`;
     toggleButton.title = "Open Accessibility Options";
     toggleButton.addEventListener("click", () => {
+      console.log("Toggle button clicked");
       isWidgetOpen = !isWidgetOpen;
       if (isWidgetOpen) {
         widgetContainer.classList.add("open");
@@ -355,43 +335,44 @@
       }
     });
     widgetContainer.appendChild(toggleButton);
-    
+  
     /**
      * =========================================
-     *  5. CREATE THE PANEL
+     *  4. CREATE THE PANEL
      * =========================================
      */
     const widgetPanel = document.createElement("div");
     widgetPanel.className = "widget-panel";
     widgetContainer.appendChild(widgetPanel);
-    
-    // 5A. Top Bar: Reset, Statement, Hide, Dictionary Search
+  
+    // 4A. Top Bar: Reset, Statement, Hide, Dictionary Search
     const topBar = document.createElement("div");
     topBar.className = "panel-top-bar";
     widgetPanel.appendChild(topBar);
-    
+  
     const resetBtn = document.createElement("button");
     resetBtn.innerText = "Reset Settings";
     resetBtn.addEventListener("click", () => {
+      console.log("Reset button clicked");
       resetAllClasses();
       widgetPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
         cb.checked = false;
       });
     });
     topBar.appendChild(resetBtn);
-    
+  
     const statementBtn = document.createElement("button");
     statementBtn.innerText = "Statement";
     statementBtn.addEventListener("click", () => {
       alert("Open Accessibility Statement (placeholder).");
     });
     topBar.appendChild(statementBtn);
-    
+  
     const hideBtn = document.createElement("button");
     hideBtn.innerText = "Hide Interface";
     hideBtn.addEventListener("click", hideWidgetInterface);
     topBar.appendChild(hideBtn);
-    
+  
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.placeholder = "Search in dictionary...";
@@ -401,30 +382,31 @@
       }
     });
     topBar.appendChild(searchInput);
-    
-    // 5B. Tabs: Profiles, Content, Color, Orientation
+  
+    // 4B. Tabs: Profiles, Content, Color, Orientation
     const tabsContainer = document.createElement("div");
     tabsContainer.className = "tabs";
     widgetPanel.appendChild(tabsContainer);
-    
+  
     const tabNames = ["Profiles", "Content", "Color", "Orientation"];
     const tabButtons = [];
     const tabContents = [];
-    
+  
     function createTab(name) {
       const btn = document.createElement("button");
       btn.className = "tab-btn";
       btn.innerText = name;
       tabsContainer.appendChild(btn);
-    
+  
       const content = document.createElement("div");
       content.className = "tab-content";
       widgetPanel.appendChild(content);
-    
+  
       tabButtons.push(btn);
       tabContents.push(content);
-    
+  
       btn.addEventListener("click", () => {
+        console.log(`Tab clicked: ${name}`);
         tabButtons.forEach((b, i) => {
           b.classList.remove("active");
           tabContents[i].classList.remove("active");
@@ -437,35 +419,37 @@
     // Activate first tab by default
     tabButtons[0].classList.add("active");
     tabContents[0].classList.add("active");
-    
+  
+    // 4C. Populate each tab with controls
     // Helper: Create a toggle row with label and ON/OFF switch
     function createToggleRow(icon, labelText, onToggle) {
       const row = document.createElement("div");
       row.className = "item-row";
-    
+  
       const label = document.createElement("div");
       label.className = "item-label";
       label.innerHTML = `<i class="${icon}"></i> <span>${labelText}</span>`;
-    
+  
       const toggleWrap = document.createElement("label");
       toggleWrap.className = "toggle-switch";
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       const slider = document.createElement("span");
       slider.className = "slider";
-    
+  
       toggleWrap.appendChild(checkbox);
       toggleWrap.appendChild(slider);
-    
+  
       checkbox.addEventListener("change", (e) => {
+        console.log(`Toggle changed: ${labelText} - ${e.target.checked}`);
         onToggle(e.target.checked);
       });
-    
+  
       row.appendChild(label);
       row.appendChild(toggleWrap);
       return row;
     }
-    
+  
     // TAB 1: Profiles
     const profilesTab = tabContents[0];
     profilesTab.appendChild(createToggleRow("fas fa-bolt", "Seizure Safe Profile", (checked) => {
@@ -486,16 +470,16 @@
     profilesTab.appendChild(createToggleRow("fas fa-blind", "Blind Users (Screen Reader)", (checked) => {
       toggleBodyClass("screen-reader-enabled");
     }));
-    
+  
     // TAB 2: Content Adjustments
     const contentTab = tabContents[1];
-    
+  
     // Fixed Text Size Dropdown (only allow 25%, 50%, 75%, 100%)
     const textSizeHeader = document.createElement("div");
     textSizeHeader.className = "section-header";
     textSizeHeader.innerText = "Fixed Text Size";
     contentTab.appendChild(textSizeHeader);
-    
+  
     const textSizeSelect = document.createElement("select");
     const textSizeOptions = [
       { value: "fixed-text-size-25", label: "25%" },
@@ -511,10 +495,11 @@
     });
     textSizeSelect.value = "fixed-text-size-100"; // default to 100%
     textSizeSelect.addEventListener("change", (e) => {
+      console.log(`Text size changed: ${e.target.value}`);
       updateFixedTextSize(e.target.value);
     });
     contentTab.appendChild(textSizeSelect);
-    
+  
     // Additional Content Toggles
     contentTab.appendChild(createToggleRow("fas fa-expand", "Content Scaling", (checked) => {
       toggleBodyClass("content-scaling");
@@ -531,7 +516,7 @@
     contentTab.appendChild(createToggleRow("fas fa-search-plus", "Text Magnifier", (checked) => {
       toggleBodyClass("text-magnifier");
     }));
-    
+  
     // Adjust Line Height via Dropdown
     const lineHeightRow = document.createElement("div");
     lineHeightRow.className = "item-row";
@@ -554,6 +539,7 @@
       lineHeightSelect.appendChild(optionEl);
     });
     lineHeightSelect.addEventListener("change", () => {
+      console.log(`Line height changed: ${lineHeightSelect.value}`);
       document.body.classList.remove("line-height-2", "line-height-3");
       if (lineHeightSelect.value) {
         document.body.classList.add(lineHeightSelect.value);
@@ -561,7 +547,7 @@
     });
     lineHeightRow.appendChild(lineHeightSelect);
     contentTab.appendChild(lineHeightRow);
-    
+  
     // Adjust Letter Spacing via Dropdown
     const letterSpacingRow = document.createElement("div");
     letterSpacingRow.className = "item-row";
@@ -584,6 +570,7 @@
       letterSpacingSelect.appendChild(optionEl);
     });
     letterSpacingSelect.addEventListener("change", () => {
+      console.log(`Letter spacing changed: ${letterSpacingSelect.value}`);
       document.body.classList.remove("letter-spacing-2", "letter-spacing-3");
       if (letterSpacingSelect.value) {
         document.body.classList.add(letterSpacingSelect.value);
@@ -591,7 +578,7 @@
     });
     letterSpacingRow.appendChild(letterSpacingSelect);
     contentTab.appendChild(letterSpacingRow);
-    
+  
     // Text Alignment Dropdown
     const alignRow = document.createElement("div");
     alignRow.className = "item-row";
@@ -615,6 +602,7 @@
       alignSelect.appendChild(optionEl);
     });
     alignSelect.addEventListener("change", () => {
+      console.log(`Text alignment changed: ${alignSelect.value}`);
       document.body.classList.remove("align-left", "align-center", "align-right");
       if (alignSelect.value) {
         document.body.classList.add(alignSelect.value);
@@ -622,9 +610,10 @@
     });
     alignRow.appendChild(alignSelect);
     contentTab.appendChild(alignRow);
-    
+  
     // TAB 3: Color Adjustments
     const colorTab = tabContents[2];
+  
     colorTab.appendChild(createToggleRow("fas fa-moon", "Dark Contrast", (checked) => {
       toggleBodyClass("dark-contrast");
     }));
@@ -643,7 +632,7 @@
     colorTab.appendChild(createToggleRow("fas fa-eye-dropper", "Monochrome", (checked) => {
       toggleBodyClass("monochrome");
     }));
-    
+  
     // Text Colors via Swatches
     const textColorsRow = document.createElement("div");
     textColorsRow.className = "item-row";
@@ -660,6 +649,7 @@
       swatch.className = "color-swatch";
       swatch.style.backgroundColor = color;
       swatch.addEventListener("click", () => {
+        console.log(`Text color changed: ${color}`);
         document.body.style.color = color;
       });
       textSwatches.appendChild(swatch);
@@ -669,12 +659,13 @@
     cancelTextColor.style.marginLeft = "5px";
     cancelTextColor.style.fontSize = "12px";
     cancelTextColor.addEventListener("click", () => {
+      console.log("Text color reset");
       document.body.style.color = "";
     });
     textSwatches.appendChild(cancelTextColor);
     textColorsRow.appendChild(textSwatches);
     colorTab.appendChild(textColorsRow);
-    
+  
     // Background Colors via Swatches
     const bgColorsRow = document.createElement("div");
     bgColorsRow.className = "item-row";
@@ -691,6 +682,7 @@
       swatch.className = "color-swatch";
       swatch.style.backgroundColor = color;
       swatch.addEventListener("click", () => {
+        console.log(`Background color changed: ${color}`);
         document.body.style.backgroundColor = color;
       });
       bgSwatches.appendChild(swatch);
@@ -700,12 +692,13 @@
     cancelBgColor.style.marginLeft = "5px";
     cancelBgColor.style.fontSize = "12px";
     cancelBgColor.addEventListener("click", () => {
+      console.log("Background color reset");
       document.body.style.backgroundColor = "";
     });
     bgSwatches.appendChild(cancelBgColor);
     bgColorsRow.appendChild(bgSwatches);
     colorTab.appendChild(bgColorsRow);
-    
+  
     // TAB 4: Orientation Adjustments
     const orientationTab = tabContents[3];
     orientationTab.appendChild(createToggleRow("fas fa-volume-mute", "Mute Sounds", (checked) => {
@@ -721,7 +714,7 @@
     orientationTab.appendChild(createToggleRow("fas fa-grip-lines", "Reading Guide", (checked) => {
       toggleBodyClass("reading-guide");
     }));
-    
+  
     // Useful Links Dropdown (placeholder)
     const usefulLinksRow = document.createElement("div");
     usefulLinksRow.className = "item-row";
@@ -745,13 +738,14 @@
     });
     linksSelect.addEventListener("change", () => {
       if (linksSelect.value) {
+        console.log(`Useful link selected: ${linksSelect.value}`);
         window.open(linksSelect.value, "_blank");
         linksSelect.value = "";
       }
     });
     usefulLinksRow.appendChild(linksSelect);
     orientationTab.appendChild(usefulLinksRow);
-    
+  
     orientationTab.appendChild(createToggleRow("fas fa-stop", "Stop Animations", (checked) => {
       toggleBodyClass("stop-animations");
     }));
@@ -772,25 +766,25 @@
       toggleBodyClass("big-white-cursor");
       if (checked) document.body.classList.remove("big-black-cursor");
     }));
-    
+  
     // Additional Screen Reader Controls in a dedicated section
     const screenReaderHeader = document.createElement("div");
     screenReaderHeader.className = "section-header";
     screenReaderHeader.innerText = "Screen Reader";
     orientationTab.appendChild(screenReaderHeader);
-    
+  
     const readAloudBtn = document.createElement("button");
     readAloudBtn.className = "access-btn";
     readAloudBtn.innerHTML = `<i class="fas fa-volume-up"></i> Read Aloud`;
     readAloudBtn.addEventListener("click", speakPage);
     orientationTab.appendChild(readAloudBtn);
-    
+  
     const stopReadingBtn = document.createElement("button");
     stopReadingBtn.className = "access-btn";
     stopReadingBtn.innerHTML = `<i class="fas fa-stop"></i> Stop Reading`;
     stopReadingBtn.addEventListener("click", cancelSpeech);
     orientationTab.appendChild(stopReadingBtn);
-    
+  
     // "See All Options" Button for future expansion
     const moreOptionsBtn = document.createElement("button");
     moreOptionsBtn.className = "access-btn";
@@ -802,12 +796,11 @@
         : "See All Options";
     });
     orientationTab.appendChild(moreOptionsBtn);
-    
+  
     /**
      * =========================================
-     *  6. ATTACH THE WIDGET TO THE DOCUMENT
+     *  5. ATTACH THE WIDGET TO THE DOCUMENT
      * =========================================
      */
     document.body.appendChild(widgetContainer);
   })();
-  
