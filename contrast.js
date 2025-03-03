@@ -1,10 +1,17 @@
+// contrast.js
 export const contrastModule = (() => {
-    let contrastEnabled = false;
-    return {
-      toggle: () => {
-        contrastEnabled = !contrastEnabled;
-        document.body.style.backgroundColor = contrastEnabled ? "black" : "white";
-        document.body.style.color = contrastEnabled ? "yellow" : "black";
-      }
-    };
-  })();
+  // Toggles a high-contrast theme on the page
+  const toggleHighContrast = () => {
+    document.body.classList.toggle("high-contrast");
+  };
+
+  // Toggles an alternate smart contrast mode
+  const toggleSmartContrast = () => {
+    document.body.classList.toggle("high-contrast-2");
+  };
+
+  return {
+    toggleHighContrast,
+    toggleSmartContrast
+  };
+})();
