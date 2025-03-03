@@ -1,34 +1,23 @@
 (function () {
-  // Dynamically inject FontAwesome if not already loaded
-  (function loadFontAwesome() {
-    if (!document.querySelector('link[href*="font-awesome"]')) {
-      const faLink = document.createElement("link");
-      faLink.rel = "stylesheet";
-      faLink.href =
-        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
-      faLink.integrity =
-        "sha512-o8C+3R5Nq9pZ6U+LzDnN9Em+6dRbB7DgzPbxkmiv9+1uX9iBlF+gxH+T5F8aMJFxOX5U3Op81nI4bP+NFjeXrQ==";
-      faLink.crossOrigin = "anonymous";
-      faLink.referrerPolicy = "no-referrer";
-      document.head.appendChild(faLink);
-    }
-  })();
-
   /************************************************************
-   * 0. HELPER FUNCTIONS & GLOBAL STATE
+   * Piece 1: Load Dependencies & Define Global State
    ************************************************************/
+  // Global widget state
   let isWidgetOpen = false;
   let isVoiceNavActive = false;
-  let recognition; // for SpeechRecognition
+  let recognition; // For SpeechRecognition
   const synth = window.speechSynthesis;
   let readingUtterance = null;
 
+  /************************************************************
+   * Piece 2: Helper Functions
+   ************************************************************/
   // Toggle a class on <body>
   function toggleBodyClass(cls) {
     document.body.classList.toggle(cls);
   }
 
-  // Reset all accessibility profile classes
+  // Reset accessibility settings (remove forced classes)
   function resetAccessibilitySettings() {
     const classesToRemove = [
       "high-contrast", "dyslexia-font", "bigger-text",
@@ -36,20 +25,33 @@
       "big-cursor", "high-contrast-2"
     ];
     classesToRemove.forEach((cls) => document.body.classList.remove(cls));
+
+    // Reset any inline style changes (e.g., cursor, colors)
+    document.body.style.cursor = "auto";
+    document.body.style.color = "";
+    document.body.style.backgroundColor = "";
+
+    // Uncheck toggles and hide any descriptions
+    widgetPanel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.checked = false;
+    });
+    widgetPanel.querySelectorAll(".profile-description").forEach(desc => {
+      desc.classList.remove("active");
+    });
   }
 
-  // Dictionary search (placeholder)
+  // Dictionary search placeholder
   function dictionarySearch(query) {
     if (!query.trim()) return;
-    alert(`Searching dictionary for: "${query}" (placeholder)`);
+    alert(`Searching dictionary for: "${query}" (placeholder).`);
   }
 
-  // Hide widget completely
+  // Hide widget interface
   function hideWidget() {
     widgetContainer.style.display = "none";
   }
 
-  // Text-to-Speech: Read entire page text
+  // Text-to-Speech (Screen Reader)
   function speakPage() {
     if (!("speechSynthesis" in window)) {
       alert("Sorry, your browser doesn't support text-to-speech.");
@@ -64,13 +66,12 @@
     readingUtterance.pitch = 1;
     synth.speak(readingUtterance);
   }
+
   function cancelSpeech() {
     if (synth.speaking) synth.cancel();
   }
 
-  /************************************************************
-   * 1. VOICE NAVIGATION (using SpeechRecognition)
-   ************************************************************/
+  // Voice Navigation Initialization and Command Handling
   function initVoiceNavigation() {
     if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
       alert("Sorry, your browser doesn't support voice navigation.");
@@ -108,7 +109,7 @@
     } else if (command.includes("voice off")) {
       stopVoiceNavigation();
     }
-    // Additional voice commands can be added here.
+    // Add more voice commands as needed.
   }
 
   function startVoiceNavigation() {
@@ -123,7 +124,7 @@
   }
 
   /************************************************************
-   * 2. FORCED OVERRIDES (Using !important)
+   * Piece 3: Forced Overrides CSS (Using !important)
    ************************************************************/
   const overrideStyleEl = document.createElement("style");
   overrideStyleEl.id = "accessibility-overrides";
@@ -137,7 +138,7 @@
       color: #0ff !important;
     }
     
-    /* Dyslexia-Friendly */
+    /* Dyslexia-Friendly Font */
     body.dyslexia-font {
       font-family: 'OpenDyslexic', Arial, sans-serif !important;
     }
@@ -180,7 +181,7 @@
   document.head.appendChild(overrideStyleEl);
 
   /************************************************************
-   * 3. CREATE WIDGET CONTAINER & LOCAL STYLES
+   * Piece 4: Create Widget Container & Local Styles
    ************************************************************/
   const widgetContainer = document.createElement("div");
   widgetContainer.className = "usa-access-widget";
@@ -280,7 +281,7 @@
       font-size: 20px;
       margin-bottom: 5px;
     }
-    /* Additional button for Voice Navigation */
+    /* Voice Navigation Button */
     .usa-access-widget .voice-nav-btn {
       grid-column: span 3;
       background-color: #008000;
@@ -290,7 +291,7 @@
   document.head.appendChild(localStyleEl);
 
   /************************************************************
-   * 4. CREATE THE TOGGLE BUTTON
+   * Piece 5: Create Toggle Button (Floating)
    ************************************************************/
   const toggleBtn = document.createElement("button");
   toggleBtn.className = "toggle-btn";
@@ -306,7 +307,7 @@
   widgetContainer.appendChild(toggleBtn);
 
   /************************************************************
-   * 5. CREATE THE WIDGET PANEL (Top Bar + Grid of Features)
+   * Piece 6: Create Widget Panel (Top Bar + Feature Grid)
    ************************************************************/
   const widgetPanel = document.createElement("div");
   widgetPanel.className = "widget-panel";
@@ -315,7 +316,7 @@
   widgetPanel.setAttribute("aria-label", "Accessibility Options Panel");
   widgetContainer.appendChild(widgetPanel);
 
-  // Top Bar: Reset, Statement, Hide, Dictionary Search
+  // 6A. Top Bar: Reset, Statement, Hide, Dictionary Search
   const topBar = document.createElement("div");
   topBar.className = "panel-top-bar";
   widgetPanel.appendChild(topBar);
@@ -328,7 +329,7 @@
   const statementBtn = document.createElement("button");
   statementBtn.textContent = "Statement";
   statementBtn.addEventListener("click", () => {
-    alert("Accessibility Statement (placeholder).\n\nEnsure compliance with ADA and Section 508 guidelines.");
+    alert("Accessibility Statement (placeholder).\nEnsure compliance with ADA and Section 508 guidelines.");
   });
   topBar.appendChild(statementBtn);
 
@@ -347,12 +348,12 @@
   });
   topBar.appendChild(searchInput);
 
-  // Grid for feature/service buttons
+  // 6B. Grid of Feature Buttons
   const grid = document.createElement("div");
   grid.className = "widget-grid";
   widgetPanel.appendChild(grid);
 
-  // Helper: Create feature buttons with ARIA support and keyboard events
+  // Helper: Create feature buttons with ARIA support
   function createFeatureButton(iconClass, label, callback) {
     const btn = document.createElement("div");
     btn.className = "widget-feature-btn";
@@ -369,10 +370,11 @@
     return btn;
   }
 
-  // --- Core Accessibility Features ---
+  // --- Core Features ---
   grid.appendChild(createFeatureButton("fas fa-adjust", "High Contrast", () => {
     toggleBodyClass("high-contrast");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-volume-up", "Screen Reader", () => {
     if (!synth.speaking) {
       const text = document.body.innerText;
@@ -382,24 +384,31 @@
       synth.speak(readingUtterance);
     }
   }));
+
   grid.appendChild(createFeatureButton("fas fa-adjust", "Smart Contrast", () => {
     toggleBodyClass("high-contrast-2");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-link", "Highlight Links", () => {
     toggleBodyClass("highlight-links");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-text-height", "Bigger Text", () => {
     toggleBodyClass("bigger-text");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-pause-circle", "Pause Animations", () => {
     toggleBodyClass("pause-animations");
   }));
+
   grid.appendChild(createFeatureButton("far fa-image", "Hide Images", () => {
     toggleBodyClass("hide-images");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-font", "Dyslexia Friendly", () => {
     toggleBodyClass("dyslexia-font");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-mouse-pointer", "Custom Cursor", () => {
     toggleBodyClass("big-cursor");
     if (document.body.classList.contains("big-cursor")) {
@@ -408,12 +417,15 @@
       document.body.style.cursor = "auto";
     }
   }));
+
   grid.appendChild(createFeatureButton("fas fa-comment-dots", "Tooltips", () => {
     alert("Tooltips toggled (placeholder).");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-sitemap", "Page Structure", () => {
     alert("Page Structure toggled (placeholder).");
   }));
+
   grid.appendChild(createFeatureButton("fas fa-microphone", "Voice Navigation", function () {
     if (!isVoiceNavActive) {
       startVoiceNavigation();
@@ -423,8 +435,10 @@
       this.innerHTML = `<i class="fas fa-microphone"></i><span>Voice Navigation</span>`;
     }
   }));
-      
-  // --- Additional Services ---
+  // Mark Voice Navigation button as spanning full width in the grid
+  grid.lastChild.classList.add("voice-nav-btn");
+
+  // --- Additional Features (Placeholders) ---
   grid.appendChild(createFeatureButton("fas fa-search", "Audit", () => {
     alert("Running Accessibility Audit (placeholder).");
   }));
@@ -442,7 +456,7 @@
   }));
 
   /************************************************************
-   * 6. ATTACH THE WIDGET TO THE DOCUMENT
+   * Piece 7: Attach Widget to Document
    ************************************************************/
   document.body.appendChild(widgetContainer);
 })();
