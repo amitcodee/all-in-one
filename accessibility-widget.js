@@ -4,72 +4,107 @@ import { contrastModule } from "./contrast.js";
 import { screenReaderModule } from "./screen_reader.js";
 import { voiceAssistantModule } from "./voice_assistant.js";
 
-(function () {
+document.addEventListener("DOMContentLoaded", () => {
+  // Inject widget-specific styles to override existing website styles
+  const widgetStyle = document.createElement("style");
+  widgetStyle.innerHTML = `
+    .accessibility-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+    }
+    .accessibility-widget .toggle-btn {
+      padding: 10px 15px;
+      background-color: #004a99;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: background-color 0.3s ease;
+    }
+    .accessibility-widget .toggle-btn:hover {
+      background-color: #003a80;
+    }
+    .accessibility-widget .widget-panel {
+      margin-top: 10px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      display: none;
+    }
+    .accessibility-widget.open .widget-panel {
+      display: block;
+    }
+    .accessibility-widget .widget-panel button {
+      display: block;
+      width: 100%;
+      margin-bottom: 5px;
+      padding: 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #eee;
+      transition: background-color 0.2s ease;
+    }
+    .accessibility-widget .widget-panel button:hover {
+      background-color: #ddd;
+    }
+  `;
+  document.head.appendChild(widgetStyle);
+
   // Create the widget container
   const widgetContainer = document.createElement("div");
   widgetContainer.className = "accessibility-widget";
-  widgetContainer.style.position = "fixed";
-  widgetContainer.style.bottom = "20px";
-  widgetContainer.style.right = "20px";
-  widgetContainer.style.zIndex = "9999";
-  widgetContainer.style.fontFamily = "Arial, sans-serif";
 
   // Create a toggle button to open/close the widget panel
   const toggleBtn = document.createElement("button");
-  toggleBtn.textContent = "Accessibility";
-  toggleBtn.style.padding = "10px 15px";
-  toggleBtn.style.marginBottom = "10px";
+  toggleBtn.className = "toggle-btn";
+  toggleBtn.textContent = "Accessibility Options";
   toggleBtn.addEventListener("click", () => {
     widgetContainer.classList.toggle("open");
   });
   widgetContainer.appendChild(toggleBtn);
 
-  // Create the panel for features
+  // Create the panel that holds the feature buttons
   const panel = document.createElement("div");
   panel.className = "widget-panel";
-  panel.style.display = "none";
-  panel.style.backgroundColor = "#fff";
-  panel.style.padding = "15px";
-  panel.style.borderRadius = "5px";
-  panel.style.boxShadow = "0 2px 10px rgba(0,0,0,0.3)";
   widgetContainer.appendChild(panel);
-
-  // Toggle panel visibility based on container's "open" class
-  const observer = new MutationObserver(() => {
-    panel.style.display = widgetContainer.classList.contains("open") ? "block" : "none";
-  });
-  observer.observe(widgetContainer, { attributes: true, attributeFilter: ["class"] });
 
   // Create and append feature buttons
 
-  // 1. Toggle High Contrast
+  // High Contrast
   const contrastBtn = document.createElement("button");
   contrastBtn.textContent = "High Contrast";
-  contrastBtn.style.display = "block";
-  contrastBtn.style.marginBottom = "5px";
   contrastBtn.addEventListener("click", contrastModule.toggleHighContrast);
   panel.appendChild(contrastBtn);
 
-  // 2. Toggle Bigger Text
+  // Smart Contrast
+  const smartContrastBtn = document.createElement("button");
+  smartContrastBtn.textContent = "Smart Contrast";
+  smartContrastBtn.addEventListener("click", contrastModule.toggleSmartContrast);
+  panel.appendChild(smartContrastBtn);
+
+  // Bigger Text
   const textSizeBtn = document.createElement("button");
   textSizeBtn.textContent = "Bigger Text";
-  textSizeBtn.style.display = "block";
-  textSizeBtn.style.marginBottom = "5px";
   textSizeBtn.addEventListener("click", textSizeModule.toggleTextSize);
   panel.appendChild(textSizeBtn);
 
-  // 3. Screen Reader (Text-to-Speech)
+  // Screen Reader (Text-to-Speech)
   const screenReaderBtn = document.createElement("button");
   screenReaderBtn.textContent = "Read Page";
-  screenReaderBtn.style.display = "block";
-  screenReaderBtn.style.marginBottom = "5px";
   screenReaderBtn.addEventListener("click", screenReaderModule.speakPage);
   panel.appendChild(screenReaderBtn);
 
-  // 4. Voice Assistant
+  // Voice Assistant
   const voiceBtn = document.createElement("button");
   voiceBtn.textContent = "Voice Assistant";
-  voiceBtn.style.display = "block";
   voiceBtn.addEventListener("click", () => {
     if (!voiceAssistantModule.isVoiceNavActive()) {
       voiceAssistantModule.startVoiceNavigation();
@@ -83,4 +118,4 @@ import { voiceAssistantModule } from "./voice_assistant.js";
 
   // Append the widget container to the document body
   document.body.appendChild(widgetContainer);
-})();
+});
