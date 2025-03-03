@@ -1,11 +1,4 @@
-/*!
- * Sienna Accessibility Widget v1.1
- * (c) 2024 Benny Luk
- * License: GNU
- * Home Page : https://accessibility-widget.pages.dev/
- * Repository: git+https://github.com/bennyluk/Sienna-Accessibility-Widget.git
- *
- */ (() => {
+ (() => {
   "use strict";
   var t = function () {
       return (
