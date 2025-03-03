@@ -6,16 +6,17 @@ import { voiceAssistantModule } from "./voice_assistant.js";
 
 // Wait for DOM load
 document.addEventListener("DOMContentLoaded", function () {
-  // Inject some CSS for the floating button and panel
+  // Inject some CSS for the floating button and side nav
   const style = document.createElement("style");
   style.innerHTML = `
+    /* Floating button */
     #accessibility-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
       background-color: #007bff;
       color: #fff;
-      padding: 10px;
+      padding: 12px;
       border-radius: 50%;
       cursor: pointer;
       z-index: 9999;
@@ -26,37 +27,45 @@ document.addEventListener("DOMContentLoaded", function () {
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
+    /* Side nav panel (hidden by default) */
     #accessibility-panel {
-      display: none;
       position: fixed;
-      bottom: 80px;
-      right: 20px;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100vh;
       background-color: #fff;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 8px;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
       z-index: 9999;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      width: 220px;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
     }
 
+    /* Slide in when active */
     #accessibility-panel.active {
-      display: block;
+      transform: translateX(0);
     }
 
     #accessibility-panel h3 {
-      margin: 0 0 10px 0;
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 1.2em;
     }
 
     #accessibility-panel button {
-      width: 100%;
-      margin-bottom: 8px;
-      padding: 8px;
+      margin-bottom: 12px;
+      padding: 10px;
       cursor: pointer;
       border: none;
       border-radius: 4px;
       background-color: #f1f1f1;
       transition: background-color 0.3s ease;
+      width: 100%;
+      text-align: left;
+      font-size: 1em;
     }
 
     #accessibility-panel button:hover {
@@ -71,9 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
   button.id = "accessibility-btn";
   document.body.appendChild(button);
 
-  // Create Accessibility Panel
+  // Create side nav for Accessibility Panel
   const panel = document.createElement("div");
   panel.id = "accessibility-panel";
+
+  // Accessibility panel inner HTML
+  // Added a small change below for canmore
   panel.innerHTML = `
     <h3>Accessibility Options</h3>
     <button id="increase-text">Increase Text Size</button>
@@ -83,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <button id="screen-reader">Enable Screen Reader</button>
     <button id="voice-assist">Enable Voice Assistant</button>
   `;
+
   document.body.appendChild(panel);
 
   // Toggle Panel visibility
@@ -110,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Listen for recognition results
     if (voiceAssistantModule.process) {
+      // Expose recognition on the module for easy reference
       const recognition = voiceAssistantModule._recognition;
       if (recognition) {
         recognition.onresult = (event) => {
