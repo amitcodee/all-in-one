@@ -1,137 +1,448 @@
-// accessibility-widget.js
-import { textSizeModule } from "./increase_text.js";
-import { contrastModule } from "./contrast.js";
-import { screenReaderModule } from "./screen_reader.js";
-import { voiceAssistantModule } from "./voice_assistant.js";
-
-document.addEventListener("DOMContentLoaded", () => {
-  // ✅ Ensure FontAwesome is loaded
+(function () {
+  // Dynamically inject FontAwesome if not already loaded
   (function loadFontAwesome() {
     if (!document.querySelector('link[href*="font-awesome"]')) {
       const faLink = document.createElement("link");
       faLink.rel = "stylesheet";
       faLink.href =
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
+      faLink.integrity =
+        "sha512-o8C+3R5Nq9pZ6U+LzDnN9Em+6dRbB7DgzPbxkmiv9+1uX9iBlF+gxH+T5F8aMJFxOX5U3Op81nI4bP+NFjeXrQ==";
+      faLink.crossOrigin = "anonymous";
+      faLink.referrerPolicy = "no-referrer";
       document.head.appendChild(faLink);
     }
   })();
 
-  // ✅ Inject global widget styles
-  const widgetStyle = document.createElement("style");
-  widgetStyle.innerHTML = `
-    .accessibility-widget {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 99999;
-      font-family: Arial, sans-serif;
+  /************************************************************
+   * 0. HELPER FUNCTIONS & GLOBAL STATE
+   ************************************************************/
+  let isWidgetOpen = false;
+  let isVoiceNavActive = false;
+  let recognition; // for SpeechRecognition
+  const synth = window.speechSynthesis;
+  let readingUtterance = null;
+
+  // Toggle a class on <body>
+  function toggleBodyClass(cls) {
+    document.body.classList.toggle(cls);
+  }
+
+  // Reset all accessibility profile classes
+  function resetAccessibilitySettings() {
+    const classesToRemove = [
+      "high-contrast", "dyslexia-font", "bigger-text",
+      "highlight-links", "pause-animations", "hide-images",
+      "big-cursor", "high-contrast-2"
+    ];
+    classesToRemove.forEach((cls) => document.body.classList.remove(cls));
+  }
+
+  // Dictionary search (placeholder)
+  function dictionarySearch(query) {
+    if (!query.trim()) return;
+    alert(`Searching dictionary for: "${query}" (placeholder)`);
+  }
+
+  // Hide widget completely
+  function hideWidget() {
+    widgetContainer.style.display = "none";
+  }
+
+  // Text-to-Speech: Read entire page text
+  function speakPage() {
+    if (!("speechSynthesis" in window)) {
+      alert("Sorry, your browser doesn't support text-to-speech.");
+      return;
     }
-    .accessibility-widget .toggle-btn {
+    if (synth.speaking) return;
+    const text = document.body.innerText || "";
+    if (!text.trim()) return alert("No text available to read.");
+    readingUtterance = new SpeechSynthesisUtterance(text);
+    readingUtterance.lang = "en-US";
+    readingUtterance.rate = 1;
+    readingUtterance.pitch = 1;
+    synth.speak(readingUtterance);
+  }
+  function cancelSpeech() {
+    if (synth.speaking) synth.cancel();
+  }
+
+  /************************************************************
+   * 1. VOICE NAVIGATION (using SpeechRecognition)
+   ************************************************************/
+  function initVoiceNavigation() {
+    if (!("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
+      alert("Sorry, your browser doesn't support voice navigation.");
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.addEventListener("result", (event) => {
+      const command = event.results[0][0].transcript.toLowerCase();
+      handleVoiceCommand(command);
+    });
+
+    recognition.addEventListener("end", () => {
+      if (isVoiceNavActive) recognition.start();
+    });
+  }
+
+  function handleVoiceCommand(command) {
+    console.log("Voice Command:", command);
+    if (command.includes("scroll up")) {
+      window.scrollBy({ top: -200, behavior: "smooth" });
+    } else if (command.includes("scroll down")) {
+      window.scrollBy({ top: 200, behavior: "smooth" });
+    } else if (command.includes("go to top")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (command.includes("go to bottom")) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    } else if (command.includes("close panel")) {
+      isWidgetOpen = false;
+      widgetContainer.classList.remove("open");
+    } else if (command.includes("voice off")) {
+      stopVoiceNavigation();
+    }
+    // Additional voice commands can be added here.
+  }
+
+  function startVoiceNavigation() {
+    if (!recognition) initVoiceNavigation();
+    isVoiceNavActive = true;
+    recognition.start();
+  }
+
+  function stopVoiceNavigation() {
+    isVoiceNavActive = false;
+    if (recognition) recognition.stop();
+  }
+
+  /************************************************************
+   * 2. FORCED OVERRIDES (Using !important)
+   ************************************************************/
+  const overrideStyleEl = document.createElement("style");
+  overrideStyleEl.id = "accessibility-overrides";
+  overrideStyleEl.innerHTML = `
+    /* High Contrast */
+    body.high-contrast {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+    body.high-contrast a {
+      color: #0ff !important;
+    }
+    
+    /* Dyslexia-Friendly */
+    body.dyslexia-font {
+      font-family: 'OpenDyslexic', Arial, sans-serif !important;
+    }
+    
+    /* Bigger Text */
+    body.bigger-text * {
+      font-size: 120% !important;
+      line-height: 1.4 !important;
+    }
+    
+    /* Highlight Links */
+    body.highlight-links a {
+      outline: 2px dashed red !important;
+      background-color: yellow !important;
+    }
+    
+    /* Pause Animations */
+    body.pause-animations * {
+      animation: none !important;
+      transition: none !important;
+    }
+    
+    /* Hide Images */
+    body.hide-images img,
+    body.hide-images picture,
+    body.hide-images figure {
+      display: none !important;
+    }
+    
+    /* Big Cursor */
+    body.big-cursor {
+      cursor: url('https://cdn-icons-png.flaticon.com/512/892/892693.png'), auto !important;
+    }
+    
+    /* Smart Contrast (Alternate) */
+    body.high-contrast-2 {
+      filter: contrast(150%) brightness(90%);
+    }
+  `;
+  document.head.appendChild(overrideStyleEl);
+
+  /************************************************************
+   * 3. CREATE WIDGET CONTAINER & LOCAL STYLES
+   ************************************************************/
+  const widgetContainer = document.createElement("div");
+  widgetContainer.className = "usa-access-widget";
+  widgetContainer.setAttribute("role", "complementary");
+  widgetContainer.setAttribute("aria-label", "Accessibility Options");
+  widgetContainer.style.position = "fixed";
+  widgetContainer.style.bottom = "20px";
+  widgetContainer.style.right = "20px";
+  widgetContainer.style.zIndex = "999999";
+  widgetContainer.style.fontFamily = "Arial, sans-serif";
+
+  const localStyleEl = document.createElement("style");
+  localStyleEl.innerHTML = `
+    /* Floating Toggle Button */
+    .usa-access-widget .toggle-btn {
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      background-color: #004a99;
+      color: #fff;
+      font-size: 26px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 60px;
-      height: 60px;
-      background-color: #004a99;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 24px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      transition: background-color 0.3s ease;
     }
-    .accessibility-widget .toggle-btn:hover {
-      background-color: #003a80;
-    }
-    .accessibility-widget .widget-panel {
+    /* Widget Panel */
+    .usa-access-widget .widget-panel {
       display: none;
       position: absolute;
       bottom: 70px;
       right: 0;
       background-color: #fff;
+      width: 360px;
       padding: 15px;
       border-radius: 5px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      width: 250px;
     }
-    .accessibility-widget.open .widget-panel {
+    .usa-access-widget.open .widget-panel {
       display: block;
     }
-    .accessibility-widget .widget-panel button {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
+    /* Top Bar */
+    .usa-access-widget .panel-top-bar {
+      background-color: #f9f9f9;
       padding: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .usa-access-widget .panel-top-bar button {
       background-color: #eee;
-      transition: background-color 0.2s ease;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
     }
-    .accessibility-widget .widget-panel button i {
-      font-size: 18px;
-    }
-    .accessibility-widget .widget-panel button:hover {
+    .usa-access-widget .panel-top-bar button:hover {
       background-color: #ddd;
     }
+    .usa-access-widget .panel-top-bar input[type="text"] {
+      flex: 1;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    /* Grid Layout for Feature Buttons */
+    .usa-access-widget .widget-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .usa-access-widget .widget-feature-btn {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .usa-access-widget .widget-feature-btn:hover {
+      background-color: #e8e8e8;
+    }
+    .usa-access-widget .widget-feature-btn i {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    /* Additional button for Voice Navigation */
+    .usa-access-widget .voice-nav-btn {
+      grid-column: span 3;
+      background-color: #008000;
+      color: #fff;
+    }
   `;
-  document.head.appendChild(widgetStyle);
+  document.head.appendChild(localStyleEl);
 
-  // ✅ Create widget container
-  const widgetContainer = document.createElement("div");
-  widgetContainer.className = "accessibility-widget";
-
-  // ✅ Create toggle button with FontAwesome icon
+  /************************************************************
+   * 4. CREATE THE TOGGLE BUTTON
+   ************************************************************/
   const toggleBtn = document.createElement("button");
   toggleBtn.className = "toggle-btn";
+  toggleBtn.setAttribute("aria-expanded", "false");
+  toggleBtn.setAttribute("aria-controls", "usa-access-widget-panel");
   toggleBtn.innerHTML = `<i class="fas fa-universal-access"></i>`;
+  toggleBtn.title = "Open Accessibility Options";
   toggleBtn.addEventListener("click", () => {
-    widgetContainer.classList.toggle("open");
+    isWidgetOpen = !isWidgetOpen;
+    toggleBtn.setAttribute("aria-expanded", isWidgetOpen ? "true" : "false");
+    widgetContainer.classList.toggle("open", isWidgetOpen);
   });
   widgetContainer.appendChild(toggleBtn);
 
-  // ✅ Create widget panel
-  const panel = document.createElement("div");
-  panel.className = "widget-panel";
-  widgetContainer.appendChild(panel);
+  /************************************************************
+   * 5. CREATE THE WIDGET PANEL (Top Bar + Grid of Features)
+   ************************************************************/
+  const widgetPanel = document.createElement("div");
+  widgetPanel.className = "widget-panel";
+  widgetPanel.id = "usa-access-widget-panel";
+  widgetPanel.setAttribute("role", "region");
+  widgetPanel.setAttribute("aria-label", "Accessibility Options Panel");
+  widgetContainer.appendChild(widgetPanel);
 
-  // ✅ Accessibility Feature Buttons
+  // Top Bar: Reset, Statement, Hide, Dictionary Search
+  const topBar = document.createElement("div");
+  topBar.className = "panel-top-bar";
+  widgetPanel.appendChild(topBar);
 
-  // Increase Text Size
-  const textSizeBtn = document.createElement("button");
-  textSizeBtn.innerHTML = `<i class="fas fa-text-height"></i> Increase Text`;
-  textSizeBtn.addEventListener("click", textSizeModule.toggleTextSize);
-  panel.appendChild(textSizeBtn);
+  const resetBtn = document.createElement("button");
+  resetBtn.textContent = "Reset Settings";
+  resetBtn.addEventListener("click", resetAccessibilitySettings);
+  topBar.appendChild(resetBtn);
 
-  // High Contrast
-  const contrastBtn = document.createElement("button");
-  contrastBtn.innerHTML = `<i class="fas fa-adjust"></i> High Contrast`;
-  contrastBtn.addEventListener("click", contrastModule.toggleHighContrast);
-  panel.appendChild(contrastBtn);
+  const statementBtn = document.createElement("button");
+  statementBtn.textContent = "Statement";
+  statementBtn.addEventListener("click", () => {
+    alert("Accessibility Statement (placeholder).\n\nEnsure compliance with ADA and Section 508 guidelines.");
+  });
+  topBar.appendChild(statementBtn);
 
-  // Screen Reader
-  const screenReaderBtn = document.createElement("button");
-  screenReaderBtn.innerHTML = `<i class="fas fa-volume-up"></i> Read Page`;
-  screenReaderBtn.addEventListener("click", screenReaderModule.speakPage);
-  panel.appendChild(screenReaderBtn);
+  const hideBtn = document.createElement("button");
+  hideBtn.textContent = "Hide Interface";
+  hideBtn.addEventListener("click", hideWidget);
+  topBar.appendChild(hideBtn);
 
-  // Voice Assistant
-  const voiceBtn = document.createElement("button");
-  voiceBtn.innerHTML = `<i class="fas fa-microphone"></i> Voice Assistant`;
-  voiceBtn.addEventListener("click", () => {
-    if (!voiceAssistantModule.isVoiceNavActive()) {
-      voiceAssistantModule.startVoiceNavigation();
-      voiceBtn.innerHTML = `<i class="fas fa-microphone-slash"></i> Stop Voice`;
-    } else {
-      voiceAssistantModule.stopVoiceNavigation();
-      voiceBtn.innerHTML = `<i class="fas fa-microphone"></i> Voice Assistant`;
+  const searchInput = document.createElement("input");
+  searchInput.type = "text";
+  searchInput.placeholder = "Dictionary search...";
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      dictionarySearch(searchInput.value);
     }
   });
-  panel.appendChild(voiceBtn);
+  topBar.appendChild(searchInput);
 
-  // ✅ Append widget to body
+  // Grid for feature/service buttons
+  const grid = document.createElement("div");
+  grid.className = "widget-grid";
+  widgetPanel.appendChild(grid);
+
+  // Helper: Create feature buttons with ARIA support and keyboard events
+  function createFeatureButton(iconClass, label, callback) {
+    const btn = document.createElement("div");
+    btn.className = "widget-feature-btn";
+    btn.setAttribute("role", "button");
+    btn.setAttribute("tabindex", "0");
+    btn.innerHTML = `<i class="${iconClass}"></i><span>${label}</span>`;
+    btn.addEventListener("click", callback);
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        callback();
+      }
+    });
+    return btn;
+  }
+
+  // --- Core Accessibility Features ---
+  grid.appendChild(createFeatureButton("fas fa-adjust", "High Contrast", () => {
+    toggleBodyClass("high-contrast");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-volume-up", "Screen Reader", () => {
+    if (!synth.speaking) {
+      const text = document.body.innerText;
+      readingUtterance = new SpeechSynthesisUtterance(text);
+      readingUtterance.rate = 1;
+      readingUtterance.pitch = 1;
+      synth.speak(readingUtterance);
+    }
+  }));
+  grid.appendChild(createFeatureButton("fas fa-adjust", "Smart Contrast", () => {
+    toggleBodyClass("high-contrast-2");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-link", "Highlight Links", () => {
+    toggleBodyClass("highlight-links");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-text-height", "Bigger Text", () => {
+    toggleBodyClass("bigger-text");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-pause-circle", "Pause Animations", () => {
+    toggleBodyClass("pause-animations");
+  }));
+  grid.appendChild(createFeatureButton("far fa-image", "Hide Images", () => {
+    toggleBodyClass("hide-images");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-font", "Dyslexia Friendly", () => {
+    toggleBodyClass("dyslexia-font");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-mouse-pointer", "Custom Cursor", () => {
+    toggleBodyClass("big-cursor");
+    if (document.body.classList.contains("big-cursor")) {
+      document.body.style.cursor = "url('https://cdn-icons-png.flaticon.com/512/892/892693.png'), auto";
+    } else {
+      document.body.style.cursor = "auto";
+    }
+  }));
+  grid.appendChild(createFeatureButton("fas fa-comment-dots", "Tooltips", () => {
+    alert("Tooltips toggled (placeholder).");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-sitemap", "Page Structure", () => {
+    alert("Page Structure toggled (placeholder).");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-microphone", "Voice Navigation", function () {
+    if (!isVoiceNavActive) {
+      startVoiceNavigation();
+      this.innerHTML = `<i class="fas fa-microphone-slash"></i><span>Voice Off</span>`;
+    } else {
+      stopVoiceNavigation();
+      this.innerHTML = `<i class="fas fa-microphone"></i><span>Voice Navigation</span>`;
+    }
+  }));
+      
+  // --- Additional Services ---
+  grid.appendChild(createFeatureButton("fas fa-search", "Audit", () => {
+    alert("Running Accessibility Audit (placeholder).");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-edit", "Forms", () => {
+    alert("Enhancing Form Accessibility (placeholder).");
+  }));
+  grid.appendChild(createFeatureButton("fas fa-forward", "Skip to Content", () => {
+    const mainContent = document.getElementById("main-content");
+    if (mainContent) {
+      mainContent.focus();
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    alert("Skipping to main content (placeholder).");
+  }));
+
+  /************************************************************
+   * 6. ATTACH THE WIDGET TO THE DOCUMENT
+   ************************************************************/
   document.body.appendChild(widgetContainer);
-});
+})();
