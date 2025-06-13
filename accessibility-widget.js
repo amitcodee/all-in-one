@@ -83,14 +83,16 @@
         });
     var e = document.querySelector(".asw-amount");
     e && (e.innerText = "".concat((100 * t).toFixed(0), "%"));
-  }
-  function l(t) {
+  }  function l(t) {
     var e = t.id,
       i = t.css;
     if (i) {
       var n =
         document.getElementById(e || "") || document.createElement("style");
       (n.innerHTML = i), n.id || ((n.id = e), document.head.appendChild(n));
+    } else {
+      var n = document.getElementById(e || "");
+      n && n.remove();
     }
   }
   var c = ["-o-", "-ms-", "-moz-", "-webkit-", ""],
@@ -178,11 +180,10 @@
         "ol",
       ],
       !1
-    ),
-    b = {
-      "dark-contrast": {
+    ),    b = {      "dark-contrast": {
         styles: { color: "#FFF", fill: "#FFF", "background-color": "#000" },
-        childrenSelector: v,
+        childrenSelector: ["", "*:not(.material-icons)"],
+        css: "html, body { background-color: #000 !important; color: #FFF !important; } body * { border-color: #FFF !important; } input, textarea, select { background-color: #000 !important; color: #FFF !important; border: 1px solid #FFF !important; } input::placeholder, textarea::placeholder { color: #CCC !important; } .asw-menu { background-color: #000 !important; color: #FFF !important; border-color: #FFF !important; } .asw-menu * { background-color: #000 !important; color: #FFF !important; } .asw-menu button { background-color: #000 !important; color: #FFF !important; border: 1px solid #FFF !important; } .asw-menu button:hover { background-color: #333 !important; } .asw-menu .asw-btn { background-color: #000 !important; color: #FFF !important; border-color: #FFF !important; } .asw-menu .asw-btn:hover { background-color: #333 !important; }",
       },
       "light-contrast": {
         styles: { color: "#000", fill: "#000", "background-color": "#FFF" },
@@ -774,12 +775,11 @@
         t.addEventListener("click", function () {
           var e,
             i = t.dataset.key,
-            a = !t.classList.contains("asw-selected");
-          t.classList.contains("asw-filter")
+            a = !t.classList.contains("asw-selected");          t.classList.contains("asw-filter")
             ? (p.querySelectorAll(".asw-filter").forEach(function (t) {
                 t.classList.remove("asw-selected");
               }),
-              n({ contrast: !!a && i }),
+              n({ contrast: a ? i : null }),
               a && t.classList.add("asw-selected"),
               w())
             : (t.classList.toggle("asw-selected", a),
