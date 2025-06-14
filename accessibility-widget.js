@@ -412,11 +412,8 @@
             };
           }
         }
-          window.__asw__readOnClickHandler = function(event) {
-          // Initialize link navigation variables
-          window.__asw__linkToNavigate = null;
-          window.__asw__isLink = false;
-          
+        
+        window.__asw__readOnClickHandler = function(event) {
           if (!event.target.closest('.asw-container')) {
             // Play click sound first
             try {
@@ -551,19 +548,41 @@
                     utterance.voice = defaultVoice;
                   }
                   
-                  // Handle link navigation after speech ends
-                  if (window.__asw__isLink && window.__asw__linkToNavigate) {
-                    utterance.onend = function() {
-                      const url = window.__asw__linkToNavigate;
-                      window.__asw__linkToNavigate = null;
-                      window.__asw__isLink = false;
-                      
-                      // Navigate to the link
+                  // Add event handler to navigate to link after speech ends
+                  utterance.onend = function() {
+                    if (window.__asw__linkToNavigate && window.__asw__isLink) {
+                      // Small delay to ensure speech has fully completed
                       setTimeout(function() {
-                        window.location.href = url;
-                      }, 200); // Small delay to ensure speech has finished
-                    };
-                  }
+                        try {
+                          window.location.href = window.__asw__linkToNavigate;
+                        } catch (error) {
+                          console.warn('Failed to navigate to link:', error);
+                          // Fallback: try opening in new tab
+                          window.open(window.__asw__linkToNavigate, '_blank');
+                        }
+                        // Clean up the stored link
+                        delete window.__asw__linkToNavigate;
+                        delete window.__asw__isLink;
+                      }, 100);
+                    }
+                  };
+                  
+                  // Handle speech errors
+                  utterance.onerror = function(event) {
+                    console.warn('Speech synthesis error:', event);
+                    // Still navigate to link even if speech fails
+                    if (window.__asw__linkToNavigate && window.__asw__isLink) {
+                      setTimeout(function() {
+                        try {
+                          window.location.href = window.__asw__linkToNavigate;
+                        } catch (error) {
+                          window.open(window.__asw__linkToNavigate, '_blank');
+                        }
+                        delete window.__asw__linkToNavigate;
+                        delete window.__asw__isLink;
+                      }, 100);
+                    }
+                  };
                   
                   // Speak the text
                   window.speechSynthesis.speak(utterance);
@@ -573,7 +592,8 @@
           }
         };
         document.addEventListener('click', window.__asw__readOnClickHandler, true);
-      }    } else {
+      }
+    } else {
       if (window.__asw__readOnClickHandler) {
         document.removeEventListener('click', window.__asw__readOnClickHandler, true);
         delete window.__asw__readOnClickHandler;
@@ -582,10 +602,6 @@
         if (window.speechSynthesis) {
           window.speechSynthesis.cancel();
         }
-        
-        // Clean up link navigation variables
-        window.__asw__linkToNavigate = null;
-        window.__asw__isLink = false;
       }
     }
   }
