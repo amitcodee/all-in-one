@@ -1,4 +1,4 @@
- (() => {
+(() => {
   "use strict";
   var t = function () {
       return (
@@ -52,8 +52,6 @@
     return n && (e = JSON.parse(n)), e;
   }
 
-
-  
   function r(t) {
     void 0 === t && (t = 1),
       document
@@ -83,7 +81,8 @@
         });
     var e = document.querySelector(".asw-amount");
     e && (e.innerText = "".concat((100 * t).toFixed(0), "%"));
-  }  function l(t) {
+  }
+  function l(t) {
     var e = t.id,
       i = t.css;
     if (i) {
@@ -180,7 +179,9 @@
         "ol",
       ],
       !1
-    ),    b = {      "dark-contrast": {
+    ),
+    b = {
+      "dark-contrast": {
         styles: { color: "#FFF", fill: "#FFF", "background-color": "#000" },
         childrenSelector: ["", "*:not(.material-icons)"],
         css: "html, body { background-color: #000 !important; color: #FFF !important; } body * { border-color: #FFF !important; } input, textarea, select { background-color: #000 !important; color: #FFF !important; border: 1px solid #FFF !important; } input::placeholder, textarea::placeholder { color: #CCC !important; } .asw-menu { background-color: #000 !important; color: #FFF !important; border-color: #FFF !important; } .asw-menu * { background-color: #000 !important; color: #FFF !important; } .asw-menu button { background-color: #000 !important; color: #FFF !important; border: 1px solid #FFF !important; } .asw-menu button:hover { background-color: #333 !important; } .asw-menu .asw-btn { background-color: #000 !important; color: #FFF !important; border-color: #FFF !important; } .asw-menu .asw-btn:hover { background-color: #333 !important; }",
@@ -191,20 +192,27 @@
       },
       "high-contrast": { styles: { filter: "contrast(125%)" } },
       "high-saturation": { styles: { filter: "saturate(200%)" } },
-      "low-saturation": { styles: { filter: "saturate(50%)" } },      monochrome: { styles: { filter: "grayscale(100%)" } },      "hide-images": { 
+      "low-saturation": { styles: { filter: "saturate(50%)" } },
+      monochrome: { styles: { filter: "grayscale(100%)" } },
+      "hide-images": {
         id: "hide-images",
-        styles: { display: "none" }, 
+        styles: { display: "none" },
         selector: "img",
-        css: "img:not(.asw-container img):not(.asw-widget img):not(.asw-menu img):not(.asw-menu * img):not(.asw-rg img):not(.asw-rg * img):not(.asw-menu-btn img):not(.asw-menu-btn * img), [style*='background-image']:not(.asw-container):not(.asw-widget):not(.asw-menu):not(.asw-menu *):not(.asw-container *):not(.asw-widget *):not(.asw-rg):not(.asw-rg *):not(.asw-menu-btn):not(.asw-menu-btn *) { display: none !important; } *:not(.asw-container):not(.asw-widget):not(.asw-menu):not(.asw-menu *):not(.asw-container *):not(.asw-widget *):not(.asw-rg):not(.asw-rg *):not(.asw-menu-btn):not(.asw-menu-btn *) { background-image: none !important; }"
-      },      "hide-videos": { 
+        css: "img:not(.asw-container img):not(.asw-widget img):not(.asw-menu img):not(.asw-menu * img):not(.asw-rg img):not(.asw-rg * img):not(.asw-menu-btn img):not(.asw-menu-btn * img), [style*='background-image']:not(.asw-container):not(.asw-widget):not(.asw-menu):not(.asw-menu *):not(.asw-container *):not(.asw-widget *):not(.asw-rg):not(.asw-rg *):not(.asw-menu-btn):not(.asw-menu-btn *) { display: none !important; } *:not(.asw-container):not(.asw-widget):not(.asw-menu):not(.asw-menu *):not(.asw-container *):not(.asw-widget *):not(.asw-rg):not(.asw-rg *):not(.asw-menu-btn):not(.asw-menu-btn *) { background-image: none !important; }",
+      },
+      "hide-videos": {
         id: "hide-videos",
-        styles: { display: "none" }, 
-        selector: "video, iframe[src*='youtube'], iframe[src*='vimeo'], iframe[src*='dailymotion'], iframe[src*='twitch']",
-        css: "video:not(.asw-container video):not(.asw-widget video):not(.asw-menu video):not(.asw-menu * video):not(.asw-rg video):not(.asw-rg * video):not(.asw-menu-btn video):not(.asw-menu-btn * video), iframe[src*='youtube']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), iframe[src*='vimeo']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), iframe[src*='dailymotion']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), iframe[src*='twitch']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), embed[src*='video']:not(.asw-container embed):not(.asw-widget embed):not(.asw-menu embed):not(.asw-rg embed):not(.asw-menu-btn embed) { display: none !important; }"      },"hide-icons": { 
+        styles: { display: "none" },
+        selector:
+          "video, iframe[src*='youtube'], iframe[src*='vimeo'], iframe[src*='dailymotion'], iframe[src*='twitch']",
+        css: "video:not(.asw-container video):not(.asw-widget video):not(.asw-menu video):not(.asw-menu * video):not(.asw-rg video):not(.asw-rg * video):not(.asw-menu-btn video):not(.asw-menu-btn * video), iframe[src*='youtube']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), iframe[src*='vimeo']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), iframe[src*='dailymotion']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), iframe[src*='twitch']:not(.asw-container iframe):not(.asw-widget iframe):not(.asw-menu iframe):not(.asw-rg iframe):not(.asw-menu-btn iframe), embed[src*='video']:not(.asw-container embed):not(.asw-widget embed):not(.asw-menu embed):not(.asw-rg embed):not(.asw-menu-btn embed) { display: none !important; }",
+      },
+      "hide-icons": {
         id: "hide-icons",
-        styles: { display: "none" }, 
-        selector: "i, .icon, [class*='icon-'], [class*='fa-'], .material-icons, svg:not(.asw-menu svg):not(.asw-menu * svg):not(.asw-menu-btn svg):not(.asw-menu-btn * svg)",
-        css: "i:not(.asw-container i):not(.asw-widget i):not(.asw-menu i):not(.asw-menu * i):not(.asw-container * i):not(.asw-widget * i):not(.asw-rg i):not(.asw-rg * i):not(.asw-menu-btn i):not(.asw-menu-btn * i), .icon:not(.asw-container .icon):not(.asw-widget .icon):not(.asw-menu .icon):not(.asw-menu * .icon):not(.asw-rg .icon):not(.asw-rg * .icon):not(.asw-menu-btn .icon):not(.asw-menu-btn * .icon), [class*='icon-']:not(.asw-container [class*='icon-']):not(.asw-widget [class*='icon-']):not(.asw-menu [class*='icon-']):not(.asw-menu * [class*='icon-']):not(.asw-rg [class*='icon-']):not(.asw-rg * [class*='icon-']):not(.asw-menu-btn [class*='icon-']):not(.asw-menu-btn * [class*='icon-']), [class*='fa-']:not(.asw-container [class*='fa-']):not(.asw-widget [class*='fa-']):not(.asw-menu [class*='fa-']):not(.asw-menu * [class*='fa-']):not(.asw-rg [class*='fa-']):not(.asw-rg * [class*='fa-']):not(.asw-menu-btn [class*='fa-']):not(.asw-menu-btn * [class*='fa-']), .material-icons:not(.asw-container .material-icons):not(.asw-widget .material-icons):not(.asw-menu .material-icons):not(.asw-menu * .material-icons):not(.asw-rg .material-icons):not(.asw-rg * .material-icons):not(.asw-menu-btn .material-icons):not(.asw-menu-btn * .material-icons), svg:not(.asw-container svg):not(.asw-widget svg):not(.asw-menu svg):not(.asw-menu * svg):not(.asw-container * svg):not(.asw-widget * svg):not(.asw-rg svg):not(.asw-rg * svg):not(.asw-menu-btn svg):not(.asw-menu-btn * svg) { display: none !important; }"
+        styles: { display: "none" },
+        selector:
+          "i, .icon, [class*='icon-'], [class*='fa-'], .material-icons, svg:not(.asw-menu svg):not(.asw-menu * svg):not(.asw-menu-btn svg):not(.asw-menu-btn * svg)",
+        css: "i:not(.asw-container i):not(.asw-widget i):not(.asw-menu i):not(.asw-menu * i):not(.asw-container * i):not(.asw-widget * i):not(.asw-rg i):not(.asw-rg * i):not(.asw-menu-btn i):not(.asw-menu-btn * i), .icon:not(.asw-container .icon):not(.asw-widget .icon):not(.asw-menu .icon):not(.asw-menu * .icon):not(.asw-rg .icon):not(.asw-rg * .icon):not(.asw-menu-btn .icon):not(.asw-menu-btn * .icon), [class*='icon-']:not(.asw-container [class*='icon-']):not(.asw-widget [class*='icon-']):not(.asw-menu [class*='icon-']):not(.asw-menu * [class*='icon-']):not(.asw-rg [class*='icon-']):not(.asw-rg * [class*='icon-']):not(.asw-menu-btn [class*='icon-']):not(.asw-menu-btn * [class*='icon-']), [class*='fa-']:not(.asw-container [class*='fa-']):not(.asw-widget [class*='fa-']):not(.asw-menu [class*='fa-']):not(.asw-menu * [class*='fa-']):not(.asw-rg [class*='fa-']):not(.asw-rg * [class*='fa-']):not(.asw-menu-btn [class*='fa-']):not(.asw-menu-btn * [class*='fa-']), .material-icons:not(.asw-container .material-icons):not(.asw-widget .material-icons):not(.asw-menu .material-icons):not(.asw-menu * .material-icons):not(.asw-rg .material-icons):not(.asw-rg * .material-icons):not(.asw-menu-btn .material-icons):not(.asw-menu-btn * .material-icons), svg:not(.asw-container svg):not(.asw-widget svg):not(.asw-menu svg):not(.asw-menu * svg):not(.asw-container * svg):not(.asw-widget * svg):not(.asw-rg svg):not(.asw-rg * svg):not(.asw-menu-btn svg):not(.asw-menu-btn * svg) { display: none !important; }",
       },
     };
   var S = function () {
@@ -391,15 +399,17 @@
             return t;
           }),
         T.apply(this, arguments)
-      );    },
+      );
+    },
     B = {
       id: "font-weight",
-      selector: "html",      childrenSelector: p,
+      selector: "html",
+      childrenSelector: p,
       styles: { "font-weight": "700" },
-    };  // Read on Click Feature - Enhanced with tag information
+    }; // Read on Click Feature - Enhanced with tag information
   function enableReadOnClick(enabled) {
     if (enabled === undefined) enabled = false;
-    
+
     if (enabled) {
       if (!window.__asw__readOnClickHandler) {
         // Initialize voices on first load to avoid double-click issue
@@ -407,158 +417,166 @@
           window.speechSynthesis.getVoices();
           // Wait for voices to load if they haven't already
           if (window.speechSynthesis.onvoiceschanged !== undefined) {
-            window.speechSynthesis.onvoiceschanged = function() {
+            window.speechSynthesis.onvoiceschanged = function () {
               // Voices are now loaded
             };
           }
         }
-        
-        window.__asw__readOnClickHandler = function(event) {
-          if (!event.target.closest('.asw-container')) {
+
+        window.__asw__readOnClickHandler = function (event) {
+          if (!event.target.closest(".asw-container")) {
             // Play click sound first
             try {
               const audio = new Audio("click.mp3");
               audio.volume = 0.5; // Moderate volume for click sound
-              audio.play().catch(err => console.warn("Click sound blocked:", err));
+              audio
+                .play()
+                .catch((err) => console.warn("Click sound blocked:", err));
             } catch (err) {
               console.warn("Could not play click sound:", err);
             }
-            
+
             const element = event.target;
             const tagName = element.tagName.toLowerCase();
-            
+
             // Get element description based on tag
-            let description = '';
+            let description = "";
             switch (tagName) {
-              case 'h1':
-              case 'h2':
-              case 'h3':
-              case 'h4':
-              case 'h5':
-              case 'h6':
-                description = 'Heading level ' + tagName.charAt(1);
+              case "h1":
+              case "h2":
+              case "h3":
+              case "h4":
+              case "h5":
+              case "h6":
+                description = "Heading level " + tagName.charAt(1);
                 break;
-              case 'a':
-                description = element.href ? 'Link' : 'Link';
+              case "a":
+                description = element.href ? "Link" : "Link";
                 break;
-              case 'button':
-                description = 'Button';
+              case "button":
+                description = "Button";
                 break;
-              case 'img':
-                description = 'Image';
+              case "img":
+                description = "Image";
                 break;
-              case 'p':
-                description = 'Paragraph';
+              case "p":
+                description = "Paragraph";
                 break;
-              case 'div':
-                description = 'Section';
+              case "div":
+                description = "Section";
                 break;
-              case 'span':
-                description = 'Text span';
+              case "span":
+                description = "Text span";
                 break;
-              case 'li':
-                description = 'List item';
+              case "li":
+                description = "List item";
                 break;
-              case 'input':
-                const inputType = element.type || 'text';
-                description = inputType + ' input field';
+              case "input":
+                const inputType = element.type || "text";
+                description = inputType + " input field";
                 break;
-              case 'textarea':
-                description = 'Text area';
+              case "textarea":
+                description = "Text area";
                 break;
-              case 'select':
-                description = 'Dropdown menu';
+              case "select":
+                description = "Dropdown menu";
                 break;
-              case 'label':
-                description = 'Form label';
+              case "label":
+                description = "Form label";
                 break;
-              case 'nav':
-                description = 'Navigation';
+              case "nav":
+                description = "Navigation";
                 break;
-              case 'main':
-                description = 'Main content';
+              case "main":
+                description = "Main content";
                 break;
-              case 'header':
-                description = 'Header';
+              case "header":
+                description = "Header";
                 break;
-              case 'footer':
-                description = 'Footer';
+              case "footer":
+                description = "Footer";
                 break;
               default:
-                description = 'Element';
+                description = "Element";
             }
-            
+
             // Get text content
-            let text = element.innerText || element.textContent || '';
-            
+            let text = element.innerText || element.textContent || "";
+
             // For images, get alt text
-            if (tagName === 'img') {
-              text = element.alt || 'Image with no description';
+            if (tagName === "img") {
+              text = element.alt || "Image with no description";
             }
-              // For links, handle specially to announce then navigate
-            if (tagName === 'a' && element.href) {
+            // For links, handle specially to announce then navigate
+            if (tagName === "a" && element.href) {
               event.preventDefault(); // Prevent immediate navigation
-              const linkText = text.trim() || 'Link';
+              const linkText = text.trim() || "Link";
               text = linkText;
-              
+
               // We'll handle navigation after speech
               window.__asw__linkToNavigate = element.href;
               window.__asw__isLink = true;
             }
-            
+
             // For form elements, include labels
-            if (['input', 'textarea', 'select'].includes(tagName)) {
-              const label = document.querySelector(`label[for="${element.id}"]`) || 
-                           element.closest('label') ||
-                           element.previousElementSibling;
-              if (label && label.tagName.toLowerCase() === 'label') {
-                const labelText = label.innerText || label.textContent || '';
-                text = labelText + ', ' + description + (text ? ', value: ' + text : '');
+            if (["input", "textarea", "select"].includes(tagName)) {
+              const label =
+                document.querySelector(`label[for="${element.id}"]`) ||
+                element.closest("label") ||
+                element.previousElementSibling;
+              if (label && label.tagName.toLowerCase() === "label") {
+                const labelText = label.innerText || label.textContent || "";
+                text =
+                  labelText +
+                  ", " +
+                  description +
+                  (text ? ", value: " + text : "");
               } else {
-                text = description + (text ? ', value: ' + text : '');
+                text = description + (text ? ", value: " + text : "");
               }
             } else {
               text = text.trim();
             }
-            
+
             // Create full message
             let fullMessage = description;
             if (text) {
-              fullMessage += ': ' + text;
+              fullMessage += ": " + text;
             }
-            
+
             // Use system speech synthesis directly with delay for click sound
             if (fullMessage.trim()) {
-              setTimeout(function() {
+              setTimeout(function () {
                 if (window.speechSynthesis) {
                   window.speechSynthesis.cancel();
-                  
+
                   // Create speech utterance
                   const utterance = new SpeechSynthesisUtterance(fullMessage);
-                  
+
                   // Set speech properties for better audibility
-                  utterance.rate = 0.9;     // Slightly slower for clarity
-                  utterance.pitch = 1.0;    // Normal pitch
-                  utterance.volume = 1.0;   // Maximum volume
-                    // Use system default voice - get voices again to ensure they're loaded
+                  utterance.rate = 0.9; // Slightly slower for clarity
+                  utterance.pitch = 1.0; // Normal pitch
+                  utterance.volume = 1.0; // Maximum volume
+                  // Use system default voice - get voices again to ensure they're loaded
                   const voices = window.speechSynthesis.getVoices();
                   if (voices.length > 0) {
                     // Try to find the default system voice or use the first available
-                    const defaultVoice = voices.find(voice => voice.default) || voices[0];
+                    const defaultVoice =
+                      voices.find((voice) => voice.default) || voices[0];
                     utterance.voice = defaultVoice;
                   }
-                  
+
                   // Add event handler to navigate to link after speech ends
-                  utterance.onend = function() {
+                  utterance.onend = function () {
                     if (window.__asw__linkToNavigate && window.__asw__isLink) {
                       // Small delay to ensure speech has fully completed
-                      setTimeout(function() {
+                      setTimeout(function () {
                         try {
                           window.location.href = window.__asw__linkToNavigate;
                         } catch (error) {
-                          console.warn('Failed to navigate to link:', error);
+                          console.warn("Failed to navigate to link:", error);
                           // Fallback: try opening in new tab
-                          window.open(window.__asw__linkToNavigate, '_blank');
+                          window.open(window.__asw__linkToNavigate, "_blank");
                         }
                         // Clean up the stored link
                         delete window.__asw__linkToNavigate;
@@ -566,24 +584,24 @@
                       }, 100);
                     }
                   };
-                  
+
                   // Handle speech errors
-                  utterance.onerror = function(event) {
-                    console.warn('Speech synthesis error:', event);
+                  utterance.onerror = function (event) {
+                    console.warn("Speech synthesis error:", event);
                     // Still navigate to link even if speech fails
                     if (window.__asw__linkToNavigate && window.__asw__isLink) {
-                      setTimeout(function() {
+                      setTimeout(function () {
                         try {
                           window.location.href = window.__asw__linkToNavigate;
                         } catch (error) {
-                          window.open(window.__asw__linkToNavigate, '_blank');
+                          window.open(window.__asw__linkToNavigate, "_blank");
                         }
                         delete window.__asw__linkToNavigate;
                         delete window.__asw__isLink;
                       }, 100);
                     }
                   };
-                  
+
                   // Speak the text
                   window.speechSynthesis.speak(utterance);
                 }
@@ -591,13 +609,21 @@
             }
           }
         };
-        document.addEventListener('click', window.__asw__readOnClickHandler, true);
+        document.addEventListener(
+          "click",
+          window.__asw__readOnClickHandler,
+          true
+        );
       }
     } else {
       if (window.__asw__readOnClickHandler) {
-        document.removeEventListener('click', window.__asw__readOnClickHandler, true);
+        document.removeEventListener(
+          "click",
+          window.__asw__readOnClickHandler,
+          true
+        );
         delete window.__asw__readOnClickHandler;
-        
+
         // Stop any ongoing speech when disabling
         if (window.speechSynthesis) {
           window.speechSynthesis.cancel();
@@ -609,7 +635,7 @@
   // Focus Outline Enhancement
   function enableFocusOutline(enabled) {
     if (enabled === undefined) enabled = false;
-    
+
     const focusOutlineConfig = {
       id: "focus-outline",
       selector: "html",
@@ -625,9 +651,9 @@
           outline: 3px solid #0066cc !important;
           outline-offset: 2px !important;
         }
-      `
+      `,
     };
-      d(Object.assign({}, focusOutlineConfig, { enable: enabled }));
+    d(Object.assign({}, focusOutlineConfig, { enable: enabled }));
   }
 
   function P() {
@@ -681,7 +707,8 @@
                 window.__asw__onScrollReadableGuide
               ),
               delete window.__asw__onScrollReadableGuide);
-      })(e["readable-guide"]),      (function (t) {
+      })(e["readable-guide"]),
+      (function (t) {
         void 0 === t && (t = !1), d(y(y({}, f), { enable: t }));
       })(e["stop-animations"]),
       (function (t) {
@@ -692,7 +719,8 @@
       })(e["hide-videos"]),
       (function (t) {
         void 0 === t && (t = !1), d(S(S({}, b["hide-icons"]), { enable: t }));
-      })(e["hide-icons"]),      (function (t) {
+      })(e["hide-icons"]),
+      (function (t) {
         void 0 === t && (t = !1), d(C(C({}, L), { enable: t }));
       })(e["big-cursor"]),
       enableReadOnClick(e["read-on-click"]),
@@ -715,7 +743,7 @@
         : "none";
   }
   const G =
-      '<style>.asw-menu{position:fixed;left:0;top:0;box-shadow:0 0 20px #00000080;opacity:1;transition:.3s;z-index:500000;overflow:hidden;background:#eff1f5;width:500px;line-height:1;font-size:16px;height:100%;letter-spacing:.015em}.asw-menu *{color:#000!important;font-family:inherit;padding:0;margin:0;line-height:1!important;letter-spacing:normal!important}.asw-menu-header{display:flex;align-items:center;justify-content:space-between;padding-left:18px;padding-right:18px;height:55px;font-weight:700!important;background-color:#0848ca!important}.asw-menu-title{font-size:16px!important;color:#fff!important}.asw-menu-header svg{fill:#0848ca!important;width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important}.asw-menu-header>div{display:flex}.asw-menu-header div[role=button]{padding:5px;background:#fff!important;cursor:pointer;border-radius:50%;transition:opacity .3s ease}.asw-menu-header div[role=button]:hover{opacity:.8}.asw-card{margin:0 15px 20px}.asw-card-title{font-size:14px!important;padding:15px 0;font-weight:600!important;opacity:.8}.asw-menu .asw-select{width:100%!important;padding:0 15px!important;font-size:16px!important;font-family:inherit!important;font-weight:600!important;border-radius:45px!important;background:#fff!important;border:none!important;min-height:45px!important;max-height:45px!important;height:45px!important;color:inherit!important}.asw-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.asw-btn{aspect-ratio:6/5;border-radius:12px;padding:0 15px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#333;font-size:16px!important;background:#fff!important;border:2px solid transparent!important;transition:border-color .2s ease;cursor:pointer;word-break:break-word;gap:10px;position:relative;width:auto!important;height:auto!important}.asw-adjust-font .asw-label div,.asw-btn .asw-translate{font-size:14px!important;font-weight:600!important}.asw-minus,.asw-plus{background-color:#eff1f5!important;border:2px solid transparent;transition:border .2s ease}.asw-minus:hover,.asw-plus:hover{border-color:#0848ca!important}.asw-amount{font-size:18px!important;font-weight:600!important}.asw-adjust-font svg{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important}.asw-btn svg{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;max-width:34px!important;max-height:34px!important}.asw-btn.asw-selected,.asw-btn:hover{border-color:#0848ca!important}.asw-btn.asw-selected span,.asw-btn.asw-selected svg{fill:#0848ca!important;color:#0848ca!important}.asw-btn.asw-selected:after{content:"âœ“";position:absolute;top:10px;right:10px;background-color:#0848ca!important;color:#fff;padding:6px;font-size:10px;width:18px;height:18px;border-radius:100%;line-height:6px}.asw-footer{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:20px;text-align:center;border-top:2px solid #eff1f5}.asw-footer a{font-size:16px!important;text-decoration:none!important;color:#000!important;background:0 0!important;font-weight:600!important}.asw-footer a:hover,.asw-footer a:hover span{color:#0848ca!important}.asw-menu-content{overflow:scroll;max-height:calc(100% - 80px);padding:30px 0 15px}.asw-adjust-font{background:#fff;padding:20px;margin-bottom:20px}.asw-adjust-font .asw-label{display:flex;justify-content:flex-start}.asw-adjust-font>div{display:flex;justify-content:space-between;margin-top:20px;align-items:center;font-size:15px}.asw-adjust-font .asw-label div{font-size:15px!important}.asw-adjust-font div[role=button]{background:#eff1f5!important;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer}.asw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000}@media only screen and (max-width:560px){.asw-menu{width:100%}}@media only screen and (max-width:420px){.asw-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}}</style> <div class="asw-menu"> <div class="asw-menu-header"> <div class="asw-menu-title asw-translate"> Accessibility Menu </div> <div style="gap:15px"> <div role="button" class="asw-menu-reset" title="Reset settings"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M12 4c2.1 0 4.1.8 5.6 2.3 3.1 3.1 3.1 8.2 0 11.3a7.78 7.78 0 0 1-6.7 2.3l.5-2c1.7.2 3.5-.4 4.8-1.7a6.1 6.1 0 0 0 0-8.5A6.07 6.07 0 0 0 12 6v4.6l-5-5 5-5V4M6.3 17.6C3.7 15 3.3 11 5.1 7.9l1.5 1.5c-1.1 2.2-.7 5 1.2 6.8.5.5 1.1.9 1.8 1.2l-.6 2a8 8 0 0 1-2.7-1.8Z"/> </svg> </div> <div role="button" class="asw-menu-close" title="Close"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/> </svg> </div> </div> </div> <div class="asw-menu-content"> <div class="asw-card"> <select id="asw-language" title="Language" class="asw-select"></select> </div> <div class="asw-card"> <div class="asw-card-title"> Content Adjustments </div> <div class="asw-adjust-font"> <div class="asw-label" style="margin:0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="margin-right:15px"> <path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/> </svg> <div class="asw-translate"> Adjust Font Size </div> </div> <div> <div class="asw-minus" data-key="font-size" role="button" aria-pressed="false" title="Decrease Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13H5v-2h14v2Z"/> </svg> </div> <div class="asw-amount"> 100% </div> <div class="asw-plus" data-key="font-size" role="button" aria-pressed="false" title="Increase Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/> </svg> </div> </div> </div> <div class="asw-items content"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Color Adjustments </div> <div class="asw-items contrast"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Hidden Content </div> <div class="asw-items hiddencontent"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Tools </div> <div class="asw-items tools"> </div> </div> </div> <div class="asw-footer"> <a href="" target="_blank">Web Accessibility By <span style="font-weight:700;color:inherit">Anthromorphe</span></a> </div> </div> <div class="asw-overlay"> </div>',
+      '<style>.asw-menu{position:fixed;left:0;top:0;box-shadow:0 0 20px #00000080;opacity:1;transition:.3s;z-index:500000;overflow:hidden;background:#eff1f5;width:500px;line-height:1;font-size:16px;height:100%;letter-spacing:.015em}.asw-menu *{color:#000!important;font-family:inherit;padding:0;margin:0;line-height:1!important;letter-spacing:normal!important}.asw-menu-header{display:flex;align-items:center;justify-content:space-between;padding-left:18px;padding-right:18px;height:55px;font-weight:700!important;background-color:#0848ca!important}.asw-menu-title{font-size:16px!important;color:#fff!important}.asw-menu-header svg{fill:#0848ca!important;width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important}.asw-menu-header>div{display:flex}.asw-menu-header div[role=button]{padding:5px;background:#fff!important;cursor:pointer;border-radius:50%;transition:opacity .3s ease}.asw-menu-header div[role=button]:hover{opacity:.8}.asw-card{margin:0 15px 20px}.asw-card-title{font-size:14px!important;padding:15px 0;font-weight:600!important;opacity:.8}.asw-menu .asw-select{width:100%!important;padding:0 15px!important;font-size:16px!important;font-family:inherit!important;font-weight:600!important;border-radius:45px!important;background:#fff!important;border:none!important;min-height:45px!important;max-height:45px!important;height:45px!important;color:inherit!important}.asw-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.asw-btn{aspect-ratio:6/5;border-radius:12px;padding:0 15px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#333;font-size:16px!important;background:#fff!important;border:2px solid transparent!important;transition:border-color .2s ease;cursor:pointer;word-break:break-word;gap:10px;position:relative;width:auto!important;height:auto!important}.asw-adjust-font .asw-label div,.asw-btn .asw-translate{font-size:14px!important;font-weight:600!important}.asw-minus,.asw-plus{background-color:#eff1f5!important;border:2px solid transparent;transition:border .2s ease}.asw-minus:hover,.asw-plus:hover{border-color:#0848ca!important}.asw-amount{font-size:18px!important;font-weight:600!important}.asw-adjust-font svg{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important}.asw-btn svg{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;max-width:34px!important;max-height:34px!important}.asw-btn.asw-selected,.asw-btn:hover{border-color:#0848ca!important}.asw-btn.asw-selected span,.asw-btn.asw-selected svg{fill:#0848ca!important;color:#0848ca!important}.asw-btn.asw-selected:after{content:"\\2713";position:absolute;top:10px;right:10px;background-color:#0848ca!important;color:#fff;padding:6px;font-size:10px;width:18px;height:18px;border-radius:100%;line-height:6px}.asw-footer{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:20px;text-align:center;border-top:2px solid #eff1f5}.asw-footer a{font-size:16px!important;text-decoration:none!important;color:#000!important;background:0 0!important;font-weight:600!important}.asw-footer a:hover,.asw-footer a:hover span{color:#0848ca!important}.asw-menu-content{overflow:scroll;max-height:calc(100% - 80px);padding:30px 0 15px}.asw-adjust-font{background:#fff;padding:20px;margin-bottom:20px}.asw-adjust-font .asw-label{display:flex;justify-content:flex-start}.asw-adjust-font>div{display:flex;justify-content:space-between;margin-top:20px;align-items:center;font-size:15px}.asw-adjust-font .asw-label div{font-size:15px!important}.asw-adjust-font div[role=button]{background:#eff1f5!important;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer}.asw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000}@media only screen and (max-width:560px){.asw-menu{width:100%}}@media only screen and (max-width:420px){.asw-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}}</style> <div class="asw-menu"> <div class="asw-menu-header"> <div class="asw-menu-title asw-translate"> Accessibility Menu </div> <div style="gap:15px"> <div role="button" class="asw-menu-reset" title="Reset settings"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M12 4c2.1 0 4.1.8 5.6 2.3 3.1 3.1 3.1 8.2 0 11.3a7.78 7.78 0 0 1-6.7 2.3l.5-2c1.7.2 3.5-.4 4.8-1.7a6.1 6.1 0 0 0 0-8.5A6.07 6.07 0 0 0 12 6v4.6l-5-5 5-5V4M6.3 17.6C3.7 15 3.3 11 5.1 7.9l1.5 1.5c-1.1 2.2-.7 5 1.2 6.8.5.5 1.1.9 1.8 1.2l-.6 2a8 8 0 0 1-2.7-1.8Z"/> </svg> </div> <div role="button" class="asw-menu-close" title="Close"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/> </svg> </div> </div> </div> <div class="asw-menu-content"> <div class="asw-card"> <select id="asw-language" title="Language" class="asw-select"></select> </div> <div class="asw-card"> <div class="asw-card-title"> Content Adjustments </div> <div class="asw-adjust-font"> <div class="asw-label" style="margin:0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="margin-right:15px"> <path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/> </svg> <div class="asw-translate"> Adjust Font Size </div> </div> <div> <div class="asw-minus" data-key="font-size" role="button" aria-pressed="false" title="Decrease Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13H5v-2h14v2Z"/> </svg> </div> <div class="asw-amount"> 100% </div> <div class="asw-plus" data-key="font-size" role="button" aria-pressed="false" title="Increase Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/> </svg> </div> </div> </div> <div class="asw-items content"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Color Adjustments </div> <div class="asw-items contrast"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Hidden Content </div> <div class="asw-items hiddencontent"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Tools </div> <div class="asw-items tools"> </div> </div> </div> <div class="asw-footer"> <a href="" target="_blank">Web Accessibility By <span style="font-weight:700;color:inherit">Anthromorphe</span></a> </div> </div> <div class="asw-overlay"> </div>',
     E = [
       {
         label: "Monochrome",
@@ -778,7 +806,8 @@
         label: "Highlight Title",
         key: "highlight-title",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M5 4v3h5.5v12h3V7H19V4H5Z"/>\r\n</svg>',
-      },    ],
+      },
+    ],
     HiddenContent = [
       {
         label: "Hide Images",
@@ -806,11 +835,13 @@
         label: "Stop Animations",
         key: "stop-animations",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M22 12c0-5.54-4.46-10-10-10-1.17 0-2.3.19-3.38.56l.7 1.94A7.15 7.15 0 0 1 12 3.97 8.06 8.06 0 0 1 20.03 12 8.06 8.06 0 0 1 12 20.03 8.06 8.06 0 0 1 3.97 12c0-.94.19-1.88.53-2.72l-1.94-.66A10.37 10.37 0 0 0 2 12c0 5.54 4.46 10 10 10s10-4.46 10-10M5.47 3.97c.85 0 1.53.71 1.53 1.5C7 6.32 6.32 7 5.47 7c-.79 0-1.5-.68-1.5-1.53 0-.79.71-1.5 1.5-1.5M18 12c0-3.33-2.67-6-6-6s-6 2.67-6 6 2.67 6 6 6 6-2.67 6-6m-7-3v6H9V9m6 0v6h-2V9"/>\r\n</svg>',
-      },      {
+      },
+      {
         label: "Reading Guide",
         key: "readable-guide",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54A13.15 13.15 0 0 0 3 8v11c3.5 0 6.64 1.35 9 3.54A13.15 13.15 0 0 1 21 19V8c-3.5 0-6.64 1.35-9 3.54Z"/>\r\n</svg>',
-      },      {
+      },
+      {
         label: "Read on Click",
         key: "read-on-click",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M9 12l1.5 1.5L15 9m-3-7c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2m0 18c4.4 0 8-3.6 8-8s-3.6-8-8-8-8 3.6-8 8 3.6 8 8 8z"/>\r\n</svg>',
@@ -851,7 +882,8 @@
       ),
       el: JSON.parse(
         '{"Accessibility Menu":"ÎœÎµÎ½Î¿Ï Ï€ÏÎ¿ÏƒÎ²Î±ÏƒÎ¹Î¼ÏŒÏ„Î·Ï„Î±Ï‚","Reset settings":"Î•Ï€Î±Î½Î±Ï†Î¿ÏÎ¬ ÏÏ…Î¸Î¼Î¯ÏƒÎµÏ‰Î½","Close":"ÎšÎ»ÎµÎ¯ÏƒÎ¹Î¼Î¿","Content Adjustments":"Î ÏÎ¿ÏƒÎ±ÏÎ¼Î¿Î³Î­Ï‚ Ï€ÎµÏÎ¹ÎµÏ‡Î¿Î¼Î­Î½Î¿Ï…","Adjust Font Size":"Î ÏÎ¿ÏƒÎ±ÏÎ¼Î¿Î³Î® Î¼ÎµÎ³Î­Î¸Î¿Ï…Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Highlight Title":"Î•Ï€Î¹ÏƒÎ®Î¼Î±Î½ÏƒÎ· Ï„Î¯Ï„Î»Î¿Ï…","Highlight Links":"Î•Ï€Î¹ÏƒÎ®Î¼Î±Î½ÏƒÎ· ÏƒÏ…Î½Î´Î­ÏƒÎ¼Ï‰Î½","Readable Font":"Î•Ï…Î±Î½Î¬Î³Î½Ï‰ÏƒÏ„Î· Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬","Color Adjustments":"Î ÏÎ¿ÏƒÎ±ÏÎ¼Î¿Î³Î­Ï‚ Ï‡ÏÏ‰Î¼Î¬Ï„Ï‰Î½","Dark Contrast":"Î‘Î½Ï„Î¯Î¸ÎµÏƒÎ· ÏƒÎµ ÏƒÎºÎ¿ÏÏÎ¿","Light Contrast":"Î‘Î½Ï„Î¯Î¸ÎµÏƒÎ· ÏƒÎµ Ï†Ï‰Ï„ÎµÎ¹Î½ÏŒ","High Contrast":"Î¥ÏˆÎ·Î»Î® Î±Î½Ï„Î¯Î¸ÎµÏƒÎ·","High Saturation":"Î¥ÏˆÎ·Î»ÏŒÏ‚ ÎºÎ¿ÏÎµÏƒÎ¼ÏŒÏ‚","Low Saturation":"Î§Î±Î¼Î·Î»ÏŒÏ‚ ÎºÎ¿ÏÎµÏƒÎ¼ÏŒÏ‚","Monochrome":"ÎœÎ¿Î½ÏŒÏ‡ÏÏ‰Î¼Î¿","Tools":"Î•ÏÎ³Î±Î»ÎµÎ¯Î±","Reading Guide":"ÎŸÎ´Î·Î³ÏŒÏ‚ Î±Î½Î¬Î³Î½Ï‰ÏƒÎ·Ï‚","Stop Animations":"Î‘Ï†Î±Î¯ÏÎµÏƒÎ· ÎºÎ¯Î½Î·ÏƒÎ·Ï‚","Big Cursor":"ÎœÎµÎ³Î¬Î»Î¿Ï‚ Î´ÎµÎ¯ÎºÏ„Î·Ï‚","Increase Font Size":"Î‘ÏÎ¾Î·ÏƒÎ· Î¼ÎµÎ³Î­Î¸Î¿Ï…Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Decrease Font Size":"ÎœÎµÎ¯Ï‰ÏƒÎ· Î¼ÎµÎ³Î­Î¸Î¿Ï…Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Letter Spacing":"Î”Î¹Î¬ÎºÎµÎ½Î¿ Î³ÏÎ±Î¼Î¼Î¬Ï„Ï‰Î½","Line Height":"Î¥ÏˆÎ¿Ï‚ Î³ÏÎ±Î¼Î¼Î®Ï‚","Font Weight":"Î’Î¬ÏÎ¿Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Dyslexia Font":"Î“ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬ Î³Î¹Î± Î´Ï…ÏƒÎ»ÎµÎ¾Î¯Î±","Language":"Î“Î»ÏŽÏƒÏƒÎ±","Open Accessibility Menu":"Î‘Î½Î¿Î¯Î¾Ï„Îµ Ï„Î¿ Î¼ÎµÎ½Î¿Ï Ï€ÏÎ¿ÏƒÎ²Î±ÏƒÎ¹Î¼ÏŒÏ„Î·Ï„Î±Ï‚"}'
-      ),      en: JSON.parse(
+      ),
+      en: JSON.parse(
         '{"Accessibility Menu":"Accessibility Menu","Reset settings":"Reset settings","Close":"Close","Content Adjustments":"Content Adjustments","Adjust Font Size":"Adjust Font Size","Highlight Title":"Highlight Title","Highlight Links":"Highlight Links","Readable Font":"Readable Font","Color Adjustments":"Color Adjustments","Dark Contrast":"Dark Contrast","Light Contrast":"Light Contrast","High Contrast":"High Contrast","High Saturation":"High Saturation","Low Saturation":"Low Saturation","Monochrome":"Monochrome","Hidden Content":"Hidden Content","Tools":"Tools","Reading Guide":"Reading Guide","Stop Animations":"Stop Animations","Big Cursor":"Big Cursor","Read on Click":"Read on Click","Focus Outline":"Focus Outline","Increase Font Size":"Increase Font Size","Decrease Font Size":"Decrease Font Size","Letter Spacing":"Letter Spacing","Line Height":"Line Height","Font Weight":"Font Weight","Dyslexia Font":"Dyslexia Font","Language":"Language","Open Accessibility Menu":"Open Accessibility Menu"}'
       ),
       es: JSON.parse(
@@ -1025,7 +1057,8 @@
     h.innerHTML = G;
     var p = h.querySelector(".asw-menu");
     (null == u ? void 0 : u.includes("right")) &&
-      ((p.style.right = "0px"), (p.style.left = "auto")),      (p.querySelector(".content").innerHTML = W(J)),
+      ((p.style.right = "0px"), (p.style.left = "auto")),
+      (p.querySelector(".content").innerHTML = W(J)),
       (p.querySelector(".tools").innerHTML = W(Z, "asw-tools")),
       (p.querySelector(".contrast").innerHTML = W(E, "asw-filter")),
       (p.querySelector(".hiddencontent").innerHTML = W(HiddenContent)),
@@ -1051,7 +1084,8 @@
         t.addEventListener("click", function () {
           var e,
             i = t.dataset.key,
-            a = !t.classList.contains("asw-selected");          t.classList.contains("asw-filter")
+            a = !t.classList.contains("asw-selected");
+          t.classList.contains("asw-filter")
             ? (p.querySelectorAll(".asw-filter").forEach(function (t) {
                 t.classList.remove("asw-selected");
               }),
