@@ -412,8 +412,11 @@
             };
           }
         }
-        
-        window.__asw__readOnClickHandler = function(event) {
+          window.__asw__readOnClickHandler = function(event) {
+          // Initialize link navigation variables
+          window.__asw__linkToNavigate = null;
+          window.__asw__isLink = false;
+          
           if (!event.target.closest('.asw-container')) {
             // Play click sound first
             try {
@@ -540,13 +543,26 @@
                   utterance.rate = 0.9;     // Slightly slower for clarity
                   utterance.pitch = 1.0;    // Normal pitch
                   utterance.volume = 1.0;   // Maximum volume
-                  
-                  // Use system default voice - get voices again to ensure they're loaded
+                    // Use system default voice - get voices again to ensure they're loaded
                   const voices = window.speechSynthesis.getVoices();
                   if (voices.length > 0) {
                     // Try to find the default system voice or use the first available
                     const defaultVoice = voices.find(voice => voice.default) || voices[0];
                     utterance.voice = defaultVoice;
+                  }
+                  
+                  // Handle link navigation after speech ends
+                  if (window.__asw__isLink && window.__asw__linkToNavigate) {
+                    utterance.onend = function() {
+                      const url = window.__asw__linkToNavigate;
+                      window.__asw__linkToNavigate = null;
+                      window.__asw__isLink = false;
+                      
+                      // Navigate to the link
+                      setTimeout(function() {
+                        window.location.href = url;
+                      }, 200); // Small delay to ensure speech has finished
+                    };
                   }
                   
                   // Speak the text
@@ -557,8 +573,7 @@
           }
         };
         document.addEventListener('click', window.__asw__readOnClickHandler, true);
-      }
-    } else {
+      }    } else {
       if (window.__asw__readOnClickHandler) {
         document.removeEventListener('click', window.__asw__readOnClickHandler, true);
         delete window.__asw__readOnClickHandler;
@@ -567,6 +582,10 @@
         if (window.speechSynthesis) {
           window.speechSynthesis.cancel();
         }
+        
+        // Clean up link navigation variables
+        window.__asw__linkToNavigate = null;
+        window.__asw__isLink = false;
       }
     }
   }
