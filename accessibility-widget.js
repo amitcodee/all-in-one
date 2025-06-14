@@ -866,81 +866,108 @@
   }
   var K = {
       en: {
-    "Accessibility Menu": "Accessibility Menu",
-    "Reset settings": "Reset settings",
-    "Close": "Close",
-    "Content Adjustments": "Content Adjustments",
-    "Adjust Font Size": "Adjust Font Size",
-    "Highlight Title": "Highlight Title",
-    "Highlight Links": "Highlight Links",
-    "Readable Font": "Readable Font",
-    "Color Adjustments": "Color Adjustments",
-    "Dark Contrast": "Dark Contrast",
-    "Light Contrast": "Light Contrast",
-    "High Contrast": "High Contrast",
-    "High Saturation": "High Saturation",
-    "Low Saturation": "Low Saturation",
-    "Monochrome": "Monochrome",
-    "Hidden Content": "Hidden Content",
-    "Tools": "Tools",
-    "Reading Guide": "Reading Guide",
-    "Stop Animations": "Stop Animations",
-    "Big Cursor": "Big Cursor",
-    "Increase Font Size": "Increase Font Size",
-    "Decrease Font Size": "Decrease Font Size",
-    "Letter Spacing": "Letter Spacing",
-    "Line Height": "Line Height",
-    "Font Weight": "Font Weight",
-    "Dyslexia Font": "Dyslexia Font",
-    "Language": "Language",
-    "Open Accessibility Menu": "Open Accessibility Menu"
-  },
+        "Accessibility Menu": "Accessibility Menu",
+        "Reset settings": "Reset settings",
+        Close: "Close",
+        "Content Adjustments": "Content Adjustments",
+        "Adjust Font Size": "Adjust Font Size",
+        "Highlight Title": "Highlight Title",
+        "Highlight Links": "Highlight Links",
+        "Readable Font": "Readable Font",
+        "Color Adjustments": "Color Adjustments",
+        "Dark Contrast": "Dark Contrast",
+        "Light Contrast": "Light Contrast",
+        "High Contrast": "High Contrast",
+        "High Saturation": "High Saturation",
+        "Low Saturation": "Low Saturation",
+        Monochrome: "Monochrome",
+        "Hidden Content": "Hidden Content",
+        Tools: "Tools",
+        "Reading Guide": "Reading Guide",
+        "Stop Animations": "Stop Animations",
+        "Big Cursor": "Big Cursor",
+        "Increase Font Size": "Increase Font Size",
+        "Decrease Font Size": "Decrease Font Size",
+        "Letter Spacing": "Letter Spacing",
+        "Line Height": "Line Height",
+        "Font Weight": "Font Weight",
+        "Dyslexia Font": "Dyslexia Font",
+        Language: "Language",
+        "Open Accessibility Menu": "Open Accessibility Menu",
+      },
 
-  ar: JSON.parse('{ "Accessibility Menu": "قائمة إمكانية الوصول", "Reset settings": "إعادة تعيين الإعدادات", "Close": "إغلاق", "Content Adjustments": "تعديلات المحتوى", "Adjust Font Size": "تعديل حجم الخط", "Highlight Title": "تسليط الضوء على العنوان", "Highlight Links": "تسليط الضوء على الروابط", "Readable Font": "خط سهل القراءة", "Color Adjustments": "تعديلات الألوان", "Dark Contrast": "تباين داكن", "Light Contrast": "تباين فاتح", "High Contrast": "تباين عالي", "High Saturation": "تشبع عالي", "Low Saturation": "تشبع منخفض", "Monochrome": "أحادي اللون", "Hidden Content": "المحتوى المخفي", "Tools": "أدوات", "Reading Guide": "دليل القراءة", "Stop Animations": "إيقاف الرسوم المتحركة", "Big Cursor": "مؤشر كبير", "Increase Font Size": "زيادة حجم الخط", "Decrease Font Size": "تقليل حجم الخط", "Letter Spacing": "تباعد الحروف", "Line Height": "ارتفاع السطر", "Font Weight": "سماكة الخط", "Dyslexia Font": "خط خاص بعسر القراءة", "Language": "اللغة", "Open Accessibility Menu": "افتح قائمة الوصول" }'),
+      ar: JSON.parse(
+        '{ "Accessibility Menu": "قائمة إمكانية الوصول", "Reset settings": "إعادة تعيين الإعدادات", "Close": "إغلاق", "Content Adjustments": "تعديلات المحتوى", "Adjust Font Size": "تعديل حجم الخط", "Highlight Title": "تسليط الضوء على العنوان", "Highlight Links": "تسليط الضوء على الروابط", "Readable Font": "خط سهل القراءة", "Color Adjustments": "تعديلات الألوان", "Dark Contrast": "تباين داكن", "Light Contrast": "تباين فاتح", "High Contrast": "تباين عالي", "High Saturation": "تشبع عالي", "Low Saturation": "تشبع منخفض", "Monochrome": "أحادي اللون", "Hidden Content": "المحتوى المخفي", "Tools": "أدوات", "Reading Guide": "دليل القراءة", "Stop Animations": "إيقاف الرسوم المتحركة", "Big Cursor": "مؤشر كبير", "Increase Font Size": "زيادة حجم الخط", "Decrease Font Size": "تقليل حجم الخط", "Letter Spacing": "تباعد الحروف", "Line Height": "ارتفاع السطر", "Font Weight": "سماكة الخط", "Dyslexia Font": "خط خاص بعسر القراءة", "Language": "اللغة", "Open Accessibility Menu": "افتح قائمة الوصول" }'
+      ),
 
-  zh_Hans: JSON.parse('{ "Accessibility Menu": "辅助功能菜单", "Reset settings": "重置设置", "Close": "关闭", "Content Adjustments": "内容调整", "Adjust Font Size": "调整字体大小", "Highlight Title": "突出显示标题", "Highlight Links": "突出显示链接", "Readable Font": "易读字体", "Color Adjustments": "颜色调整", "Dark Contrast": "深色对比", "Light Contrast": "浅色对比", "High Contrast": "高对比度", "High Saturation": "高饱和度", "Low Saturation": "低饱和度", "Monochrome": "单色", "Hidden Content": "隐藏内容", "Tools": "工具", "Reading Guide": "阅读指南", "Stop Animations": "停止动画", "Big Cursor": "大光标", "Increase Font Size": "增加字体大小", "Decrease Font Size": "减少字体大小", "Letter Spacing": "字距", "Line Height": "行高", "Font Weight": "字体粗细", "Dyslexia Font": "阅读障碍字体", "Language": "语言", "Open Accessibility Menu": "打开辅助功能菜单" }'),
+      zh_Hans: JSON.parse(
+        '{ "Accessibility Menu": "辅助功能菜单", "Reset settings": "重置设置", "Close": "关闭", "Content Adjustments": "内容调整", "Adjust Font Size": "调整字体大小", "Highlight Title": "突出显示标题", "Highlight Links": "突出显示链接", "Readable Font": "易读字体", "Color Adjustments": "颜色调整", "Dark Contrast": "深色对比", "Light Contrast": "浅色对比", "High Contrast": "高对比度", "High Saturation": "高饱和度", "Low Saturation": "低饱和度", "Monochrome": "单色", "Hidden Content": "隐藏内容", "Tools": "工具", "Reading Guide": "阅读指南", "Stop Animations": "停止动画", "Big Cursor": "大光标", "Increase Font Size": "增加字体大小", "Decrease Font Size": "减少字体大小", "Letter Spacing": "字距", "Line Height": "行高", "Font Weight": "字体粗细", "Dyslexia Font": "阅读障碍字体", "Language": "语言", "Open Accessibility Menu": "打开辅助功能菜单" }'
+      ),
 
-  es: JSON.parse('{ "Accessibility Menu": "Menú de accesibilidad", "Reset settings": "Restablecer configuración", "Close": "Cerrar", "Content Adjustments": "Ajustes de contenido", "Adjust Font Size": "Ajustar tamaño de fuente", "Highlight Title": "Resaltar título", "Highlight Links": "Resaltar enlaces", "Readable Font": "Fuente legible", "Color Adjustments": "Ajustes de color", "Dark Contrast": "Contraste oscuro", "Light Contrast": "Contraste claro", "High Contrast": "Alto contraste", "High Saturation": "Alta saturación", "Low Saturation": "Baja saturación", "Monochrome": "Monocromo", "Hidden Content": "Contenido oculto", "Tools": "Herramientas", "Reading Guide": "Guía de lectura", "Stop Animations": "Detener animaciones", "Big Cursor": "Cursor grande", "Increase Font Size": "Aumentar tamaño de fuente", "Decrease Font Size": "Disminuir tamaño de fuente", "Letter Spacing": "Espaciado de letras", "Line Height": "Altura de línea", "Font Weight": "Peso de fuente", "Dyslexia Font": "Fuente para dislexia", "Language": "Idioma", "Open Accessibility Menu": "Abrir menú de accesibilidad" }'),
+      es: JSON.parse(
+        '{ "Accessibility Menu": "Menú de accesibilidad", "Reset settings": "Restablecer configuración", "Close": "Cerrar", "Content Adjustments": "Ajustes de contenido", "Adjust Font Size": "Ajustar tamaño de fuente", "Highlight Title": "Resaltar título", "Highlight Links": "Resaltar enlaces", "Readable Font": "Fuente legible", "Color Adjustments": "Ajustes de color", "Dark Contrast": "Contraste oscuro", "Light Contrast": "Contraste claro", "High Contrast": "Alto contraste", "High Saturation": "Alta saturación", "Low Saturation": "Baja saturación", "Monochrome": "Monocromo", "Hidden Content": "Contenido oculto", "Tools": "Herramientas", "Reading Guide": "Guía de lectura", "Stop Animations": "Detener animaciones", "Big Cursor": "Cursor grande", "Increase Font Size": "Aumentar tamaño de fuente", "Decrease Font Size": "Disminuir tamaño de fuente", "Letter Spacing": "Espaciado de letras", "Line Height": "Altura de línea", "Font Weight": "Peso de fuente", "Dyslexia Font": "Fuente para dislexia", "Language": "Idioma", "Open Accessibility Menu": "Abrir menú de accesibilidad" }'
+      ),
 
-  hi: JSON.parse('{ "Accessibility Menu": "पहुँच मेनू", "Reset settings": "सेटिंग रीसेट करें", "Close": "बंद करें", "Content Adjustments": "सामग्री समायोजन", "Adjust Font Size": "फ़ॉन्ट आकार समायोजित करें", "Highlight Title": "शीर्षक को हाइलाइट करें", "Highlight Links": "लिंक्स को हाइलाइट करें", "Readable Font": "पठनीय फ़ॉन्ट", "Color Adjustments": "रंग समायोजन", "Dark Contrast": "गहरा कंट्रास्ट", "Light Contrast": "हल्का कंट्रास्ट", "High Contrast": "उच्च कंट्रास्ट", "High Saturation": "उच्च संतृप्ति", "Low Saturation": "कम संतृप्ति", "Monochrome": "एकल रंग", "Hidden Content": "छिपी सामग्री", "Tools": "उपकरण", "Reading Guide": "पठन मार्गदर्शिका", "Stop Animations": "एनिमेशन बंद करें", "Big Cursor": "बड़ा कर्सर", "Increase Font Size": "फ़ॉन्ट आकार बढ़ाएँ", "Decrease Font Size": "फ़ॉन्ट आकार घटाएँ", "Letter Spacing": "अक्षर स्पेसिंग", "Line Height": "पंक्ति ऊँचाई", "Font Weight": "फ़ॉन्ट मोटाई", "Dyslexia Font": "डिस्लेक्सिया फ़ॉन्ट", "Language": "भाषा", "Open Accessibility Menu": "पहुँच मेनू खोलें" }'),
- fr: JSON.parse('{ "Accessibility Menu":"Menu d\'accessibilité","Reset settings":"Réinitialiser les paramètres","Close":"Fermer","Content Adjustments":"Ajustements du contenu","Adjust Font Size":"Ajuster la taille de la police","Highlight Title":"Surligner le titre","Highlight Links":"Surligner les liens","Readable Font":"Police lisible","Color Adjustments":"Ajustements des couleurs","Dark Contrast":"Contraste sombre","Light Contrast":"Contraste clair","High Contrast":"Contraste élevé","High Saturation":"Saturation élevée","Low Saturation":"Saturation faible","Monochrome":"Monochrome","Hidden Content":"Contenu masqué","Tools":"Outils","Reading Guide":"Guide de lecture","Stop Animations":"Arrêter les animations","Big Cursor":"Grand curseur","Increase Font Size":"Augmenter la taille de la police","Decrease Font Size":"Réduire la taille de la police","Letter Spacing":"Espacement des lettres","Line Height":"Hauteur de ligne","Font Weight":"Épaisseur de la police","Dyslexia Font":"Police dyslexie","Language":"Langue","Open Accessibility Menu":"Ouvrir le menu d\'accessibilité" }'),
+      hi: JSON.parse(
+        '{ "Accessibility Menu": "पहुँच मेनू", "Reset settings": "सेटिंग रीसेट करें", "Close": "बंद करें", "Content Adjustments": "सामग्री समायोजन", "Adjust Font Size": "फ़ॉन्ट आकार समायोजित करें", "Highlight Title": "शीर्षक को हाइलाइट करें", "Highlight Links": "लिंक्स को हाइलाइट करें", "Readable Font": "पठनीय फ़ॉन्ट", "Color Adjustments": "रंग समायोजन", "Dark Contrast": "गहरा कंट्रास्ट", "Light Contrast": "हल्का कंट्रास्ट", "High Contrast": "उच्च कंट्रास्ट", "High Saturation": "उच्च संतृप्ति", "Low Saturation": "कम संतृप्ति", "Monochrome": "एकल रंग", "Hidden Content": "छिपी सामग्री", "Tools": "उपकरण", "Reading Guide": "पठन मार्गदर्शिका", "Stop Animations": "एनिमेशन बंद करें", "Big Cursor": "बड़ा कर्सर", "Increase Font Size": "फ़ॉन्ट आकार बढ़ाएँ", "Decrease Font Size": "फ़ॉन्ट आकार घटाएँ", "Letter Spacing": "अक्षर स्पेसिंग", "Line Height": "पंक्ति ऊँचाई", "Font Weight": "फ़ॉन्ट मोटाई", "Dyslexia Font": "डिस्लेक्सिया फ़ॉन्ट", "Language": "भाषा", "Open Accessibility Menu": "पहुँच मेनू खोलें" }'
+      ),
+      fr: JSON.parse(
+        '{ "Accessibility Menu":"Menu d\'accessibilité","Reset settings":"Réinitialiser les paramètres","Close":"Fermer","Content Adjustments":"Ajustements du contenu","Adjust Font Size":"Ajuster la taille de la police","Highlight Title":"Surligner le titre","Highlight Links":"Surligner les liens","Readable Font":"Police lisible","Color Adjustments":"Ajustements des couleurs","Dark Contrast":"Contraste sombre","Light Contrast":"Contraste clair","High Contrast":"Contraste élevé","High Saturation":"Saturation élevée","Low Saturation":"Saturation faible","Monochrome":"Monochrome","Hidden Content":"Contenu masqué","Tools":"Outils","Reading Guide":"Guide de lecture","Stop Animations":"Arrêter les animations","Big Cursor":"Grand curseur","Increase Font Size":"Augmenter la taille de la police","Decrease Font Size":"Réduire la taille de la police","Letter Spacing":"Espacement des lettres","Line Height":"Hauteur de ligne","Font Weight":"Épaisseur de la police","Dyslexia Font":"Police dyslexie","Language":"Langue","Open Accessibility Menu":"Ouvrir le menu d\'accessibilité" }'
+      ),
 
-  ru: JSON.parse('{ "Accessibility Menu":"Меню доступности","Reset settings":"Сбросить настройки","Close":"Закрыть","Content Adjustments":"Настройки контента","Adjust Font Size":"Изменить размер шрифта","Highlight Title":"Выделить заголовок","Highlight Links":"Выделить ссылки","Readable Font":"Читаемый шрифт","Color Adjustments":"Настройки цвета","Dark Contrast":"Темный контраст","Light Contrast":"Светлый контраст","High Contrast":"Высокий контраст","High Saturation":"Высокая насыщенность","Low Saturation":"Низкая насыщенность","Monochrome":"Монохром","Hidden Content":"Скрытое содержание","Tools":"Инструменты","Reading Guide":"Руководство по чтению","Stop Animations":"Остановить анимации","Big Cursor":"Большой курсор","Increase Font Size":"Увеличить шрифт","Decrease Font Size":"Уменьшить шрифт","Letter Spacing":"Межбуквенный интервал","Line Height":"Высота строки","Font Weight":"Толщина шрифта","Dyslexia Font":"Шрифт для дислексии","Language":"Язык","Open Accessibility Menu":"Открыть меню доступности" }'),
+      ru: JSON.parse(
+        '{ "Accessibility Menu":"Меню доступности","Reset settings":"Сбросить настройки","Close":"Закрыть","Content Adjustments":"Настройки контента","Adjust Font Size":"Изменить размер шрифта","Highlight Title":"Выделить заголовок","Highlight Links":"Выделить ссылки","Readable Font":"Читаемый шрифт","Color Adjustments":"Настройки цвета","Dark Contrast":"Темный контраст","Light Contrast":"Светлый контраст","High Contrast":"Высокий контраст","High Saturation":"Высокая насыщенность","Low Saturation":"Низкая насыщенность","Monochrome":"Монохром","Hidden Content":"Скрытое содержание","Tools":"Инструменты","Reading Guide":"Руководство по чтению","Stop Animations":"Остановить анимации","Big Cursor":"Большой курсор","Increase Font Size":"Увеличить шрифт","Decrease Font Size":"Уменьшить шрифт","Letter Spacing":"Межбуквенный интервал","Line Height":"Высота строки","Font Weight":"Толщина шрифта","Dyslexia Font":"Шрифт для дислексии","Language":"Язык","Open Accessibility Menu":"Открыть меню доступности" }'
+      ),
 
-  pt: JSON.parse('{ "Accessibility Menu":"Menu de acessibilidade","Reset settings":"Redefinir configurações","Close":"Fechar","Content Adjustments":"Ajustes de conteúdo","Adjust Font Size":"Ajustar tamanho da fonte","Highlight Title":"Destacar título","Highlight Links":"Destacar links","Readable Font":"Fonte legível","Color Adjustments":"Ajustes de cores","Dark Contrast":"Contraste escuro","Light Contrast":"Contraste claro","High Contrast":"Alto contraste","High Saturation":"Alta saturação","Low Saturation":"Baixa saturação","Monochrome":"Monocromático","Hidden Content":"Conteúdo oculto","Tools":"Ferramentas","Reading Guide":"Guia de leitura","Stop Animations":"Parar animações","Big Cursor":"Cursor grande","Increase Font Size":"Aumentar fonte","Decrease Font Size":"Diminuir fonte","Letter Spacing":"Espaçamento entre letras","Line Height":"Altura da linha","Font Weight":"Peso da fonte","Dyslexia Font":"Fonte para dislexia","Language":"Idioma","Open Accessibility Menu":"Abrir menu de acessibilidade" }'),
+      pt: JSON.parse(
+        '{ "Accessibility Menu":"Menu de acessibilidade","Reset settings":"Redefinir configurações","Close":"Fechar","Content Adjustments":"Ajustes de conteúdo","Adjust Font Size":"Ajustar tamanho da fonte","Highlight Title":"Destacar título","Highlight Links":"Destacar links","Readable Font":"Fonte legível","Color Adjustments":"Ajustes de cores","Dark Contrast":"Contraste escuro","Light Contrast":"Contraste claro","High Contrast":"Alto contraste","High Saturation":"Alta saturação","Low Saturation":"Baixa saturação","Monochrome":"Monocromático","Hidden Content":"Conteúdo oculto","Tools":"Ferramentas","Reading Guide":"Guia de leitura","Stop Animations":"Parar animações","Big Cursor":"Cursor grande","Increase Font Size":"Aumentar fonte","Decrease Font Size":"Diminuir fonte","Letter Spacing":"Espaçamento entre letras","Line Height":"Altura da linha","Font Weight":"Peso da fonte","Dyslexia Font":"Fonte para dislexia","Language":"Idioma","Open Accessibility Menu":"Abrir menu de acessibilidade" }'
+      ),
 
-  de: JSON.parse('{ "Accessibility Menu":"Barrierefreiheitsmenü","Reset settings":"Einstellungen zurücksetzen","Close":"Schließen","Content Adjustments":"Inhaltsanpassungen","Adjust Font Size":"Schriftgröße anpassen","Highlight Title":"Titel hervorheben","Highlight Links":"Links hervorheben","Readable Font":"Lesbare Schriftart","Color Adjustments":"Farbänderungen","Dark Contrast":"Dunkler Kontrast","Light Contrast":"Heller Kontrast","High Contrast":"Hoher Kontrast","High Saturation":"Hohe Sättigung","Low Saturation":"Niedrige Sättigung","Monochrome":"Monochrom","Hidden Content":"Versteckter Inhalt","Tools":"Werkzeuge","Reading Guide":"Leseführung","Stop Animations":"Animationen stoppen","Big Cursor":"Großer Cursor","Increase Font Size":"Schriftgröße erhöhen","Decrease Font Size":"Schriftgröße verringern","Letter Spacing":"Buchstabenabstand","Line Height":"Zeilenhöhe","Font Weight":"Schriftgewicht","Dyslexia Font":"Dyslexie-Schriftart","Language":"Sprache","Open Accessibility Menu":"Barrierefreiheitsmenü öffnen" }'),
+      de: JSON.parse(
+        '{ "Accessibility Menu":"Barrierefreiheitsmenü","Reset settings":"Einstellungen zurücksetzen","Close":"Schließen","Content Adjustments":"Inhaltsanpassungen","Adjust Font Size":"Schriftgröße anpassen","Highlight Title":"Titel hervorheben","Highlight Links":"Links hervorheben","Readable Font":"Lesbare Schriftart","Color Adjustments":"Farbänderungen","Dark Contrast":"Dunkler Kontrast","Light Contrast":"Heller Kontrast","High Contrast":"Hoher Kontrast","High Saturation":"Hohe Sättigung","Low Saturation":"Niedrige Sättigung","Monochrome":"Monochrom","Hidden Content":"Versteckter Inhalt","Tools":"Werkzeuge","Reading Guide":"Leseführung","Stop Animations":"Animationen stoppen","Big Cursor":"Großer Cursor","Increase Font Size":"Schriftgröße erhöhen","Decrease Font Size":"Schriftgröße verringern","Letter Spacing":"Buchstabenabstand","Line Height":"Zeilenhöhe","Font Weight":"Schriftgewicht","Dyslexia Font":"Dyslexie-Schriftart","Language":"Sprache","Open Accessibility Menu":"Barrierefreiheitsmenü öffnen" }'
+      ),
 
-  ja: JSON.parse('{ "Accessibility Menu":"アクセシビリティメニュー","Reset settings":"設定をリセット","Close":"閉じる","Content Adjustments":"コンテンツの調整","Adjust Font Size":"フォントサイズを調整","Highlight Title":"タイトルを強調","Highlight Links":"リンクを強調","Readable Font":"読みやすいフォント","Color Adjustments":"色調整","Dark Contrast":"ダークコントラスト","Light Contrast":"ライトコントラスト","High Contrast":"高コントラスト","High Saturation":"高彩度","Low Saturation":"低彩度","Monochrome":"モノクロ","Hidden Content":"隠しコンテンツ","Tools":"ツール","Reading Guide":"リーディングガイド","Stop Animations":"アニメーションを停止","Big Cursor":"大きなカーソル","Increase Font Size":"フォントサイズを大きく","Decrease Font Size":"フォントサイズを小さく","Letter Spacing":"文字間隔","Line Height":"行の高さ","Font Weight":"フォントの太さ","Dyslexia Font":"ディスレクシアフォント","Language":"言語","Open Accessibility Menu":"アクセシビリティメニューを開く" }'),
+      ja: JSON.parse(
+        '{ "Accessibility Menu":"アクセシビリティメニュー","Reset settings":"設定をリセット","Close":"閉じる","Content Adjustments":"コンテンツの調整","Adjust Font Size":"フォントサイズを調整","Highlight Title":"タイトルを強調","Highlight Links":"リンクを強調","Readable Font":"読みやすいフォント","Color Adjustments":"色調整","Dark Contrast":"ダークコントラスト","Light Contrast":"ライトコントラスト","High Contrast":"高コントラスト","High Saturation":"高彩度","Low Saturation":"低彩度","Monochrome":"モノクロ","Hidden Content":"隠しコンテンツ","Tools":"ツール","Reading Guide":"リーディングガイド","Stop Animations":"アニメーションを停止","Big Cursor":"大きなカーソル","Increase Font Size":"フォントサイズを大きく","Decrease Font Size":"フォントサイズを小さく","Letter Spacing":"文字間隔","Line Height":"行の高さ","Font Weight":"フォントの太さ","Dyslexia Font":"ディスレクシアフォント","Language":"言語","Open Accessibility Menu":"アクセシビリティメニューを開く" }'
+      ),
 
-  ko: JSON.parse('{ "Accessibility Menu":"접근성 메뉴","Reset settings":"설정 재설정","Close":"닫기","Content Adjustments":"콘텐츠 조정","Adjust Font Size":"글꼴 크기 조정","Highlight Title":"제목 강조","Highlight Links":"링크 강조","Readable Font":"읽기 쉬운 글꼴","Color Adjustments":"색상 조정","Dark Contrast":"어두운 대비","Light Contrast":"밝은 대비","High Contrast":"높은 대비","High Saturation":"높은 채도","Low Saturation":"낮은 채도","Monochrome":"단색","Hidden Content":"숨겨진 콘텐츠","Tools":"도구","Reading Guide":"읽기 가이드","Stop Animations":"애니메이션 중지","Big Cursor":"큰 커서","Increase Font Size":"글꼴 크기 증가","Decrease Font Size":"글꼴 크기 감소","Letter Spacing":"문자 간격","Line Height":"줄 간격","Font Weight":"글꼴 두께","Dyslexia Font":"난독증 글꼴","Language":"언어","Open Accessibility Menu":"접근성 메뉴 열기" }'),
+      ko: JSON.parse(
+        '{ "Accessibility Menu":"접근성 메뉴","Reset settings":"설정 재설정","Close":"닫기","Content Adjustments":"콘텐츠 조정","Adjust Font Size":"글꼴 크기 조정","Highlight Title":"제목 강조","Highlight Links":"링크 강조","Readable Font":"읽기 쉬운 글꼴","Color Adjustments":"색상 조정","Dark Contrast":"어두운 대비","Light Contrast":"밝은 대비","High Contrast":"높은 대비","High Saturation":"높은 채도","Low Saturation":"낮은 채도","Monochrome":"단색","Hidden Content":"숨겨진 콘텐츠","Tools":"도구","Reading Guide":"읽기 가이드","Stop Animations":"애니메이션 중지","Big Cursor":"큰 커서","Increase Font Size":"글꼴 크기 증가","Decrease Font Size":"글꼴 크기 감소","Letter Spacing":"문자 간격","Line Height":"줄 간격","Font Weight":"글꼴 두께","Dyslexia Font":"난독증 글꼴","Language":"언어","Open Accessibility Menu":"접근성 메뉴 열기" }'
+      ),
 
-  bn: JSON.parse('{ "Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু","Reset settings":"সেটিংস রিসেট করুন","Close":"বন্ধ করুন","Content Adjustments":"বিষয়বস্তুর সমন্বয়","Adjust Font Size":"ফন্টের আকার সামঞ্জস্য করুন","Highlight Title":"শিরোনাম হাইলাইট করুন","Highlight Links":"লিংক হাইলাইট করুন","Readable Font":"পঠিতযোগ্য ফন্ট","Color Adjustments":"রঙের সমন্বয়","Dark Contrast":"গা dark ় কনট্রাস্ট","Light Contrast":"হালকা কনট্রাস্ট","High Contrast":"উচ্চ কনট্রাস্ট","High Saturation":"উচ্চ সম্পৃক্তি","Low Saturation":"নিম্ন সম্পৃক্তি","Monochrome":"এক রঙা","Hidden Content":"গোপন বিষয়বস্তু","Tools":"টুলস","Reading Guide":"পাঠ গাইড","Stop Animations":"অ্যানিমেশন বন্ধ করুন","Big Cursor":"বড় কার্সর","Increase Font Size":"ফন্টের আকার বাড়ান","Decrease Font Size":"ফন্টের আকার কমান","Letter Spacing":"অক্ষরের ব্যবধান","Line Height":"লাইন উচ্চতা","Font Weight":"ফন্ট ওজন","Dyslexia Font":"ডিসলেক্সিয়া ফন্ট","Language":"ভাষা","Open Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু খুলুন" }'),
+      bn: JSON.parse(
+        '{ "Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু","Reset settings":"সেটিংস রিসেট করুন","Close":"বন্ধ করুন","Content Adjustments":"বিষয়বস্তুর সমন্বয়","Adjust Font Size":"ফন্টের আকার সামঞ্জস্য করুন","Highlight Title":"শিরোনাম হাইলাইট করুন","Highlight Links":"লিংক হাইলাইট করুন","Readable Font":"পঠিতযোগ্য ফন্ট","Color Adjustments":"রঙের সমন্বয়","Dark Contrast":"গা dark ় কনট্রাস্ট","Light Contrast":"হালকা কনট্রাস্ট","High Contrast":"উচ্চ কনট্রাস্ট","High Saturation":"উচ্চ সম্পৃক্তি","Low Saturation":"নিম্ন সম্পৃক্তি","Monochrome":"এক রঙা","Hidden Content":"গোপন বিষয়বস্তু","Tools":"টুলস","Reading Guide":"পাঠ গাইড","Stop Animations":"অ্যানিমেশন বন্ধ করুন","Big Cursor":"বড় কার্সর","Increase Font Size":"ফন্টের আকার বাড়ান","Decrease Font Size":"ফন্টের আকার কমান","Letter Spacing":"অক্ষরের ব্যবধান","Line Height":"লাইন উচ্চতা","Font Weight":"ফন্ট ওজন","Dyslexia Font":"ডিসলেক্সিয়া ফন্ট","Language":"ভাষা","Open Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু খুলুন" }'
+      ),
 
-  ta: JSON.parse('{ "Accessibility Menu":"அணுகல் பட்டி","Reset settings":"அமைப்புகளை மீட்டமை","Close":"மூடு","Content Adjustments":"உள்ளடக்கம் சரிசெய்தல்","Adjust Font Size":"எழுத்துரு அளவை மாற்று","Highlight Title":"தலைப்பை எடுத்துக்காட்டு","Highlight Links":"இணைப்புகளை எடுத்துக்காட்டு","Readable Font":"வாசிக்கத்தக்க எழுத்துரு","Color Adjustments":"நிறம் மாற்றங்கள்","Dark Contrast":"இருண்ட வேறுபாடு","Light Contrast":"ஒளி வேறுபாடு","High Contrast":"அதிக வேறுபாடு","High Saturation":"அதிக நிறம்","Low Saturation":"குறைவான நிறம்","Monochrome":"ஒற்றை நிறம்","Hidden Content":"மறைந்த உள்ளடக்கம்","Tools":"கருவிகள்","Reading Guide":"வாசிப்பு வழிகாட்டி","Stop Animations":"அசைவுகளை நிறுத்து","Big Cursor":"பெரிய காட்டி","Increase Font Size":"எழுத்தளவை அதிகரிக்க","Decrease Font Size":"எழுத்தளவை குறைக்க","Letter Spacing":"எழுத்து இடைவெளி","Line Height":"வரி உயரம்","Font Weight":"எழுத்துரு தடிமன்","Dyslexia Font":"டிஸ்லெக்சியா எழுத்துரு","Language":"மொழி","Open Accessibility Menu":"அணுகல் பட்டியைத் திற" }'),
+      ta: JSON.parse(
+        '{ "Accessibility Menu":"அணுகல் பட்டி","Reset settings":"அமைப்புகளை மீட்டமை","Close":"மூடு","Content Adjustments":"உள்ளடக்கம் சரிசெய்தல்","Adjust Font Size":"எழுத்துரு அளவை மாற்று","Highlight Title":"தலைப்பை எடுத்துக்காட்டு","Highlight Links":"இணைப்புகளை எடுத்துக்காட்டு","Readable Font":"வாசிக்கத்தக்க எழுத்துரு","Color Adjustments":"நிறம் மாற்றங்கள்","Dark Contrast":"இருண்ட வேறுபாடு","Light Contrast":"ஒளி வேறுபாடு","High Contrast":"அதிக வேறுபாடு","High Saturation":"அதிக நிறம்","Low Saturation":"குறைவான நிறம்","Monochrome":"ஒற்றை நிறம்","Hidden Content":"மறைந்த உள்ளடக்கம்","Tools":"கருவிகள்","Reading Guide":"வாசிப்பு வழிகாட்டி","Stop Animations":"அசைவுகளை நிறுத்து","Big Cursor":"பெரிய காட்டி","Increase Font Size":"எழுத்தளவை அதிகரிக்க","Decrease Font Size":"எழுத்தளவை குறைக்க","Letter Spacing":"எழுத்து இடைவெளி","Line Height":"வரி உயரம்","Font Weight":"எழுத்துரு தடிமன்","Dyslexia Font":"டிஸ்லெக்சியா எழுத்துரு","Language":"மொழி","Open Accessibility Menu":"அணுகல் பட்டியைத் திற" }'
+      ),
 
-  tr: JSON.parse('{ "Accessibility Menu":"Erişilebilirlik Menüsü","Reset settings":"Ayarları sıfırla","Close":"Kapat","Content Adjustments":"İçerik Ayarları","Adjust Font Size":"Yazı tipi boyutunu ayarla","Highlight Title":"Başlığı vurgula","Highlight Links":"Bağlantıları vurgula","Readable Font":"Okunaklı Yazı Tipi","Color Adjustments":"Renk Ayarları","Dark Contrast":"Koyu Kontrast","Light Contrast":"Açık Kontrast","High Contrast":"Yüksek Kontrast","High Saturation":"Yüksek Doygunluk","Low Saturation":"Düşük Doygunluk","Monochrome":"Tek Renk","Hidden Content":"Gizli İçerik","Tools":"Araçlar","Reading Guide":"Okuma Kılavuzu","Stop Animations":"Animasyonları Durdur","Big Cursor":"Büyük İmleç","Increase Font Size":"Yazı Tipini Büyüt","Decrease Font Size":"Yazı Tipini Küçült","Letter Spacing":"Harf Aralığı","Line Height":"Satır Yüksekliği","Font Weight":"Yazı Kalınlığı","Dyslexia Font":"Disleksi Yazı Tipi","Language":"Dil","Open Accessibility Menu":"Erişilebilirlik Menüsünü Aç" }'),
+      tr: JSON.parse(
+        '{ "Accessibility Menu":"Erişilebilirlik Menüsü","Reset settings":"Ayarları sıfırla","Close":"Kapat","Content Adjustments":"İçerik Ayarları","Adjust Font Size":"Yazı tipi boyutunu ayarla","Highlight Title":"Başlığı vurgula","Highlight Links":"Bağlantıları vurgula","Readable Font":"Okunaklı Yazı Tipi","Color Adjustments":"Renk Ayarları","Dark Contrast":"Koyu Kontrast","Light Contrast":"Açık Kontrast","High Contrast":"Yüksek Kontrast","High Saturation":"Yüksek Doygunluk","Low Saturation":"Düşük Doygunluk","Monochrome":"Tek Renk","Hidden Content":"Gizli İçerik","Tools":"Araçlar","Reading Guide":"Okuma Kılavuzu","Stop Animations":"Animasyonları Durdur","Big Cursor":"Büyük İmleç","Increase Font Size":"Yazı Tipini Büyüt","Decrease Font Size":"Yazı Tipini Küçült","Letter Spacing":"Harf Aralığı","Line Height":"Satır Yüksekliği","Font Weight":"Yazı Kalınlığı","Dyslexia Font":"Disleksi Yazı Tipi","Language":"Dil","Open Accessibility Menu":"Erişilebilirlik Menüsünü Aç" }'
+      ),
 
-  vi: JSON.parse('{ "Accessibility Menu":"Menu trợ năng","Reset settings":"Đặt lại cài đặt","Close":"Đóng","Content Adjustments":"Điều chỉnh nội dung","Adjust Font Size":"Điều chỉnh cỡ chữ","Highlight Title":"Làm nổi bật tiêu đề","Highlight Links":"Làm nổi bật liên kết","Readable Font":"Phông chữ dễ đọc","Color Adjustments":"Điều chỉnh màu sắc","Dark Contrast":"Tương phản tối","Light Contrast":"Tương phản sáng","High Contrast":"Tương phản cao","High Saturation":"Độ bão hòa cao","Low Saturation":"Độ bão hòa thấp","Monochrome":"Đơn sắc","Hidden Content":"Nội dung ẩn","Tools":"Công cụ","Reading Guide":"Hướng dẫn đọc","Stop Animations":"Dừng hoạt ảnh","Big Cursor":"Con trỏ lớn","Increase Font Size":"Tăng cỡ chữ","Decrease Font Size":"Giảm cỡ chữ","Letter Spacing":"Khoảng cách chữ","Line Height":"Chiều cao dòng","Font Weight":"Độ đậm phông chữ","Dyslexia Font":"Phông chữ cho chứng khó đọc","Language":"Ngôn ngữ","Open Accessibility Menu":"Mở menu trợ năng" }')
-
+      vi: JSON.parse(
+        '{ "Accessibility Menu":"Menu trợ năng","Reset settings":"Đặt lại cài đặt","Close":"Đóng","Content Adjustments":"Điều chỉnh nội dung","Adjust Font Size":"Điều chỉnh cỡ chữ","Highlight Title":"Làm nổi bật tiêu đề","Highlight Links":"Làm nổi bật liên kết","Readable Font":"Phông chữ dễ đọc","Color Adjustments":"Điều chỉnh màu sắc","Dark Contrast":"Tương phản tối","Light Contrast":"Tương phản sáng","High Contrast":"Tương phản cao","High Saturation":"Độ bão hòa cao","Low Saturation":"Độ bão hòa thấp","Monochrome":"Đơn sắc","Hidden Content":"Nội dung ẩn","Tools":"Công cụ","Reading Guide":"Hướng dẫn đọc","Stop Animations":"Dừng hoạt ảnh","Big Cursor":"Con trỏ lớn","Increase Font Size":"Tăng cỡ chữ","Decrease Font Size":"Giảm cỡ chữ","Letter Spacing":"Khoảng cách chữ","Line Height":"Chiều cao dòng","Font Weight":"Độ đậm phông chữ","Dyslexia Font":"Phông chữ cho chứng khó đọc","Language":"Ngôn ngữ","Open Accessibility Menu":"Mở menu trợ năng" }'
+      ),
     },
     _ = [
-  { code: "en", label: "English (English)" },
-  { code: "zh_Hans", label: "简体中文 (Simplified Chinese)" },
-  { code: "es", label: "Español (Spanish)" },
-  { code: "ar", label: "العربية (Arabic)" },
-  { code: "hi", label: "हिन्दी (Hindi)" },
-  { code: "fr", label: "Français (French)" },
-  { code: "ru", label: "Русский (Russian)" },
-  { code: "pt", label: "Português (Portuguese)" },
-  { code: "de", label: "Deutsch (German)" },
-  { code: "ja", label: "日本語 (Japanese)" },
-  { code: "ko", label: "한국어 (Korean)" },
-  { code: "bn", label: "বাংলা (Bengali)" },
-  { code: "ta", label: "தமிழ் (Tamil)" },
-  { code: "tr", label: "Türkçe (Turkish)" },
-  { code: "vi", label: "Tiếng Việt (Vietnamese)" }
-];
+      { code: "en", label: "English (English)" },
+      { code: "zh_Hans", label: "简体中文 (Simplified Chinese)" },
+      { code: "es", label: "Español (Spanish)" },
+      { code: "ar", label: "العربية (Arabic)" },
+      { code: "hi", label: "हिन्दी (Hindi)" },
+      { code: "fr", label: "Français (French)" },
+      { code: "ru", label: "Русский (Russian)" },
+      { code: "pt", label: "Português (Portuguese)" },
+      { code: "de", label: "Deutsch (German)" },
+      { code: "ja", label: "日本語 (Japanese)" },
+      { code: "ko", label: "한국어 (Korean)" },
+      { code: "bn", label: "বাংলা (Bengali)" },
+      { code: "ta", label: "தமிழ் (Tamil)" },
+      { code: "tr", label: "Türkçe (Turkish)" },
+      { code: "vi", label: "Tiếng Việt (Vietnamese)" },
+    ];
 
   function q(t, e) {
     var i = t.getAttribute("data-translate");
