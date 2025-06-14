@@ -391,14 +391,210 @@
             return t;
           }),
         T.apply(this, arguments)
-      );
-    },
+      );    },
     B = {
       id: "font-weight",
-      selector: "html",
-      childrenSelector: p,
+      selector: "html",      childrenSelector: p,
       styles: { "font-weight": "700" },
+    };  // Read on Click Feature - Enhanced with tag information
+  function enableReadOnClick(enabled) {
+    if (enabled === undefined) enabled = false;
+    
+    if (enabled) {
+      if (!window.__asw__readOnClickHandler) {
+        // Initialize voices on first load to avoid double-click issue
+        if (window.speechSynthesis) {
+          window.speechSynthesis.getVoices();
+          // Wait for voices to load if they haven't already
+          if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = function() {
+              // Voices are now loaded
+            };
+          }
+        }
+        
+        window.__asw__readOnClickHandler = function(event) {
+          if (!event.target.closest('.asw-container')) {
+            // Play click sound first
+            try {
+              const audio = new Audio("click.mp3");
+              audio.volume = 0.5; // Moderate volume for click sound
+              audio.play().catch(err => console.warn("Click sound blocked:", err));
+            } catch (err) {
+              console.warn("Could not play click sound:", err);
+            }
+            
+            const element = event.target;
+            const tagName = element.tagName.toLowerCase();
+            
+            // Get element description based on tag
+            let description = '';
+            switch (tagName) {
+              case 'h1':
+              case 'h2':
+              case 'h3':
+              case 'h4':
+              case 'h5':
+              case 'h6':
+                description = 'Heading level ' + tagName.charAt(1);
+                break;
+              case 'a':
+                description = element.href ? 'Link' : 'Link';
+                break;
+              case 'button':
+                description = 'Button';
+                break;
+              case 'img':
+                description = 'Image';
+                break;
+              case 'p':
+                description = 'Paragraph';
+                break;
+              case 'div':
+                description = 'Section';
+                break;
+              case 'span':
+                description = 'Text span';
+                break;
+              case 'li':
+                description = 'List item';
+                break;
+              case 'input':
+                const inputType = element.type || 'text';
+                description = inputType + ' input field';
+                break;
+              case 'textarea':
+                description = 'Text area';
+                break;
+              case 'select':
+                description = 'Dropdown menu';
+                break;
+              case 'label':
+                description = 'Form label';
+                break;
+              case 'nav':
+                description = 'Navigation';
+                break;
+              case 'main':
+                description = 'Main content';
+                break;
+              case 'header':
+                description = 'Header';
+                break;
+              case 'footer':
+                description = 'Footer';
+                break;
+              default:
+                description = 'Element';
+            }
+            
+            // Get text content
+            let text = element.innerText || element.textContent || '';
+            
+            // For images, get alt text
+            if (tagName === 'img') {
+              text = element.alt || 'Image with no description';
+            }
+              // For links, handle specially to announce then navigate
+            if (tagName === 'a' && element.href) {
+              event.preventDefault(); // Prevent immediate navigation
+              const linkText = text.trim() || 'Link';
+              text = linkText;
+              
+              // We'll handle navigation after speech
+              window.__asw__linkToNavigate = element.href;
+              window.__asw__isLink = true;
+            }
+            
+            // For form elements, include labels
+            if (['input', 'textarea', 'select'].includes(tagName)) {
+              const label = document.querySelector(`label[for="${element.id}"]`) || 
+                           element.closest('label') ||
+                           element.previousElementSibling;
+              if (label && label.tagName.toLowerCase() === 'label') {
+                const labelText = label.innerText || label.textContent || '';
+                text = labelText + ', ' + description + (text ? ', value: ' + text : '');
+              } else {
+                text = description + (text ? ', value: ' + text : '');
+              }
+            } else {
+              text = text.trim();
+            }
+            
+            // Create full message
+            let fullMessage = description;
+            if (text) {
+              fullMessage += ': ' + text;
+            }
+            
+            // Use system speech synthesis directly with delay for click sound
+            if (fullMessage.trim()) {
+              setTimeout(function() {
+                if (window.speechSynthesis) {
+                  window.speechSynthesis.cancel();
+                  
+                  // Create speech utterance
+                  const utterance = new SpeechSynthesisUtterance(fullMessage);
+                  
+                  // Set speech properties for better audibility
+                  utterance.rate = 0.9;     // Slightly slower for clarity
+                  utterance.pitch = 1.0;    // Normal pitch
+                  utterance.volume = 1.0;   // Maximum volume
+                  
+                  // Use system default voice - get voices again to ensure they're loaded
+                  const voices = window.speechSynthesis.getVoices();
+                  if (voices.length > 0) {
+                    // Try to find the default system voice or use the first available
+                    const defaultVoice = voices.find(voice => voice.default) || voices[0];
+                    utterance.voice = defaultVoice;
+                  }
+                  
+                  // Speak the text
+                  window.speechSynthesis.speak(utterance);
+                }
+              }, 100); // Small delay to let click sound play first
+            }
+          }
+        };
+        document.addEventListener('click', window.__asw__readOnClickHandler, true);
+      }
+    } else {
+      if (window.__asw__readOnClickHandler) {
+        document.removeEventListener('click', window.__asw__readOnClickHandler, true);
+        delete window.__asw__readOnClickHandler;
+        
+        // Stop any ongoing speech when disabling
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
+      }
+    }
+  }
+
+  // Focus Outline Enhancement
+  function enableFocusOutline(enabled) {
+    if (enabled === undefined) enabled = false;
+    
+    const focusOutlineConfig = {
+      id: "focus-outline",
+      selector: "html",
+      styles: {},
+      css: `
+        *:focus {
+          outline: 3px solid #0066cc !important;
+          outline-offset: 2px !important;
+          box-shadow: 0 0 0 1px #ffffff !important;
+        }
+        
+        button:focus, input:focus, textarea:focus, select:focus, a:focus {
+          outline: 3px solid #0066cc !important;
+          outline-offset: 2px !important;
+        }
+      `
     };
+      d(Object.assign({}, focusOutlineConfig, { enable: enabled }));
+  }
+
   function P() {
     var t,
       e = s().states;
@@ -461,10 +657,11 @@
       })(e["hide-videos"]),
       (function (t) {
         void 0 === t && (t = !1), d(S(S({}, b["hide-icons"]), { enable: t }));
-      })(e["hide-icons"]),
-      (function (t) {
+      })(e["hide-icons"]),      (function (t) {
         void 0 === t && (t = !1), d(C(C({}, L), { enable: t }));
-      })(e["big-cursor"]);
+      })(e["big-cursor"]),
+      enableReadOnClick(e["read-on-click"]),
+      enableFocusOutline(e["focus-outline"]);
   }
   function V() {
     var t = s().states;
@@ -574,11 +771,19 @@
         label: "Stop Animations",
         key: "stop-animations",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M22 12c0-5.54-4.46-10-10-10-1.17 0-2.3.19-3.38.56l.7 1.94A7.15 7.15 0 0 1 12 3.97 8.06 8.06 0 0 1 20.03 12 8.06 8.06 0 0 1 12 20.03 8.06 8.06 0 0 1 3.97 12c0-.94.19-1.88.53-2.72l-1.94-.66A10.37 10.37 0 0 0 2 12c0 5.54 4.46 10 10 10s10-4.46 10-10M5.47 3.97c.85 0 1.53.71 1.53 1.5C7 6.32 6.32 7 5.47 7c-.79 0-1.5-.68-1.5-1.53 0-.79.71-1.5 1.5-1.5M18 12c0-3.33-2.67-6-6-6s-6 2.67-6 6 2.67 6 6 6 6-2.67 6-6m-7-3v6H9V9m6 0v6h-2V9"/>\r\n</svg>',
-      },
-      {
+      },      {
         label: "Reading Guide",
         key: "readable-guide",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54A13.15 13.15 0 0 0 3 8v11c3.5 0 6.64 1.35 9 3.54A13.15 13.15 0 0 1 21 19V8c-3.5 0-6.64 1.35-9 3.54Z"/>\r\n</svg>',
+      },      {
+        label: "Read on Click",
+        key: "read-on-click",
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M9 12l1.5 1.5L15 9m-3-7c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2m0 18c4.4 0 8-3.6 8-8s-3.6-8-8-8-8 3.6-8 8 3.6 8 8 8z"/>\r\n</svg>',
+      },
+      {
+        label: "Focus Outline",
+        key: "focus-outline",
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>\r\n</svg>',
       },
     ];
   function W(t, e) {
@@ -612,7 +817,7 @@
       el: JSON.parse(
         '{"Accessibility Menu":"ÎœÎµÎ½Î¿Ï Ï€ÏÎ¿ÏƒÎ²Î±ÏƒÎ¹Î¼ÏŒÏ„Î·Ï„Î±Ï‚","Reset settings":"Î•Ï€Î±Î½Î±Ï†Î¿ÏÎ¬ ÏÏ…Î¸Î¼Î¯ÏƒÎµÏ‰Î½","Close":"ÎšÎ»ÎµÎ¯ÏƒÎ¹Î¼Î¿","Content Adjustments":"Î ÏÎ¿ÏƒÎ±ÏÎ¼Î¿Î³Î­Ï‚ Ï€ÎµÏÎ¹ÎµÏ‡Î¿Î¼Î­Î½Î¿Ï…","Adjust Font Size":"Î ÏÎ¿ÏƒÎ±ÏÎ¼Î¿Î³Î® Î¼ÎµÎ³Î­Î¸Î¿Ï…Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Highlight Title":"Î•Ï€Î¹ÏƒÎ®Î¼Î±Î½ÏƒÎ· Ï„Î¯Ï„Î»Î¿Ï…","Highlight Links":"Î•Ï€Î¹ÏƒÎ®Î¼Î±Î½ÏƒÎ· ÏƒÏ…Î½Î´Î­ÏƒÎ¼Ï‰Î½","Readable Font":"Î•Ï…Î±Î½Î¬Î³Î½Ï‰ÏƒÏ„Î· Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬","Color Adjustments":"Î ÏÎ¿ÏƒÎ±ÏÎ¼Î¿Î³Î­Ï‚ Ï‡ÏÏ‰Î¼Î¬Ï„Ï‰Î½","Dark Contrast":"Î‘Î½Ï„Î¯Î¸ÎµÏƒÎ· ÏƒÎµ ÏƒÎºÎ¿ÏÏÎ¿","Light Contrast":"Î‘Î½Ï„Î¯Î¸ÎµÏƒÎ· ÏƒÎµ Ï†Ï‰Ï„ÎµÎ¹Î½ÏŒ","High Contrast":"Î¥ÏˆÎ·Î»Î® Î±Î½Ï„Î¯Î¸ÎµÏƒÎ·","High Saturation":"Î¥ÏˆÎ·Î»ÏŒÏ‚ ÎºÎ¿ÏÎµÏƒÎ¼ÏŒÏ‚","Low Saturation":"Î§Î±Î¼Î·Î»ÏŒÏ‚ ÎºÎ¿ÏÎµÏƒÎ¼ÏŒÏ‚","Monochrome":"ÎœÎ¿Î½ÏŒÏ‡ÏÏ‰Î¼Î¿","Tools":"Î•ÏÎ³Î±Î»ÎµÎ¯Î±","Reading Guide":"ÎŸÎ´Î·Î³ÏŒÏ‚ Î±Î½Î¬Î³Î½Ï‰ÏƒÎ·Ï‚","Stop Animations":"Î‘Ï†Î±Î¯ÏÎµÏƒÎ· ÎºÎ¯Î½Î·ÏƒÎ·Ï‚","Big Cursor":"ÎœÎµÎ³Î¬Î»Î¿Ï‚ Î´ÎµÎ¯ÎºÏ„Î·Ï‚","Increase Font Size":"Î‘ÏÎ¾Î·ÏƒÎ· Î¼ÎµÎ³Î­Î¸Î¿Ï…Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Decrease Font Size":"ÎœÎµÎ¯Ï‰ÏƒÎ· Î¼ÎµÎ³Î­Î¸Î¿Ï…Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Letter Spacing":"Î”Î¹Î¬ÎºÎµÎ½Î¿ Î³ÏÎ±Î¼Î¼Î¬Ï„Ï‰Î½","Line Height":"Î¥ÏˆÎ¿Ï‚ Î³ÏÎ±Î¼Î¼Î®Ï‚","Font Weight":"Î’Î¬ÏÎ¿Ï‚ Î³ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬Ï‚","Dyslexia Font":"Î“ÏÎ±Î¼Î¼Î±Ï„Î¿ÏƒÎµÎ¹ÏÎ¬ Î³Î¹Î± Î´Ï…ÏƒÎ»ÎµÎ¾Î¯Î±","Language":"Î“Î»ÏŽÏƒÏƒÎ±","Open Accessibility Menu":"Î‘Î½Î¿Î¯Î¾Ï„Îµ Ï„Î¿ Î¼ÎµÎ½Î¿Ï Ï€ÏÎ¿ÏƒÎ²Î±ÏƒÎ¹Î¼ÏŒÏ„Î·Ï„Î±Ï‚"}'
       ),      en: JSON.parse(
-        '{"Accessibility Menu":"Accessibility Menu","Reset settings":"Reset settings","Close":"Close","Content Adjustments":"Content Adjustments","Adjust Font Size":"Adjust Font Size","Highlight Title":"Highlight Title","Highlight Links":"Highlight Links","Readable Font":"Readable Font","Color Adjustments":"Color Adjustments","Dark Contrast":"Dark Contrast","Light Contrast":"Light Contrast","High Contrast":"High Contrast","High Saturation":"High Saturation","Low Saturation":"Low Saturation","Monochrome":"Monochrome","Hidden Content":"Hidden Content","Tools":"Tools","Reading Guide":"Reading Guide","Stop Animations":"Stop Animations","Big Cursor":"Big Cursor","Increase Font Size":"Increase Font Size","Decrease Font Size":"Decrease Font Size","Letter Spacing":"Letter Spacing","Line Height":"Line Height","Font Weight":"Font Weight","Dyslexia Font":"Dyslexia Font","Language":"Language","Open Accessibility Menu":"Open Accessibility Menu"}'
+        '{"Accessibility Menu":"Accessibility Menu","Reset settings":"Reset settings","Close":"Close","Content Adjustments":"Content Adjustments","Adjust Font Size":"Adjust Font Size","Highlight Title":"Highlight Title","Highlight Links":"Highlight Links","Readable Font":"Readable Font","Color Adjustments":"Color Adjustments","Dark Contrast":"Dark Contrast","Light Contrast":"Light Contrast","High Contrast":"High Contrast","High Saturation":"High Saturation","Low Saturation":"Low Saturation","Monochrome":"Monochrome","Hidden Content":"Hidden Content","Tools":"Tools","Reading Guide":"Reading Guide","Stop Animations":"Stop Animations","Big Cursor":"Big Cursor","Read on Click":"Read on Click","Focus Outline":"Focus Outline","Increase Font Size":"Increase Font Size","Decrease Font Size":"Decrease Font Size","Letter Spacing":"Letter Spacing","Line Height":"Line Height","Font Weight":"Font Weight","Dyslexia Font":"Dyslexia Font","Language":"Language","Open Accessibility Menu":"Open Accessibility Menu"}'
       ),
       es: JSON.parse(
         '{"Accessibility Menu":"MenÃº de accesibilidad","Reset settings":"Restablecer configuraciÃ³n","Close":"Cerrar","Content Adjustments":"Ajustes de contenido","Adjust Font Size":"Ajustar el tamaÃ±o de fuente","Highlight Title":"Destacar tÃ­tulo","Highlight Links":"Destacar enlaces","Readable Font":"Fuente legible","Color Adjustments":"Ajustes de color","Dark Contrast":"Contraste oscuro","Light Contrast":"Contraste claro","High Contrast":"Alto contraste","High Saturation":"Alta saturaciÃ³n","Low Saturation":"Baja saturaciÃ³n","Monochrome":"Monocromo","Hidden Content":"Contenido Oculto","Tools":"Herramientas","Reading Guide":"GuÃ­a de lectura","Stop Animations":"Detener animaciones","Big Cursor":"Cursor grande","Increase Font Size":"Aumentar tamaÃ±o de fuente","Decrease Font Size":"Reducir tamaÃ±o de fuente","Letter Spacing":"Espaciado entre letras","Line Height":"Altura de lÃ­nea","Font Weight":"Grosor de fuente","Dyslexia Font":"Fuente para dislexia","Language":"Idioma","Open Accessibility Menu":"Abrir menÃº de accesibilidad"}'
