@@ -362,12 +362,13 @@
           }),
         M.apply(this, arguments)
       );
-    },
-    D = {
+    },    D = {
       id: "letter-spacing",
       selector: "html",
       childrenSelector: p,
-      styles: { "letter-spacing": "2px" },
+      styles: { "letter-spacing": "1px" },
+      level2: { "letter-spacing": "3px" },
+      level3: { "letter-spacing": "5px" },
     };
   var R = function () {
       return (
@@ -381,12 +382,13 @@
           }),
         R.apply(this, arguments)
       );
-    },
-    O = {
+    },    O = {
       id: "line-height",
       selector: "html",
       childrenSelector: p,
-      styles: { "line-height": "3" },
+      styles: { "line-height": "2" },
+      level2: { "line-height": "2.5" },
+      level3: { "line-height": "3" },
     };
   var T = function () {
       return (
@@ -663,12 +665,28 @@
       d(F(F({}, x), { enable: t })),
       (function (t) {
         void 0 === t && (t = !1), d(z(z({}, j), { enable: t }));
-      })(e["highlight-links"]),
-      (function (t) {
-        void 0 === t && (t = !1), d(M(M({}, D), { enable: t }));
-      })(e["letter-spacing"]),
-      (function (t) {
-        void 0 === t && (t = !1), d(R(R({}, O), { enable: t }));
+      })(e["highlight-links"]),      (function (t) {
+        void 0 === t && (t = 0);
+        var config = M(M({}, D), { enable: t > 0 });
+        if (t === 1) {
+          config.styles = D.styles;
+        } else if (t === 2) {
+          config.styles = D.level2;
+        } else if (t === 3) {
+          config.styles = D.level3;
+        }
+        d(config);
+      })(e["letter-spacing"]),      (function (t) {
+        void 0 === t && (t = 0);
+        var config = R(R({}, O), { enable: t > 0 });
+        if (t === 1) {
+          config.styles = O.styles;
+        } else if (t === 2) {
+          config.styles = O.level2;
+        } else if (t === 3) {
+          config.styles = O.level3;
+        }
+        d(config);
       })(e["line-height"]),
       (function (t) {
         void 0 === t && (t = !1), d(T(T({}, B), { enable: t }));
@@ -1290,17 +1308,45 @@
             
             return;
           }
-          
-          t.classList.contains("asw-filter")
+            t.classList.contains("asw-filter")
             ? (p.querySelectorAll(".asw-filter").forEach(function (t) {
                 t.classList.remove("asw-selected");
               }),
               n({ contrast: a ? i : null }),
               a && t.classList.add("asw-selected"),
               w())
-            : (t.classList.toggle("asw-selected", a),
-              n((((e = {})[i] = a), e)),
-              P());
+            : (function() {
+                // Handle 3-level toggle for letter-spacing and line-height
+                if (i === "letter-spacing" || i === "line-height") {
+                  var currentLevel = o(i) || 0;
+                  var nextLevel = (currentLevel + 1) % 4; // 0, 1, 2, 3, then back to 0
+                  
+                  // Update button appearance based on level
+                  t.classList.remove("asw-selected", "asw-level-1", "asw-level-2", "asw-level-3");
+                  if (nextLevel > 0) {
+                    t.classList.add("asw-selected", "asw-level-" + nextLevel);
+                    // Add level indicator
+                    var indicator = t.querySelector('.level-indicator') || document.createElement('span');
+                    indicator.className = 'level-indicator';
+                    indicator.style.cssText = 'position:absolute;top:5px;right:5px;background:#0848ca;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:bold;';
+                    indicator.textContent = nextLevel;
+                    if (!t.querySelector('.level-indicator')) {
+                      t.appendChild(indicator);
+                    }
+                  } else {
+                    var indicator = t.querySelector('.level-indicator');
+                    if (indicator) indicator.remove();
+                  }
+                  
+                  n((((e = {})[i] = nextLevel), e));
+                  P();
+                } else {
+                  // Regular toggle for other features
+                  t.classList.toggle("asw-selected", a);
+                  n((((e = {})[i] = a), e));
+                  P();
+                }
+              })();
         });
       }),
       null === (e = p.querySelector(".asw-menu-reset")) ||
@@ -1350,18 +1396,27 @@
       Y(p),
       m.states)
     )
-      for (var S in m.states)
-        if (m.states[S] && "fontSize" !== S) {
+      for (var S in m.states)        if (m.states[S] && "fontSize" !== S) {
           var y = "contrast" === S ? m.states[S] : S;
-          null ===
-            (c =
-              null ===
-                (l = p.querySelector('.asw-btn[data-key="'.concat(y, '"]'))) ||
-              void 0 === l
-                ? void 0
-                : l.classList) ||
-            void 0 === c ||
-            c.add("asw-selected");
+          var buttonElement = p.querySelector('.asw-btn[data-key="'.concat(y, '"]'));
+          if (buttonElement) {
+            // Handle multi-level states for letter-spacing and line-height
+            if ((S === "letter-spacing" || S === "line-height") && typeof m.states[S] === "number") {
+              var level = m.states[S];
+              if (level > 0) {
+                buttonElement.classList.add("asw-selected", "asw-level-" + level);
+                // Add level indicator
+                var indicator = document.createElement('span');
+                indicator.className = 'level-indicator';
+                indicator.style.cssText = 'position:absolute;top:5px;right:5px;background:#0848ca;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:bold;';
+                indicator.textContent = level;
+                buttonElement.appendChild(indicator);
+              }
+            } else {
+              // Regular boolean state
+              buttonElement.classList.add("asw-selected");
+            }
+          }
         }
     return g.appendChild(h), h;
   }
