@@ -731,7 +731,7 @@
     r((null == t ? void 0 : t.fontSize) || 1), P(), w();
   }
   const I =
-    '<style>.asw-menu,.asw-widget{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-weight:400;-webkit-font-smoothing:antialiased}.asw-menu *,.asw-widget *{box-sizing:border-box!important}.asw-menu-btn{position:fixed;z-index:500000;left:30px;bottom:30px;box-shadow:0 5px 15px 0 rgb(37 44 97 / 15%),0 2px 4px 0 rgb(93 100 148 / 20%);transition:transform .2s ease;border-radius:50%;align-items:center;justify-content:center;width:58px;height:58px;display:flex;cursor:pointer;border:3px solid #fff!important;outline:5px solid #0048ff!important;text-decoration:none!important;background:#326cff!important;background:linear-gradient(96deg,#326cff 0,#0048ff 100%)!important}.asw-menu-btn svg{width:36px;height:36px;min-height:36px;min-width:36px;max-width:36px;max-height:36px;background:0 0!important}.asw-menu-btn:hover{transform:scale(1.05)}@media only screen and (max-width:768px){.asw-menu-btn{width:42px;height:42px}.asw-menu-btn svg{width:26px;height:26px;min-height:26px;min-width:26px;max-width:26px;max-height:26px}}</style> <div class="asw-widget"> <a href="https://accessibility-widget.pages.dev" target="_blank" class="asw-menu-btn" title="Open Accessibility Menu" role="button" aria-expanded="false"> <svg xmlns="http://www.w3.org/2000/svg" style="fill:white" viewBox="0 0 24 24" width="30px" height="30px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20.5 6c-2.61.7-5.67 1-8.5 1s-5.89-.3-8.5-1L3 8c1.86.5 4 .83 6 1v13h2v-6h2v6h2V9c2-.17 4.14-.5 6-1l-.5-2zM12 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg> </a> </div>';
+    '<style>.asw-menu,.asw-widget{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-weight:400;-webkit-font-smoothing:antialiased}.asw-menu *,.asw-widget *{box-sizing:border-box!important}.asw-menu-btn{position:fixed;z-index:500000;left:30px;bottom:30px;box-shadow:0 5px 15px 0 rgb(37 44 97 / 15%),0 2px 4px 0 rgb(93 100 148 / 20%);transition:transform .2s ease;border-radius:50%;align-items:center;justify-content:center;width:58px;height:58px;display:flex;cursor:pointer;border:3px solid #fff!important;outline:5px solid #0048ff!important;text-decoration:none!important;background:#326cff!important;background:linear-gradient(96deg,#326cff 0,#0048ff 100%)!important}.asw-menu-btn svg{width:36px;height:36px;min-height:36px;min-width:36px;max-width:36px;max-height:36px;background:0 0!important}.asw-menu-btn:hover{transform:scale(1.05)}@media only screen and (max-width:768px){.asw-menu-btn{width:42px;height:42px}.asw-menu-btn svg{width:26px;height:26px;min-height:26px;min-width:26px;max-width:26px;max-height:26px}}</style> <div class="asw-widget"> <a href="http://amitcodee.netlify.app/" target="_blank" class="asw-menu-btn" title="Open Accessibility Menu" role="button" aria-expanded="false"> <svg xmlns="http://www.w3.org/2000/svg" style="fill:white" viewBox="0 0 24 24" width="30px" height="30px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20.5 6c-2.61.7-5.67 1-8.5 1s-5.89-.3-8.5-1L3 8c1.86.5 4 .83 6 1v13h2v-6h2v6h2V9c2-.17 4.14-.5 6-1l-.5-2zM12 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg> </a> </div>';
   function N(t, e) {
     t.style.display =
       void 0 === e
@@ -845,11 +845,15 @@
         label: "Read on Click",
         key: "read-on-click",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M9 12l1.5 1.5L15 9m-3-7c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2m0 18c4.4 0 8-3.6 8-8s-3.6-8-8-8-8 3.6-8 8 3.6 8 8 8z"/>\r\n</svg>',
-      },
-      {
+      },      {
         label: "Focus Outline",
         key: "focus-outline",
         icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>\r\n</svg>',
+      },
+      {
+        label: "Page Structure",
+        key: "page-structure",
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\r<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>\r\n</svg>',
       },
     ];
   function W(t, e) {
@@ -890,65 +894,56 @@
         "Decrease Font Size": "Decrease Font Size",
         "Letter Spacing": "Letter Spacing",
         "Line Height": "Line Height",
-        "Font Weight": "Font Weight",
-        "Dyslexia Font": "Dyslexia Font",
+        "Font Weight": "Font Weight",        "Dyslexia Font": "Dyslexia Font",
         Language: "Language",
         "Open Accessibility Menu": "Open Accessibility Menu",
+        "Page Structure": "Page Structure",
       },
 
       ar: JSON.parse(
-        '{ "Accessibility Menu": "قائمة إمكانية الوصول", "Reset settings": "إعادة تعيين الإعدادات", "Close": "إغلاق", "Content Adjustments": "تعديلات المحتوى", "Adjust Font Size": "تعديل حجم الخط", "Highlight Title": "تسليط الضوء على العنوان", "Highlight Links": "تسليط الضوء على الروابط", "Readable Font": "خط سهل القراءة", "Color Adjustments": "تعديلات الألوان", "Dark Contrast": "تباين داكن", "Light Contrast": "تباين فاتح", "High Contrast": "تباين عالي", "High Saturation": "تشبع عالي", "Low Saturation": "تشبع منخفض", "Monochrome": "أحادي اللون", "Hidden Content": "المحتوى المخفي", "Tools": "أدوات", "Reading Guide": "دليل القراءة", "Stop Animations": "إيقاف الرسوم المتحركة", "Big Cursor": "مؤشر كبير", "Increase Font Size": "زيادة حجم الخط", "Decrease Font Size": "تقليل حجم الخط", "Letter Spacing": "تباعد الحروف", "Line Height": "ارتفاع السطر", "Font Weight": "سماكة الخط", "Dyslexia Font": "خط خاص بعسر القراءة", "Language": "اللغة", "Open Accessibility Menu": "افتح قائمة الوصول" }'
+        '{ "Accessibility Menu": "قائمة إمكانية الوصول", "Reset settings": "إعادة تعيين الإعدادات", "Close": "إغلاق", "Content Adjustments": "تعديلات المحتوى", "Adjust Font Size": "تعديل حجم الخط", "Highlight Title": "تسليط الضوء على العنوان", "Highlight Links": "تسليط الضوء على الروابط", "Readable Font": "خط سهل القراءة", "Color Adjustments": "تعديلات الألوان", "Dark Contrast": "تباين داكن", "Light Contrast": "تباين فاتح", "High Contrast": "تباين عالي", "High Saturation": "تشبع عالي", "Low Saturation": "تشبع منخفض", "Monochrome": "أحادي اللون", "Hidden Content": "المحتوى المخفي", "Tools": "أدوات", "Reading Guide": "دليل القراءة", "Stop Animations": "إيقاف الرسوم المتحركة", "Big Cursor": "مؤشر كبير", "Increase Font Size": "زيادة حجم الخط", "Decrease Font Size": "تقليل حجم الخط", "Letter Spacing": "تباعد الحروف", "Line Height": "ارتفاع السطر", "Font Weight": "سماكة الخط", "Dyslexia Font": "خط خاص بعسر القراءة", "Language": "اللغة", "Open Accessibility Menu": "افتح قائمة الوصول", "Page Structure": "بنية الصفحة" }'
       ),
 
       zh_Hans: JSON.parse(
-        '{ "Accessibility Menu": "辅助功能菜单", "Reset settings": "重置设置", "Close": "关闭", "Content Adjustments": "内容调整", "Adjust Font Size": "调整字体大小", "Highlight Title": "突出显示标题", "Highlight Links": "突出显示链接", "Readable Font": "易读字体", "Color Adjustments": "颜色调整", "Dark Contrast": "深色对比", "Light Contrast": "浅色对比", "High Contrast": "高对比度", "High Saturation": "高饱和度", "Low Saturation": "低饱和度", "Monochrome": "单色", "Hidden Content": "隐藏内容", "Tools": "工具", "Reading Guide": "阅读指南", "Stop Animations": "停止动画", "Big Cursor": "大光标", "Increase Font Size": "增加字体大小", "Decrease Font Size": "减少字体大小", "Letter Spacing": "字距", "Line Height": "行高", "Font Weight": "字体粗细", "Dyslexia Font": "阅读障碍字体", "Language": "语言", "Open Accessibility Menu": "打开辅助功能菜单" }'
+        '{ "Accessibility Menu": "辅助功能菜单", "Reset settings": "重置设置", "Close": "关闭", "Content Adjustments": "内容调整", "Adjust Font Size": "调整字体大小", "Highlight Title": "突出显示标题", "Highlight Links": "突出显示链接", "Readable Font": "易读字体", "Color Adjustments": "颜色调整", "Dark Contrast": "深色对比", "Light Contrast": "浅色对比", "High Contrast": "高对比度", "High Saturation": "高饱和度", "Low Saturation": "低饱和度", "Monochrome": "单色", "Hidden Content": "隐藏内容", "Tools": "工具", "Reading Guide": "阅读指南", "Stop Animations": "停止动画", "Big Cursor": "大光标", "Increase Font Size": "增加字体大小", "Decrease Font Size": "减少字体大小", "Letter Spacing": "字距", "Line Height": "行高", "Font Weight": "字体粗细", "Dyslexia Font": "阅读障碍字体", "Language": "语言", "Open Accessibility Menu": "打开辅助功能菜单", "Page Structure": "页面结构" }'
       ),
 
       es: JSON.parse(
-        '{ "Accessibility Menu": "Menú de accesibilidad", "Reset settings": "Restablecer configuración", "Close": "Cerrar", "Content Adjustments": "Ajustes de contenido", "Adjust Font Size": "Ajustar tamaño de fuente", "Highlight Title": "Resaltar título", "Highlight Links": "Resaltar enlaces", "Readable Font": "Fuente legible", "Color Adjustments": "Ajustes de color", "Dark Contrast": "Contraste oscuro", "Light Contrast": "Contraste claro", "High Contrast": "Alto contraste", "High Saturation": "Alta saturación", "Low Saturation": "Baja saturación", "Monochrome": "Monocromo", "Hidden Content": "Contenido oculto", "Tools": "Herramientas", "Reading Guide": "Guía de lectura", "Stop Animations": "Detener animaciones", "Big Cursor": "Cursor grande", "Increase Font Size": "Aumentar tamaño de fuente", "Decrease Font Size": "Disminuir tamaño de fuente", "Letter Spacing": "Espaciado de letras", "Line Height": "Altura de línea", "Font Weight": "Peso de fuente", "Dyslexia Font": "Fuente para dislexia", "Language": "Idioma", "Open Accessibility Menu": "Abrir menú de accesibilidad" }'
+        '{ "Accessibility Menu": "Menú de accesibilidad", "Reset settings": "Restablecer configuración", "Close": "Cerrar", "Content Adjustments": "Ajustes de contenido", "Adjust Font Size": "Ajustar tamaño de fuente", "Highlight Title": "Resaltar título", "Highlight Links": "Resaltar enlaces", "Readable Font": "Fuente legible", "Color Adjustments": "Ajustes de color", "Dark Contrast": "Contraste oscuro", "Light Contrast": "Contraste claro", "High Contrast": "Alto contraste", "High Saturation": "Alta saturación", "Low Saturation": "Baja saturación", "Monochrome": "Monocromo", "Hidden Content": "Contenido oculto", "Tools": "Herramientas", "Reading Guide": "Guía de lectura", "Stop Animations": "Detener animaciones", "Big Cursor": "Cursor grande", "Increase Font Size": "Aumentar tamaño de fuente", "Decrease Font Size": "Disminuir tamaño de fuente", "Letter Spacing": "Espaciado de letras", "Line Height": "Altura de línea", "Font Weight": "Peso de fuente", "Dyslexia Font": "Fuente para dislexia", "Language": "Idioma", "Open Accessibility Menu": "Abrir menú de accesibilidad", "Page Structure": "Estructura de página" }'
       ),
 
       hi: JSON.parse(
-        '{ "Accessibility Menu": "पहुँच मेनू", "Reset settings": "सेटिंग रीसेट करें", "Close": "बंद करें", "Content Adjustments": "सामग्री समायोजन", "Adjust Font Size": "फ़ॉन्ट आकार समायोजित करें", "Highlight Title": "शीर्षक को हाइलाइट करें", "Highlight Links": "लिंक्स को हाइलाइट करें", "Readable Font": "पठनीय फ़ॉन्ट", "Color Adjustments": "रंग समायोजन", "Dark Contrast": "गहरा कंट्रास्ट", "Light Contrast": "हल्का कंट्रास्ट", "High Contrast": "उच्च कंट्रास्ट", "High Saturation": "उच्च संतृप्ति", "Low Saturation": "कम संतृप्ति", "Monochrome": "एकल रंग", "Hidden Content": "छिपी सामग्री", "Tools": "उपकरण", "Reading Guide": "पठन मार्गदर्शिका", "Stop Animations": "एनिमेशन बंद करें", "Big Cursor": "बड़ा कर्सर", "Increase Font Size": "फ़ॉन्ट आकार बढ़ाएँ", "Decrease Font Size": "फ़ॉन्ट आकार घटाएँ", "Letter Spacing": "अक्षर स्पेसिंग", "Line Height": "पंक्ति ऊँचाई", "Font Weight": "फ़ॉन्ट मोटाई", "Dyslexia Font": "डिस्लेक्सिया फ़ॉन्ट", "Language": "भाषा", "Open Accessibility Menu": "पहुँच मेनू खोलें" }'
-      ),
-      fr: JSON.parse(
-        '{ "Accessibility Menu":"Menu d\'accessibilité","Reset settings":"Réinitialiser les paramètres","Close":"Fermer","Content Adjustments":"Ajustements du contenu","Adjust Font Size":"Ajuster la taille de la police","Highlight Title":"Surligner le titre","Highlight Links":"Surligner les liens","Readable Font":"Police lisible","Color Adjustments":"Ajustements des couleurs","Dark Contrast":"Contraste sombre","Light Contrast":"Contraste clair","High Contrast":"Contraste élevé","High Saturation":"Saturation élevée","Low Saturation":"Saturation faible","Monochrome":"Monochrome","Hidden Content":"Contenu masqué","Tools":"Outils","Reading Guide":"Guide de lecture","Stop Animations":"Arrêter les animations","Big Cursor":"Grand curseur","Increase Font Size":"Augmenter la taille de la police","Decrease Font Size":"Réduire la taille de la police","Letter Spacing":"Espacement des lettres","Line Height":"Hauteur de ligne","Font Weight":"Épaisseur de la police","Dyslexia Font":"Police dyslexie","Language":"Langue","Open Accessibility Menu":"Ouvrir le menu d\'accessibilité" }'
-      ),
-
-      ru: JSON.parse(
-        '{ "Accessibility Menu":"Меню доступности","Reset settings":"Сбросить настройки","Close":"Закрыть","Content Adjustments":"Настройки контента","Adjust Font Size":"Изменить размер шрифта","Highlight Title":"Выделить заголовок","Highlight Links":"Выделить ссылки","Readable Font":"Читаемый шрифт","Color Adjustments":"Настройки цвета","Dark Contrast":"Темный контраст","Light Contrast":"Светлый контраст","High Contrast":"Высокий контраст","High Saturation":"Высокая насыщенность","Low Saturation":"Низкая насыщенность","Monochrome":"Монохром","Hidden Content":"Скрытое содержание","Tools":"Инструменты","Reading Guide":"Руководство по чтению","Stop Animations":"Остановить анимации","Big Cursor":"Большой курсор","Increase Font Size":"Увеличить шрифт","Decrease Font Size":"Уменьшить шрифт","Letter Spacing":"Межбуквенный интервал","Line Height":"Высота строки","Font Weight":"Толщина шрифта","Dyslexia Font":"Шрифт для дислексии","Language":"Язык","Open Accessibility Menu":"Открыть меню доступности" }'
-      ),
-
-      pt: JSON.parse(
-        '{ "Accessibility Menu":"Menu de acessibilidade","Reset settings":"Redefinir configurações","Close":"Fechar","Content Adjustments":"Ajustes de conteúdo","Adjust Font Size":"Ajustar tamanho da fonte","Highlight Title":"Destacar título","Highlight Links":"Destacar links","Readable Font":"Fonte legível","Color Adjustments":"Ajustes de cores","Dark Contrast":"Contraste escuro","Light Contrast":"Contraste claro","High Contrast":"Alto contraste","High Saturation":"Alta saturação","Low Saturation":"Baixa saturação","Monochrome":"Monocromático","Hidden Content":"Conteúdo oculto","Tools":"Ferramentas","Reading Guide":"Guia de leitura","Stop Animations":"Parar animações","Big Cursor":"Cursor grande","Increase Font Size":"Aumentar fonte","Decrease Font Size":"Diminuir fonte","Letter Spacing":"Espaçamento entre letras","Line Height":"Altura da linha","Font Weight":"Peso da fonte","Dyslexia Font":"Fonte para dislexia","Language":"Idioma","Open Accessibility Menu":"Abrir menu de acessibilidade" }'
+        '{ "Accessibility Menu": "पहुँच मेनू", "Reset settings": "सेटिंग रीसेट करें", "Close": "बंद करें", "Content Adjustments": "सामग्री समायोजन", "Adjust Font Size": "फ़ॉन्ट आकार समायोजित करें", "Highlight Title": "शीर्षक को हाइलाइट करें", "Highlight Links": "लिंक्स को हाइलाइट करें", "Readable Font": "पठनीय फ़ॉन्ट", "Color Adjustments": "रंग समायोजन", "Dark Contrast": "गहरा कंट्रास्ट", "Light Contrast": "हल्का कंट्रास्ट", "High Contrast": "उच्च कंट्रास्ट", "High Saturation": "उच्च संतृप्ति", "Low Saturation": "कम संतृप्ति", "Monochrome": "एकल रंग", "Hidden Content": "छिपी सामग्री", "Tools": "उपकरण", "Reading Guide": "पठन मार्गदर्शिका", "Stop Animations": "एनिमेशन बंद करें", "Big Cursor": "बड़ा कर्सर", "Increase Font Size": "फ़ॉन्ट आकार बढ़ाएँ", "Decrease Font Size": "फ़ॉन्ट आकार घटाएँ", "Letter Spacing": "अक्षर स्पेसिंग", "Line Height": "पंक्ति ऊँचाई", "Font Weight": "फ़ॉन्ट मोटाई", "Dyslexia Font": "डिस्लेक्सिया फ़ॉन्ट", "Language": "भाषा", "Open Accessibility Menu": "पहुँच मेनू खोलें", "Page Structure": "पेज संरचना" }'
+      ),      fr: JSON.parse(
+        '{ "Accessibility Menu":"Menu d\'accessibilité","Reset settings":"Réinitialiser les paramètres","Close":"Fermer","Content Adjustments":"Ajustements du contenu","Adjust Font Size":"Ajuster la taille de la police","Highlight Title":"Surligner le titre","Highlight Links":"Surligner les liens","Readable Font":"Police lisible","Color Adjustments":"Ajustements des couleurs","Dark Contrast":"Contraste sombre","Light Contrast":"Contraste clair","High Contrast":"Contraste élevé","High Saturation":"Saturation élevée","Low Saturation":"Saturation faible","Monochrome":"Monochrome","Hidden Content":"Contenu masqué","Tools":"Outils","Reading Guide":"Guide de lecture","Stop Animations":"Arrêter les animations","Big Cursor":"Grand curseur","Increase Font Size":"Augmenter la taille de la police","Decrease Font Size":"Réduire la taille de la police","Letter Spacing":"Espacement des lettres","Line Height":"Hauteur de ligne","Font Weight":"Épaisseur de la police","Dyslexia Font":"Police dyslexie","Language":"Langue","Open Accessibility Menu":"Ouvrir le menu d\'accessibilité","Page Structure":"Structure de page" }'
+      ),      ru: JSON.parse(
+        '{ "Accessibility Menu":"Меню доступности","Reset settings":"Сбросить настройки","Close":"Закрыть","Content Adjustments":"Настройки контента","Adjust Font Size":"Изменить размер шрифта","Highlight Title":"Выделить заголовок","Highlight Links":"Выделить ссылки","Readable Font":"Читаемый шрифт","Color Adjustments":"Настройки цвета","Dark Contrast":"Темный контраст","Light Contrast":"Светлый контраст","High Contrast":"Высокий контраст","High Saturation":"Высокая насыщенность","Low Saturation":"Низкая насыщенность","Monochrome":"Монохром","Hidden Content":"Скрытое содержание","Tools":"Инструменты","Reading Guide":"Руководство по чтению","Stop Animations":"Остановить анимации","Big Cursor":"Большой курсор","Increase Font Size":"Увеличить шрифт","Decrease Font Size":"Уменьшить шрифт","Letter Spacing":"Межбуквенный интервал","Line Height":"Высота строки","Font Weight":"Толщина шрифта","Dyslexia Font":"Шрифт для дислексии","Language":"Язык","Open Accessibility Menu":"Открыть меню доступности","Page Structure":"Структура страницы" }'
+      ),      pt: JSON.parse(
+        '{ "Accessibility Menu":"Menu de acessibilidade","Reset settings":"Redefinir configurações","Close":"Fechar","Content Adjustments":"Ajustes de conteúdo","Adjust Font Size":"Ajustar tamanho da fonte","Highlight Title":"Destacar título","Highlight Links":"Destacar links","Readable Font":"Fonte legível","Color Adjustments":"Ajustes de cores","Dark Contrast":"Contraste escuro","Light Contrast":"Contraste claro","High Contrast":"Alto contraste","High Saturation":"Alta saturação","Low Saturation":"Baixa saturação","Monochrome":"Monocromático","Hidden Content":"Conteúdo oculto","Tools":"Ferramentas","Reading Guide":"Guia de leitura","Stop Animations":"Parar animações","Big Cursor":"Cursor grande","Increase Font Size":"Aumentar fonte","Decrease Font Size":"Diminuir fonte","Letter Spacing":"Espaçamento entre letras","Line Height":"Altura da linha","Font Weight":"Peso da fonte","Dyslexia Font":"Fonte para dislexia","Language":"Idioma","Open Accessibility Menu":"Abrir menu de acessibilidade","Page Structure":"Estrutura da página" }'
       ),
 
       de: JSON.parse(
-        '{ "Accessibility Menu":"Barrierefreiheitsmenü","Reset settings":"Einstellungen zurücksetzen","Close":"Schließen","Content Adjustments":"Inhaltsanpassungen","Adjust Font Size":"Schriftgröße anpassen","Highlight Title":"Titel hervorheben","Highlight Links":"Links hervorheben","Readable Font":"Lesbare Schriftart","Color Adjustments":"Farbänderungen","Dark Contrast":"Dunkler Kontrast","Light Contrast":"Heller Kontrast","High Contrast":"Hoher Kontrast","High Saturation":"Hohe Sättigung","Low Saturation":"Niedrige Sättigung","Monochrome":"Monochrom","Hidden Content":"Versteckter Inhalt","Tools":"Werkzeuge","Reading Guide":"Leseführung","Stop Animations":"Animationen stoppen","Big Cursor":"Großer Cursor","Increase Font Size":"Schriftgröße erhöhen","Decrease Font Size":"Schriftgröße verringern","Letter Spacing":"Buchstabenabstand","Line Height":"Zeilenhöhe","Font Weight":"Schriftgewicht","Dyslexia Font":"Dyslexie-Schriftart","Language":"Sprache","Open Accessibility Menu":"Barrierefreiheitsmenü öffnen" }'
-      ),
-
-      ja: JSON.parse(
-        '{ "Accessibility Menu":"アクセシビリティメニュー","Reset settings":"設定をリセット","Close":"閉じる","Content Adjustments":"コンテンツの調整","Adjust Font Size":"フォントサイズを調整","Highlight Title":"タイトルを強調","Highlight Links":"リンクを強調","Readable Font":"読みやすいフォント","Color Adjustments":"色調整","Dark Contrast":"ダークコントラスト","Light Contrast":"ライトコントラスト","High Contrast":"高コントラスト","High Saturation":"高彩度","Low Saturation":"低彩度","Monochrome":"モノクロ","Hidden Content":"隠しコンテンツ","Tools":"ツール","Reading Guide":"リーディングガイド","Stop Animations":"アニメーションを停止","Big Cursor":"大きなカーソル","Increase Font Size":"フォントサイズを大きく","Decrease Font Size":"フォントサイズを小さく","Letter Spacing":"文字間隔","Line Height":"行の高さ","Font Weight":"フォントの太さ","Dyslexia Font":"ディスレクシアフォント","Language":"言語","Open Accessibility Menu":"アクセシビリティメニューを開く" }'
+        '{ "Accessibility Menu":"Barrierefreiheitsmenü","Reset settings":"Einstellungen zurücksetzen","Close":"Schließen","Content Adjustments":"Inhaltsanpassungen","Adjust Font Size":"Schriftgröße anpassen","Highlight Title":"Titel hervorheben","Highlight Links":"Links hervorheben","Readable Font":"Lesbare Schriftart","Color Adjustments":"Farbänderungen","Dark Contrast":"Dunkler Kontrast","Light Contrast":"Heller Kontrast","High Contrast":"Hoher Kontrast","High Saturation":"Hohe Sättigung","Low Saturation":"Niedrige Sättigung","Monochrome":"Monochrom","Hidden Content":"Versteckter Inhalt","Tools":"Werkzeuge","Reading Guide":"Leseführung","Stop Animations":"Animationen stoppen","Big Cursor":"Großer Cursor","Increase Font Size":"Schriftgröße erhöhen","Decrease Font Size":"Schriftgröße verringern","Letter Spacing":"Buchstabenabstand","Line Height":"Zeilenhöhe","Font Weight":"Schriftgewicht","Dyslexia Font":"Dyslexie-Schriftart","Language":"Sprache","Open Accessibility Menu":"Barrierefreiheitsmenü öffnen","Page Structure":"Seitenstruktur" }'
+      ),      ja: JSON.parse(
+        '{ "Accessibility Menu":"アクセシビリティメニュー","Reset settings":"設定をリセット","Close":"閉じる","Content Adjustments":"コンテンツの調整","Adjust Font Size":"フォントサイズを調整","Highlight Title":"タイトルを強調","Highlight Links":"リンクを強調","Readable Font":"読みやすいフォント","Color Adjustments":"色調整","Dark Contrast":"ダークコントラスト","Light Contrast":"ライトコントラスト","High Contrast":"高コントラスト","High Saturation":"高彩度","Low Saturation":"低彩度","Monochrome":"モノクロ","Hidden Content":"隠しコンテンツ","Tools":"ツール","Reading Guide":"リーディングガイド","Stop Animations":"アニメーションを停止","Big Cursor":"大きなカーソル","Increase Font Size":"フォントサイズを大きく","Decrease Font Size":"フォントサイズを小さく","Letter Spacing":"文字間隔","Line Height":"行の高さ","Font Weight":"フォントの太さ","Dyslexia Font":"ディスレクシアフォント","Language":"言語","Open Accessibility Menu":"アクセシビリティメニューを開く","Page Structure":"ページ構造" }'
       ),
 
       ko: JSON.parse(
-        '{ "Accessibility Menu":"접근성 메뉴","Reset settings":"설정 재설정","Close":"닫기","Content Adjustments":"콘텐츠 조정","Adjust Font Size":"글꼴 크기 조정","Highlight Title":"제목 강조","Highlight Links":"링크 강조","Readable Font":"읽기 쉬운 글꼴","Color Adjustments":"색상 조정","Dark Contrast":"어두운 대비","Light Contrast":"밝은 대비","High Contrast":"높은 대비","High Saturation":"높은 채도","Low Saturation":"낮은 채도","Monochrome":"단색","Hidden Content":"숨겨진 콘텐츠","Tools":"도구","Reading Guide":"읽기 가이드","Stop Animations":"애니메이션 중지","Big Cursor":"큰 커서","Increase Font Size":"글꼴 크기 증가","Decrease Font Size":"글꼴 크기 감소","Letter Spacing":"문자 간격","Line Height":"줄 간격","Font Weight":"글꼴 두께","Dyslexia Font":"난독증 글꼴","Language":"언어","Open Accessibility Menu":"접근성 메뉴 열기" }'
-      ),
-
-      bn: JSON.parse(
-        '{ "Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু","Reset settings":"সেটিংস রিসেট করুন","Close":"বন্ধ করুন","Content Adjustments":"বিষয়বস্তুর সমন্বয়","Adjust Font Size":"ফন্টের আকার সামঞ্জস্য করুন","Highlight Title":"শিরোনাম হাইলাইট করুন","Highlight Links":"লিংক হাইলাইট করুন","Readable Font":"পঠিতযোগ্য ফন্ট","Color Adjustments":"রঙের সমন্বয়","Dark Contrast":"গা dark ় কনট্রাস্ট","Light Contrast":"হালকা কনট্রাস্ট","High Contrast":"উচ্চ কনট্রাস্ট","High Saturation":"উচ্চ সম্পৃক্তি","Low Saturation":"নিম্ন সম্পৃক্তি","Monochrome":"এক রঙা","Hidden Content":"গোপন বিষয়বস্তু","Tools":"টুলস","Reading Guide":"পাঠ গাইড","Stop Animations":"অ্যানিমেশন বন্ধ করুন","Big Cursor":"বড় কার্সর","Increase Font Size":"ফন্টের আকার বাড়ান","Decrease Font Size":"ফন্টের আকার কমান","Letter Spacing":"অক্ষরের ব্যবধান","Line Height":"লাইন উচ্চতা","Font Weight":"ফন্ট ওজন","Dyslexia Font":"ডিসলেক্সিয়া ফন্ট","Language":"ভাষা","Open Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু খুলুন" }'
+        '{ "Accessibility Menu":"접근성 메뉴","Reset settings":"설정 재설정","Close":"닫기","Content Adjustments":"콘텐츠 조정","Adjust Font Size":"글꼴 크기 조정","Highlight Title":"제목 강조","Highlight Links":"링크 강조","Readable Font":"읽기 쉬운 글꼴","Color Adjustments":"색상 조정","Dark Contrast":"어두운 대비","Light Contrast":"밝은 대비","High Contrast":"높은 대비","High Saturation":"높은 채도","Low Saturation":"낮은 채도","Monochrome":"단색","Hidden Content":"숨겨진 콘텐츠","Tools":"도구","Reading Guide":"읽기 가이드","Stop Animations":"애니메이션 중지","Big Cursor":"큰 커서","Increase Font Size":"글꼴 크기 증가","Decrease Font Size":"글꼴 크기 감소","Letter Spacing":"문자 간격","Line Height":"줄 간격","Font Weight":"글꼴 두께","Dyslexia Font":"난독증 글꼴","Language":"언어","Open Accessibility Menu":"접근성 메뉴 열기","Page Structure":"페이지 구조" }'
+      ),      bn: JSON.parse(
+        '{ "Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু","Reset settings":"সেটিংস রিসেট করুন","Close":"বন্ধ করুন","Content Adjustments":"বিষয়বস্তুর সমন্বয়","Adjust Font Size":"ফন্টের আকার সামঞ্জস্য করুন","Highlight Title":"শিরোনাম হাইলাইট করুন","Highlight Links":"লিংক হাইলাইট করুন","Readable Font":"পঠিতযোগ্য ফন্ট","Color Adjustments":"রঙের সমন্বয়","Dark Contrast":"গা dark ় কনট্রাস্ট","Light Contrast":"হালকা কনট্রাস্ট","High Contrast":"উচ্চ কনট্রাস্ট","High Saturation":"উচ্চ সম্পৃক্তি","Low Saturation":"নিম্ন সম্পৃক্তি","Monochrome":"এক রঙা","Hidden Content":"গোপন বিষয়বস্তু","Tools":"টুলস","Reading Guide":"পাঠ গাইড","Stop Animations":"অ্যানিমেশন বন্ধ করুন","Big Cursor":"বড় কার্সর","Increase Font Size":"ফন্টের আকার বাড়ান","Decrease Font Size":"ফন্টের আকার কমান","Letter Spacing":"অক্ষরের ব্যবধান","Line Height":"লাইন উচ্চতা","Font Weight":"ফন্ট ওজন","Dyslexia Font":"ডিসলেক্সিয়া ফন্ট","Language":"ভাষা","Open Accessibility Menu":"অ্যাক্সেসিবিলিটি মেনু খুলুন","Page Structure":"পৃষ্ঠার কাঠামো" }'
       ),
 
       ta: JSON.parse(
-        '{ "Accessibility Menu":"அணுகல் பட்டி","Reset settings":"அமைப்புகளை மீட்டமை","Close":"மூடு","Content Adjustments":"உள்ளடக்கம் சரிசெய்தல்","Adjust Font Size":"எழுத்துரு அளவை மாற்று","Highlight Title":"தலைப்பை எடுத்துக்காட்டு","Highlight Links":"இணைப்புகளை எடுத்துக்காட்டு","Readable Font":"வாசிக்கத்தக்க எழுத்துரு","Color Adjustments":"நிறம் மாற்றங்கள்","Dark Contrast":"இருண்ட வேறுபாடு","Light Contrast":"ஒளி வேறுபாடு","High Contrast":"அதிக வேறுபாடு","High Saturation":"அதிக நிறம்","Low Saturation":"குறைவான நிறம்","Monochrome":"ஒற்றை நிறம்","Hidden Content":"மறைந்த உள்ளடக்கம்","Tools":"கருவிகள்","Reading Guide":"வாசிப்பு வழிகாட்டி","Stop Animations":"அசைவுகளை நிறுத்து","Big Cursor":"பெரிய காட்டி","Increase Font Size":"எழுத்தளவை அதிகரிக்க","Decrease Font Size":"எழுத்தளவை குறைக்க","Letter Spacing":"எழுத்து இடைவெளி","Line Height":"வரி உயரம்","Font Weight":"எழுத்துரு தடிமன்","Dyslexia Font":"டிஸ்லெக்சியா எழுத்துரு","Language":"மொழி","Open Accessibility Menu":"அணுகல் பட்டியைத் திற" }'
+        '{ "Accessibility Menu":"அணுகல் பட்டி","Reset settings":"அமைப்புகளை மீட்டமை","Close":"மூடு","Content Adjustments":"உள்ளடக்கம் சரிசெய்தல்","Adjust Font Size":"எழுத்துரு அளவை மாற்று","Highlight Title":"தலைப்பை எடுத்துக்காட்டு","Highlight Links":"இணைப்புகளை எடுத்துக்காட்டு","Readable Font":"வாசிக்கத்தக்க எழுத்துரு","Color Adjustments":"நிறம் மாற்றங்கள்","Dark Contrast":"இருண்ட வேறுபாடு","Light Contrast":"ஒளி வேறுபாடு","High Contrast":"அதிக வேறுபாடு","High Saturation":"அதிக நிறம்","Low Saturation":"குறைவான நிறம்","Monochrome":"ஒற்றை நிறம்","Hidden Content":"மறைந்த உள்ளடக்கம்","Tools":"கருவிகள்","Reading Guide":"வாசிப்பு வழிகாட்டி","Stop Animations":"அசைவுகளை நிறுத்து","Big Cursor":"பெரிய காட்டி","Increase Font Size":"எழுத்தளவை அதிகரிக்க","Decrease Font Size":"எழுத்தளவை குறைக்க","Letter Spacing":"எழுத்து இடைவெளி","Line Height":"வரி உயரம்","Font Weight":"எழுத்துரு தடிமன்","Dyslexia Font":"டிஸ்லெக்சியா எழுத்துரு","Language":"மொழி","Open Accessibility Menu":"அணுகல் பட்டியைத் திற","Page Structure":"பக்க அமைப்பு" }'
       ),
 
       tr: JSON.parse(
-        '{ "Accessibility Menu":"Erişilebilirlik Menüsü","Reset settings":"Ayarları sıfırla","Close":"Kapat","Content Adjustments":"İçerik Ayarları","Adjust Font Size":"Yazı tipi boyutunu ayarla","Highlight Title":"Başlığı vurgula","Highlight Links":"Bağlantıları vurgula","Readable Font":"Okunaklı Yazı Tipi","Color Adjustments":"Renk Ayarları","Dark Contrast":"Koyu Kontrast","Light Contrast":"Açık Kontrast","High Contrast":"Yüksek Kontrast","High Saturation":"Yüksek Doygunluk","Low Saturation":"Düşük Doygunluk","Monochrome":"Tek Renk","Hidden Content":"Gizli İçerik","Tools":"Araçlar","Reading Guide":"Okuma Kılavuzu","Stop Animations":"Animasyonları Durdur","Big Cursor":"Büyük İmleç","Increase Font Size":"Yazı Tipini Büyüt","Decrease Font Size":"Yazı Tipini Küçült","Letter Spacing":"Harf Aralığı","Line Height":"Satır Yüksekliği","Font Weight":"Yazı Kalınlığı","Dyslexia Font":"Disleksi Yazı Tipi","Language":"Dil","Open Accessibility Menu":"Erişilebilirlik Menüsünü Aç" }'
+        '{ "Accessibility Menu":"Erişilebilirlik Menüsü","Reset settings":"Ayarları sıfırla","Close":"Kapat","Content Adjustments":"İçerik Ayarları","Adjust Font Size":"Yazı tipi boyutunu ayarla","Highlight Title":"Başlığı vurgula","Highlight Links":"Bağlantıları vurgula","Readable Font":"Okunaklı Yazı Tipi","Color Adjustments":"Renk Ayarları","Dark Contrast":"Koyu Kontrast","Light Contrast":"Açık Kontrast","High Contrast":"Yüksek Kontrast","High Saturation":"Yüksek Doygunluk","Low Saturation":"Düşük Doygunluk","Monochrome":"Tek Renk","Hidden Content":"Gizli İçerik","Tools":"Araçlar","Reading Guide":"Okuma Kılavuzu","Stop Animations":"Animasyonları Durdur","Big Cursor":"Büyük İmleç","Increase Font Size":"Yazı Tipini Büyüt","Decrease Font Size":"Yazı Tipini Küçült","Letter Spacing":"Harf Aralığı","Line Height":"Satır Yüksekliği","Font Weight":"Yazı Kalınlığı","Dyslexia Font":"Disleksi Yazı Tipi","Language":"Dil","Open Accessibility Menu":"Erişilebilirlik Menüsünü Aç","Page Structure":"Sayfa Yapısı" }'
       ),
 
       vi: JSON.parse(
-        '{ "Accessibility Menu":"Menu trợ năng","Reset settings":"Đặt lại cài đặt","Close":"Đóng","Content Adjustments":"Điều chỉnh nội dung","Adjust Font Size":"Điều chỉnh cỡ chữ","Highlight Title":"Làm nổi bật tiêu đề","Highlight Links":"Làm nổi bật liên kết","Readable Font":"Phông chữ dễ đọc","Color Adjustments":"Điều chỉnh màu sắc","Dark Contrast":"Tương phản tối","Light Contrast":"Tương phản sáng","High Contrast":"Tương phản cao","High Saturation":"Độ bão hòa cao","Low Saturation":"Độ bão hòa thấp","Monochrome":"Đơn sắc","Hidden Content":"Nội dung ẩn","Tools":"Công cụ","Reading Guide":"Hướng dẫn đọc","Stop Animations":"Dừng hoạt ảnh","Big Cursor":"Con trỏ lớn","Increase Font Size":"Tăng cỡ chữ","Decrease Font Size":"Giảm cỡ chữ","Letter Spacing":"Khoảng cách chữ","Line Height":"Chiều cao dòng","Font Weight":"Độ đậm phông chữ","Dyslexia Font":"Phông chữ cho chứng khó đọc","Language":"Ngôn ngữ","Open Accessibility Menu":"Mở menu trợ năng" }'
+        '{ "Accessibility Menu":"Menu trợ năng","Reset settings":"Đặt lại cài đặt","Close":"Đóng","Content Adjustments":"Điều chỉnh nội dung","Adjust Font Size":"Điều chỉnh cỡ chữ","Highlight Title":"Làm nổi bật tiêu đề","Highlight Links":"Làm nổi bật liên kết","Readable Font":"Phông chữ dễ đọc","Color Adjustments":"Điều chỉnh màu sắc","Dark Contrast":"Tương phản tối","Light Contrast":"Tương phản sáng","High Contrast":"Tương phản cao","High Saturation":"Độ bão hòa cao","Low Saturation":"Độ bão hòa thấp","Monochrome":"Đơn sắc","Hidden Content":"Nội dung ẩn","Tools":"Công cụ","Reading Guide":"Hướng dẫn đọc","Stop Animations":"Dừng hoạt ảnh","Big Cursor":"Con trỏ lớn","Increase Font Size":"Tăng cỡ chữ","Decrease Font Size":"Giảm cỡ chữ","Letter Spacing":"Khoảng cách chữ","Line Height":"Chiều cao dòng","Font Weight":"Độ đậm phông chữ","Dyslexia Font":"Phông chữ cho chứng khó đọc","Language":"Ngôn ngữ","Open Accessibility Menu":"Mở menu trợ năng","Page Structure":"Cấu trúc trang" }'
       ),
     },
     _ = [
@@ -1036,12 +1031,266 @@
               r((i = Number(i.toFixed(2))) || 1),
               n({ fontSize: i });
           });
-        }),
-      p.querySelectorAll(".asw-btn").forEach(function (t) {
+        }),      p.querySelectorAll(".asw-btn").forEach(function (t) {
         t.addEventListener("click", function () {
           var e,
             i = t.dataset.key,
-            a = !t.classList.contains("asw-selected");
+            a = !t.classList.contains("asw-selected");            if (i === "page-structure") {
+            // Handle page structure modal with enhanced tabbed interface
+            if (document.getElementById('page-structure-modal')) {
+              document.getElementById('page-structure-modal').remove();
+              t.classList.remove("asw-selected");
+              return;
+            }
+            
+            var modal = document.createElement('div');
+            modal.id = 'page-structure-modal';
+            modal.style.cssText = 'position:fixed;top:0;right:0;width:30%;height:100%;background:#fff;border-left:2px solid #ccc;overflow:hidden;z-index:500001;box-shadow:-5px 0 15px rgba(0,0,0,0.2);font-family:inherit;display:flex;flex-direction:column;';
+            
+            var header = document.createElement('div');
+            header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:2px solid #eff1f5;flex-shrink:0;';
+            header.innerHTML = '<h2 style="margin:0;color:#0848ca;font-size:18px;">Page Structure</h2><button id="close-page-structure" style="background:#0848ca;color:white;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;">Close</button>';
+            modal.appendChild(header);
+            
+            // Tab navigation
+            var tabNav = document.createElement('div');
+            tabNav.style.cssText = 'display:flex;background:#f8f9fa;border-bottom:1px solid #dee2e6;flex-shrink:0;';
+            tabNav.innerHTML = '<button class="ps-tab-btn active" data-tab="headings" style="flex:1;padding:12px;border:none;background:transparent;cursor:pointer;font-weight:600;color:#0848ca;border-bottom:2px solid #0848ca;">📋 Headings</button>' +
+                               '<button class="ps-tab-btn" data-tab="landmarks" style="flex:1;padding:12px;border:none;background:transparent;cursor:pointer;font-weight:600;color:#6c757d;border-bottom:2px solid transparent;">🏛️ Landmarks</button>' +
+                               '<button class="ps-tab-btn" data-tab="links" style="flex:1;padding:12px;border:none;background:transparent;cursor:pointer;font-weight:600;color:#6c757d;border-bottom:2px solid transparent;">🔗 Links</button>';
+            modal.appendChild(tabNav);
+            
+            var content = document.createElement('div');
+            content.id = 'page-structure-content';
+            content.style.cssText = 'flex:1;overflow-y:auto;padding:20px;';
+            modal.appendChild(content);
+            
+            // Helper function to create clickable items that scroll to elements
+            function createClickableItem(element, text, icon, description) {
+              var item = document.createElement('div');
+              item.style.cssText = 'padding:12px;margin:8px 0;background:#f8f9fa;border-radius:8px;cursor:pointer;transition:all 0.2s;border-left:4px solid #0848ca;position:relative;';
+              
+              var mainContent = '<div style="display:flex;align-items:flex-start;gap:10px;">';
+              mainContent += '<span style="color:#0848ca;font-size:16px;flex-shrink:0;">' + icon + '</span>';
+              mainContent += '<div style="flex:1;min-width:0;">';
+              mainContent += '<div style="font-weight:600;color:#212529;margin-bottom:4px;word-break:break-word;">' + text + '</div>';
+              if (description) {
+                mainContent += '<div style="font-size:12px;color:#6c757d;word-break:break-word;">' + description + '</div>';
+              }
+              mainContent += '</div></div>';
+              
+              item.innerHTML = mainContent;
+              
+              item.addEventListener('click', function() {
+                element.scrollIntoView({behavior: 'smooth', block: 'center'});
+                element.style.outline = '3px solid #0848ca';
+                element.style.outlineOffset = '2px';
+                setTimeout(function() {
+                  element.style.outline = '';
+                  element.style.outlineOffset = '';
+                }, 3000);
+              });
+              
+              item.addEventListener('mouseenter', function() {
+                this.style.background = '#e9ecef';
+                this.style.transform = 'translateX(4px)';
+              });
+              
+              item.addEventListener('mouseleave', function() {
+                this.style.background = '#f8f9fa';
+                this.style.transform = 'translateX(0)';
+              });
+              
+              return item;
+            }
+            
+            function showTab(tabName) {
+              // Update tab buttons
+              var tabBtns = modal.querySelectorAll('.ps-tab-btn');
+              tabBtns.forEach(function(btn) {
+                if (btn.dataset.tab === tabName) {
+                  btn.style.color = '#0848ca';
+                  btn.style.borderBottomColor = '#0848ca';
+                  btn.classList.add('active');
+                } else {
+                  btn.style.color = '#6c757d';
+                  btn.style.borderBottomColor = 'transparent';
+                  btn.classList.remove('active');
+                }
+              });
+              
+              // Clear content
+              content.innerHTML = '';
+              
+              if (tabName === 'headings') {
+                var headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                if (headings.length > 0) {
+                  headings.forEach(function(heading) {
+                    var level = heading.tagName.toLowerCase();
+                    var text = heading.textContent.trim() || 'Empty heading';
+                    var shortText = text.length > 50 ? text.substring(0, 50) + '...' : text;
+                    var item = createClickableItem(heading, level.toUpperCase() + ': ' + shortText, '📝', text.length > 50 ? text : null);
+                    content.appendChild(item);
+                  });
+                } else {
+                  content.innerHTML = '<div style="text-align:center;color:#6c757d;margin-top:40px;"><p>No headings found on this page</p></div>';
+                }
+              } else if (tabName === 'landmarks') {
+                // Comprehensive landmark detection - includes all sections, divs, and ARIA landmarks
+                var landmarkSelectors = [
+                  'main', 'nav', 'header', 'footer', 'aside', 'section', 'article', 'form', 'div',
+                  '[role="banner"]', '[role="navigation"]', '[role="main"]', '[role="contentinfo"]', 
+                  '[role="complementary"]', '[role="region"]', '[role="search"]', '[role="form"]', 
+                  '[role="application"]', '[role="document"]'
+                ];
+                
+                var allElements = document.querySelectorAll(landmarkSelectors.join(', '));
+                var landmarkItems = [];
+                
+                allElements.forEach(function(element) {
+                  // Skip script, style, and hidden elements
+                  if (element.tagName.toLowerCase() === 'script' || 
+                      element.tagName.toLowerCase() === 'style' ||
+                      element.style.display === 'none' || 
+                      element.hidden) {
+                    return;
+                  }
+                  
+                  var role = element.getAttribute('role') || element.tagName.toLowerCase();
+                  var label = element.getAttribute('aria-label') || element.getAttribute('aria-labelledby') || element.getAttribute('title') || element.id || '';
+                  
+                  var displayName = role.charAt(0).toUpperCase() + role.slice(1);
+                  var description = '';
+                  
+                  // Enhanced descriptions based on element type
+                  if (role === 'main' || element.tagName.toLowerCase() === 'main') {
+                    displayName = 'Main Content';
+                    description = 'Primary content area of the page';
+                  } else if (role === 'navigation' || element.tagName.toLowerCase() === 'nav') {
+                    displayName = 'Navigation';
+                    description = label || 'Navigation menu or links';
+                  } else if (role === 'banner' || element.tagName.toLowerCase() === 'header') {
+                    displayName = 'Header/Banner';
+                    description = label || 'Page header or banner area';
+                  } else if (role === 'contentinfo' || element.tagName.toLowerCase() === 'footer') {
+                    displayName = 'Footer';
+                    description = label || 'Page footer information';
+                  } else if (element.tagName.toLowerCase() === 'aside') {
+                    displayName = 'Aside/Sidebar';
+                    description = label || 'Supplementary content';
+                  } else if (element.tagName.toLowerCase() === 'section') {
+                    displayName = 'Section';
+                    description = label || 'Thematic grouping of content';
+                    // Try to get some content preview for sections
+                    var textContent = element.textContent.trim();
+                    if (textContent.length > 0) {
+                      description += ' - ' + textContent.substring(0, 50) + (textContent.length > 50 ? '...' : '');
+                    }
+                  } else if (element.tagName.toLowerCase() === 'article') {
+                    displayName = 'Article';
+                    description = label || 'Standalone piece of content';
+                  } else if (element.tagName.toLowerCase() === 'form' || role === 'form') {
+                    displayName = 'Form';
+                    description = label || 'Interactive form element';
+                  } else if (element.tagName.toLowerCase() === 'div') {
+                    // Only include divs with semantic meaning
+                    if (role && role !== 'div') {
+                      displayName = 'Div (' + role + ')';
+                      description = label || 'Container with ' + role + ' role';
+                    } else if (label) {
+                      displayName = 'Div';
+                      description = label;
+                    } else {
+                      // Skip unlabeled divs without roles
+                      return;
+                    }
+                  }
+                  
+                  if (label && !description.includes(label)) {
+                    if (displayName.includes(':')) {
+                      displayName = displayName.split(':')[0] + ': ' + label;
+                    } else {
+                      displayName += ': ' + label;
+                    }
+                  }
+                  
+                  landmarkItems.push({
+                    element: element,
+                    name: displayName,
+                    description: description,
+                    tagName: element.tagName.toLowerCase()
+                  });
+                });
+                
+                if (landmarkItems.length > 0) {
+                  // Sort landmarks by document order
+                  landmarkItems.sort(function(a, b) {
+                    return a.element.compareDocumentPosition(b.element) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+                  });
+                  
+                  landmarkItems.forEach(function(landmarkItem) {
+                    var icon = '🏛️';
+                    if (landmarkItem.tagName === 'nav') icon = '🧭';
+                    else if (landmarkItem.tagName === 'header') icon = '📰';
+                    else if (landmarkItem.tagName === 'footer') icon = '📄';
+                    else if (landmarkItem.tagName === 'main') icon = '📋';
+                    else if (landmarkItem.tagName === 'aside') icon = '📌';
+                    else if (landmarkItem.tagName === 'section') icon = '📦';
+                    else if (landmarkItem.tagName === 'article') icon = '📝';
+                    else if (landmarkItem.tagName === 'form') icon = '📝';
+                    else if (landmarkItem.tagName === 'div') icon = '📋';
+                    
+                    var item = createClickableItem(landmarkItem.element, landmarkItem.name, icon, landmarkItem.description);
+                    content.appendChild(item);
+                  });
+                } else {
+                  content.innerHTML = '<div style="text-align:center;color:#6c757d;margin-top:40px;"><p>No landmarks found on this page</p></div>';
+                }
+              } else if (tabName === 'links') {
+                var links = document.querySelectorAll('a[href]');
+                if (links.length > 0) {
+                  links.forEach(function(link) {
+                    var text = link.textContent.trim() || link.getAttribute('aria-label') || link.getAttribute('title') || link.href;
+                    var shortText = text.length > 40 ? text.substring(0, 40) + '...' : text;
+                    var isExternal = link.hostname && link.hostname !== window.location.hostname;
+                    var icon = isExternal ? '🔗' : '🔗';
+                    var description = isExternal ? 'External link: ' + link.href : 'Internal link: ' + link.href;
+                    
+                    if (link.getAttribute('aria-label')) {
+                      description = 'Aria-label: ' + link.getAttribute('aria-label') + ' | ' + description;
+                    }
+                    
+                    var item = createClickableItem(link, shortText, icon, description);
+                    content.appendChild(item);
+                  });
+                } else {
+                  content.innerHTML = '<div style="text-align:center;color:#6c757d;margin-top:40px;"><p>No links found on this page</p></div>';
+                }
+              }
+            }
+            
+            // Tab click handlers
+            tabNav.addEventListener('click', function(e) {
+              if (e.target.classList.contains('ps-tab-btn')) {
+                showTab(e.target.dataset.tab);
+              }
+            });
+            
+            document.body.appendChild(modal);
+            t.classList.add("asw-selected");
+            
+            // Show default tab
+            showTab('headings');
+            
+            // Close button handler
+            document.getElementById('close-page-structure').addEventListener('click', function() {
+              modal.remove();
+              t.classList.remove("asw-selected");
+            });
+            
+            return;
+          }
+          
           t.classList.contains("asw-filter")
             ? (p.querySelectorAll(".asw-filter").forEach(function (t) {
                 t.classList.remove("asw-selected");
