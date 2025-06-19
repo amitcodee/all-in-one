@@ -1315,27 +1315,46 @@
               n({ contrast: a ? i : null }),
               a && t.classList.add("asw-selected"),
               w())
-            : (function() {
-                // Handle 3-level toggle for letter-spacing and line-height
+            : (function() {                // Handle 3-level toggle for letter-spacing and line-height
                 if (i === "letter-spacing" || i === "line-height") {
                   var currentLevel = o(i) || 0;
                   var nextLevel = (currentLevel + 1) % 4; // 0, 1, 2, 3, then back to 0
                   
                   // Update button appearance based on level
                   t.classList.remove("asw-selected", "asw-level-1", "asw-level-2", "asw-level-3");
+                  
+                  // Remove existing level indicators
+                  var existingIndicator = t.querySelector('.level-indicator');
+                  var existingDashes = t.querySelector('.level-dashes');
+                  if (existingIndicator) existingIndicator.remove();
+                  if (existingDashes) existingDashes.remove();
+                  
                   if (nextLevel > 0) {
                     t.classList.add("asw-selected", "asw-level-" + nextLevel);
-                    // Add level indicator
-                    var indicator = t.querySelector('.level-indicator') || document.createElement('span');
-                    indicator.className = 'level-indicator';
-                    indicator.style.cssText = 'position:absolute;top:5px;right:5px;background:#0848ca;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:bold;';
-                    indicator.textContent = nextLevel;
-                    if (!t.querySelector('.level-indicator')) {
-                      t.appendChild(indicator);
+                    
+                    // Create 3-dash indicator inside the button
+                    var dashContainer = document.createElement('div');
+                    dashContainer.className = 'level-dashes';
+                    dashContainer.style.cssText = 'position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:3px;align-items:center;justify-content:center;';
+                    
+                    // Create 3 dashes
+                    for (var dashIndex = 1; dashIndex <= 3; dashIndex++) {
+                      var dash = document.createElement('div');
+                      dash.style.cssText = 'width:8px;height:2px;border-radius:1px;transition:background-color 0.3s ease;';
+                      
+                      // Color the dash based on current level
+                      if (dashIndex <= nextLevel) {
+                        // Active dash - blue color
+                        dash.style.backgroundColor = '#0848ca';
+                      } else {
+                        // Inactive dash - light gray
+                        dash.style.backgroundColor = '#dee2e6';
+                      }
+                      
+                      dashContainer.appendChild(dash);
                     }
-                  } else {
-                    var indicator = t.querySelector('.level-indicator');
-                    if (indicator) indicator.remove();
+                    
+                    t.appendChild(dashContainer);
                   }
                   
                   n((((e = {})[i] = nextLevel), e));
@@ -1405,12 +1424,30 @@
               var level = m.states[S];
               if (level > 0) {
                 buttonElement.classList.add("asw-selected", "asw-level-" + level);
-                // Add level indicator
-                var indicator = document.createElement('span');
-                indicator.className = 'level-indicator';
-                indicator.style.cssText = 'position:absolute;top:5px;right:5px;background:#0848ca;color:white;border-radius:50%;width:16px;height:16px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:bold;';
-                indicator.textContent = level;
-                buttonElement.appendChild(indicator);
+                
+                // Create 3-dash indicator inside the button
+                var dashContainer = document.createElement('div');
+                dashContainer.className = 'level-dashes';
+                dashContainer.style.cssText = 'position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:3px;align-items:center;justify-content:center;';
+                
+                // Create 3 dashes
+                for (var dashIndex = 1; dashIndex <= 3; dashIndex++) {
+                  var dash = document.createElement('div');
+                  dash.style.cssText = 'width:8px;height:2px;border-radius:1px;transition:background-color 0.3s ease;';
+                  
+                  // Color the dash based on current level
+                  if (dashIndex <= level) {
+                    // Active dash - blue color
+                    dash.style.backgroundColor = '#0848ca';
+                  } else {
+                    // Inactive dash - light gray
+                    dash.style.backgroundColor = '#dee2e6';
+                  }
+                  
+                  dashContainer.appendChild(dash);
+                }
+                
+                buttonElement.appendChild(dashContainer);
               }
             } else {
               // Regular boolean state
