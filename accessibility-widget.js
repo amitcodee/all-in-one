@@ -182,9 +182,99 @@
     ),
     b = {
       "dark-contrast": {
-        styles: { color: "#FFF", fill: "#FFF", "background-color": "#000" },
-        childrenSelector: ["", "*:not(.material-icons)"],
-        css: "html, body { background-color: #000 !important; color: #FFF !important; } body * { border-color: #FFF !important; } input, textarea, select { background-color: #000 !important; color: #FFF !important; border: 1px solid #FFF !important; } input::placeholder, textarea::placeholder { color: #CCC !important; } .asw-menu { background-color: #000 !important; color: #FFF !important; border-color: #FFF !important; } .asw-menu * { background-color: #000 !important; color: #FFF !important; } .asw-menu button { background-color: #000 !important; color: #FFF !important; border: 1px solid #FFF !important; } .asw-menu button:hover { background-color: #333 !important; } .asw-menu .asw-btn { background-color: #000 !important; color: #FFF !important; border-color: #FFF !important; } .asw-menu .asw-btn:hover { background-color: #333 !important; }",
+        styles: { color: "#e6edf3", fill: "#e6edf3", "background-color": "#0d1117" },
+        childrenSelector: ["", "*:not(.material-icons,.asw-menu,.asw-menu *,.asw-container,.asw-container *,.asw-widget,.asw-widget *,.asw-menu-btn,.asw-menu-btn *)"],
+        css: "html, body { background-color: #0d1117 !important; color: #e6edf3 !important; } " +
+          "body h1, body h2, body h3, body h4, body h5, body h6 { color: #ffffff !important; } " +
+          "body p, body span, body li, body td, body th, body dd, body dt, body label, body blockquote, body figcaption, body caption, body legend { color: #e6edf3 !important; } " +
+          "body *:not(.asw-container):not(.asw-container *):not(.asw-widget):not(.asw-widget *):not(.asw-menu):not(.asw-menu *):not(.asw-menu-btn):not(.asw-menu-btn *):not(.asw-rg):not(.asw-rg *):not(img):not(video):not(canvas):not(iframe):not(svg) { border-color: #30363d !important; } " +
+          "body a:not(.asw-menu a):not(.asw-container a):not(.asw-widget a):not(.asw-menu-btn) { color: #58a6ff !important; } " +
+          "body a:not(.asw-menu a):not(.asw-container a):not(.asw-widget a):not(.asw-menu-btn):hover { color: #79c0ff !important; } " +
+          "body a:not(.asw-menu a):not(.asw-container a):not(.asw-widget a):not(.asw-menu-btn):visited { color: #d2a8ff !important; } " +
+          "input:not(.asw-menu input):not(.asw-select), textarea:not(.asw-menu textarea), select:not(.asw-menu select):not(.asw-select) { background-color: #161b22 !important; color: #e6edf3 !important; border: 1px solid #30363d !important; } " +
+          "input:not(.asw-menu input):focus, textarea:not(.asw-menu textarea):focus, select:not(.asw-menu select):not(.asw-select):focus { border-color: #58a6ff !important; box-shadow: 0 0 0 3px rgba(88,166,255,0.3) !important; outline: none !important; } " +
+          "input::placeholder, textarea::placeholder { color: #484f58 !important; } " +
+          "button:not(.asw-btn):not(.asw-menu button):not(.asw-menu-btn):not(.asw-container button):not(.asw-widget button), input[type='submit'], input[type='button'], input[type='reset'] { background-color: #21262d !important; color: #e6edf3 !important; border: 1px solid #30363d !important; } " +
+          "button:not(.asw-btn):not(.asw-menu button):not(.asw-menu-btn):not(.asw-container button):not(.asw-widget button):hover { background-color: #30363d !important; border-color: #58a6ff !important; } " +
+          "table:not(.asw-menu table) { border-color: #30363d !important; } " +
+          "th:not(.asw-menu th) { background-color: #161b22 !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          "td:not(.asw-menu td) { background-color: #0d1117 !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          "tr:not(.asw-menu tr):nth-child(even) td { background-color: #161b22 !important; } " +
+          "pre:not(.asw-menu pre), code:not(.asw-menu code) { background-color: #161b22 !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          ".card:not(.asw-card), [class*='card']:not(.asw-card):not([class*='asw-']) { background-color: #161b22 !important; border-color: #30363d !important; } " +
+          ".modal-content, [class*='modal']:not(.asw-menu *):not([class*='asw-']) { background-color: #161b22 !important; border-color: #30363d !important; } " +
+          ".dropdown-menu, [class*='dropdown']:not(.asw-menu *):not([class*='asw-']) { background-color: #161b22 !important; border-color: #30363d !important; } " +
+          ".navbar, nav:not(.asw-menu nav), [class*='navbar'] { background-color: #161b22 !important; } " +
+          "header:not(.asw-menu header):not(.asw-menu-header) { background-color: #161b22 !important; } " +
+          "footer:not(.asw-menu footer) { background-color: #0d1117 !important; } " +
+          "aside, [class*='sidebar'] { background-color: #0d1117 !important; } " +
+          "img:not(.asw-menu img):not(.asw-container img):not(.asw-widget img):not(.asw-menu-btn img) { opacity: 0.88 !important; transition: opacity 0.2s ease !important; } " +
+          "img:not(.asw-menu img):not(.asw-container img):not(.asw-widget img):not(.asw-menu-btn img):hover { opacity: 1 !important; } " +
+          "svg:not(.asw-menu svg):not(.asw-container svg):not(.asw-widget svg):not(.asw-menu-btn svg) { fill: #e6edf3 !important; } " +
+          "hr { border-color: #30363d !important; background-color: #30363d !important; } " +
+          "blockquote { border-left: 4px solid #58a6ff !important; background-color: #161b22 !important; color: #e6edf3 !important; } " +
+          "::selection { background-color: #264f78 !important; color: #ffffff !important; } " +
+          "::-moz-selection { background-color: #264f78 !important; color: #ffffff !important; } " +
+          "*::-webkit-scrollbar { width: 8px !important; height: 8px !important; } " +
+          "*::-webkit-scrollbar-track { background: #0d1117 !important; } " +
+          "*::-webkit-scrollbar-thumb { background: #30363d !important; border-radius: 4px !important; } " +
+          "*::-webkit-scrollbar-thumb:hover { background: #484f58 !important; } " +
+          "*::-webkit-scrollbar-corner { background: #0d1117 !important; } " +
+          "li:not(.asw-menu li)::marker { color: #58a6ff !important; } " +
+          ".badge:not(.asw-menu .badge), .tag:not(.asw-menu .tag), .chip:not(.asw-menu .chip), .pill:not(.asw-menu .pill) { background-color: #21262d !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          ".alert:not(.asw-menu .alert) { background-color: #161b22 !important; border-color: #30363d !important; color: #e6edf3 !important; } " +
+          "[class*='tooltip']:not(.asw-menu *):not([class*='asw-']) { background-color: #21262d !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          "details { border-color: #30363d !important; } summary { color: #e6edf3 !important; } " +
+          ".breadcrumb:not(.asw-menu *), [class*='breadcrumb']:not(.asw-menu *) { background-color: #161b22 !important; } " +
+          ".pagination:not(.asw-menu *) a, .pagination:not(.asw-menu *) span, [class*='pagination']:not(.asw-menu *) a { background-color: #21262d !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          ".pagination:not(.asw-menu *) .active a, [class*='pagination']:not(.asw-menu *) .active a { background-color: #58a6ff !important; color: #ffffff !important; } " +
+          "[class*='progress']:not(.asw-menu *):not([class*='asw-']) { background-color: #21262d !important; } " +
+          "[class*='progress-bar']:not(.asw-menu *):not([class*='asw-']) { background-color: #58a6ff !important; } " +
+          "::placeholder { color: #484f58 !important; } " +
+          ".form-control:not(.asw-menu *), .form-select:not(.asw-menu *) { background-color: #161b22 !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          ".form-control:not(.asw-menu *):focus, .form-select:not(.asw-menu *):focus { border-color: #58a6ff !important; box-shadow: 0 0 0 3px rgba(88,166,255,0.3) !important; } " +
+          ".list-group-item:not(.asw-menu *) { background-color: #161b22 !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          ".list-group-item:not(.asw-menu *):hover { background-color: #21262d !important; } " +
+          ".accordion:not(.asw-menu *) .accordion-item { background-color: #161b22 !important; border-color: #30363d !important; } " +
+          ".accordion:not(.asw-menu *) .accordion-button { background-color: #21262d !important; color: #e6edf3 !important; } " +
+          ".accordion:not(.asw-menu *) .accordion-button:not(.collapsed) { background-color: #1a2332 !important; color: #58a6ff !important; } " +
+          ".tab-content:not(.asw-menu *), .nav-tabs:not(.asw-menu *) .nav-link { background-color: #161b22 !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          ".nav-tabs:not(.asw-menu *) .nav-link.active { background-color: #0d1117 !important; color: #58a6ff !important; border-bottom-color: #0d1117 !important; } " +
+          ".offcanvas:not(.asw-menu *), .offcanvas-backdrop { background-color: #161b22 !important; } " +
+          ".popover:not(.asw-menu *) { background-color: #21262d !important; border-color: #30363d !important; } " +
+          ".popover:not(.asw-menu *) .popover-body { color: #e6edf3 !important; } " +
+          ".toast:not(.asw-menu *) { background-color: #21262d !important; color: #e6edf3 !important; border-color: #30363d !important; } " +
+          ".asw-menu { background-color: #161b22 !important; color: #e6edf3 !important; border-color: #30363d !important; box-shadow: 0 0 40px rgba(0,0,0,0.6) !important; } " +
+          ".asw-menu * { color: #e6edf3 !important; } " +
+          ".asw-menu-header { background: linear-gradient(135deg, #0d1117 0%, #161b22 100%) !important; border-bottom: 1px solid #30363d !important; } " +
+          ".asw-menu-title { color: #ffffff !important; } " +
+          ".asw-menu-header div[role='button'] { background-color: #21262d !important; border: 1px solid #30363d !important; } " +
+          ".asw-menu-header div[role='button']:hover { background-color: #30363d !important; } " +
+          ".asw-menu-header svg { fill: #58a6ff !important; } " +
+          ".asw-menu-content { background-color: #161b22 !important; } " +
+          ".asw-card-title { color: #8b949e !important; } " +
+          ".asw-btn { background-color: #21262d !important; color: #e6edf3 !important; border: 2px solid #30363d !important; transition: all 0.2s ease !important; } " +
+          ".asw-btn:hover { border-color: #58a6ff !important; background-color: #262c36 !important; transform: translateY(-1px) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; } " +
+          ".asw-btn.asw-selected { border-color: #58a6ff !important; background-color: #1a2332 !important; box-shadow: 0 0 0 1px #58a6ff, 0 4px 16px rgba(88,166,255,0.15) !important; } " +
+          ".asw-btn.asw-selected span, .asw-btn.asw-selected svg { fill: #58a6ff !important; color: #58a6ff !important; } " +
+          ".asw-btn.asw-selected:after { background-color: #58a6ff !important; color: #fff !important; } " +
+          ".asw-btn svg { fill: #8b949e !important; } " +
+          ".asw-btn:hover svg { fill: #e6edf3 !important; } " +
+          ".asw-btn span { color: #e6edf3 !important; } " +
+          ".asw-adjust-font { background-color: #21262d !important; border: 1px solid #30363d !important; border-radius: 12px !important; } " +
+          ".asw-adjust-font * { color: #e6edf3 !important; } " +
+          ".asw-adjust-font svg { fill: #8b949e !important; } " +
+          ".asw-amount { color: #58a6ff !important; } " +
+          ".asw-minus, .asw-plus { background-color: #30363d !important; border: 1px solid #30363d !important; transition: all 0.2s ease !important; } " +
+          ".asw-minus:hover, .asw-plus:hover { border-color: #58a6ff !important; background-color: #3d444d !important; } " +
+          ".asw-minus svg, .asw-plus svg { fill: #e6edf3 !important; } " +
+          ".asw-select { background-color: #21262d !important; color: #e6edf3 !important; border: 1px solid #30363d !important; } " +
+          ".asw-select:focus { border-color: #58a6ff !important; box-shadow: 0 0 0 3px rgba(88,166,255,0.3) !important; } " +
+          ".asw-footer { background: linear-gradient(135deg, #0d1117 0%, #161b22 100%) !important; border-top: 1px solid #30363d !important; } " +
+          ".asw-footer a { color: #8b949e !important; } " +
+          ".asw-footer a:hover, .asw-footer a:hover span { color: #58a6ff !important; } " +
+          ".asw-footer a span { color: inherit !important; } " +
+          ".asw-overlay { background-color: rgba(0,0,0,0.5) !important; backdrop-filter: blur(4px) !important; }",
       },
       "light-contrast": {
         styles: { color: "#000", fill: "#000", "background-color": "#FFF" },
@@ -327,10 +417,10 @@
       id: "highlight-title",
       selector: "html",
       childrenSelector: m,
-      styles: { outline: "2px solid #0048ff", "outline-offset": "2px" },
+      styles: { outline: "3px solid #0848ca", "outline-offset": "4px", "border-radius": "4px" },
     };
   const H =
-    '<style>.asw-rg{position:fixed;top:0;left:0;right:0;width:100%;height:0;pointer-events:none;background-color:rgba(0,0,0,.8);z-index:1000000}</style> <div class="asw-rg asw-rg-top"></div> <div class="asw-rg asw-rg-bottom" style="top:auto;bottom:0"></div>';
+    '<style>.asw-rg{position:fixed;top:0;left:0;right:0;width:100%;height:0;pointer-events:none;background-color:rgba(0,0,0,.75);z-index:1000000;transition:height 0.08s ease}.asw-rg-top{border-bottom:2px solid rgba(8,72,202,0.6)}.asw-rg-bottom{border-top:2px solid rgba(8,72,202,0.6)}</style> <div class="asw-rg asw-rg-top"></div> <div class="asw-rg asw-rg-bottom" style="top:auto;bottom:0"></div>';
   var z = function () {
       return (
         (z =
@@ -348,7 +438,7 @@
       id: "highlight-links",
       selector: "html",
       childrenSelector: ["a[href]"],
-      styles: { outline: "2px solid #0048ff", "outline-offset": "2px" },
+      styles: { outline: "3px solid #0848ca", "outline-offset": "4px", "border-radius": "4px" },
     };
   var M = function () {
       return (
@@ -408,229 +498,289 @@
       selector: "html",
       childrenSelector: p,
       styles: { "font-weight": "700" },
-    }; // Read on Click Feature - Enhanced with tag information
+    };
+
+  // ── Read on Click Feature ── Premium with female voice, visual highlight & speech bubble
   function enableReadOnClick(enabled) {
     if (enabled === undefined) enabled = false;
 
     if (enabled) {
       if (!window.__asw__readOnClickHandler) {
-        // Initialize voices on first load to avoid double-click issue
+        // Preload voices early so first click works instantly
+        window.__asw__femaleVoice = null;
         if (window.speechSynthesis) {
-          window.speechSynthesis.getVoices();
-          // Wait for voices to load if they haven't already
+          function pickFemaleVoice() {
+            var voices = window.speechSynthesis.getVoices();
+            if (!voices.length) return;
+            // Priority order for natural female voices
+            var femaleKeywords = ["female", "zira", "hazel", "susan", "samantha", "karen", "moira", "tessa", "fiona", "victoria", "alice", "ellen", "monica", "paulina", "kanya", "kyoko", "yuna", "lekha", "mei-jia", "sin-ji", "ting-ting", "Google UK English Female", "Google US English", "Microsoft Zira"];
+            var lang = (document.documentElement.lang || navigator.language || "en").toLowerCase();
+            // 1st pass: female keyword match in user's language
+            for (var k = 0; k < femaleKeywords.length; k++) {
+              for (var v = 0; v < voices.length; v++) {
+                if (voices[v].name.toLowerCase().indexOf(femaleKeywords[k].toLowerCase()) !== -1 && voices[v].lang.toLowerCase().indexOf(lang.substring(0, 2)) !== -1) {
+                  window.__asw__femaleVoice = voices[v]; return;
+                }
+              }
+            }
+            // 2nd pass: any female keyword match
+            for (var k2 = 0; k2 < femaleKeywords.length; k2++) {
+              for (var v2 = 0; v2 < voices.length; v2++) {
+                if (voices[v2].name.toLowerCase().indexOf(femaleKeywords[k2].toLowerCase()) !== -1) {
+                  window.__asw__femaleVoice = voices[v2]; return;
+                }
+              }
+            }
+            // 3rd pass: voices with higher pitch tendency (non-male names)
+            var maleKeywords = ["david", "mark", "james", "daniel", "george", "richard", "male"];
+            for (var v3 = 0; v3 < voices.length; v3++) {
+              var isMale = false;
+              for (var m = 0; m < maleKeywords.length; m++) {
+                if (voices[v3].name.toLowerCase().indexOf(maleKeywords[m]) !== -1) { isMale = true; break; }
+              }
+              if (!isMale && voices[v3].lang.toLowerCase().indexOf(lang.substring(0, 2)) !== -1) {
+                window.__asw__femaleVoice = voices[v3]; return;
+              }
+            }
+            // Fallback: first voice in user language, or first voice overall
+            for (var v4 = 0; v4 < voices.length; v4++) {
+              if (voices[v4].lang.toLowerCase().indexOf(lang.substring(0, 2)) !== -1) {
+                window.__asw__femaleVoice = voices[v4]; return;
+              }
+            }
+            window.__asw__femaleVoice = voices[0];
+          }
+          pickFemaleVoice();
           if (window.speechSynthesis.onvoiceschanged !== undefined) {
-            window.speechSynthesis.onvoiceschanged = function () {
-              // Voices are now loaded
-            };
+            window.speechSynthesis.onvoiceschanged = pickFemaleVoice;
+          }
+        }
+
+        // Inject speech bubble + highlight styles
+        var rocStyle = document.getElementById("asw-roc-style");
+        if (!rocStyle) {
+          rocStyle = document.createElement("style");
+          rocStyle.id = "asw-roc-style";
+          rocStyle.textContent =
+            ".asw-roc-highlight { outline: 3px solid #0848ca !important; outline-offset: 3px !important; border-radius: 4px; transition: outline 0.15s ease; }" +
+            ".asw-roc-bubble { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #0848ca 0%, #326cff 100%); color: #fff; padding: 12px 22px; border-radius: 50px; font-size: 14px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; z-index: 600000; box-shadow: 0 8px 32px rgba(8,72,202,0.35); display: flex; align-items: center; gap: 10px; pointer-events: none; animation: asw-bubble-in 0.3s ease; max-width: 90vw; }" +
+            ".asw-roc-bubble .asw-roc-wave { display: flex; align-items: center; gap: 2px; }" +
+            ".asw-roc-bubble .asw-roc-wave span { display: inline-block; width: 3px; background: #fff; border-radius: 2px; animation: asw-wave 0.6s ease-in-out infinite; }" +
+            ".asw-roc-bubble .asw-roc-wave span:nth-child(1) { height: 8px; animation-delay: 0s; }" +
+            ".asw-roc-bubble .asw-roc-wave span:nth-child(2) { height: 14px; animation-delay: 0.1s; }" +
+            ".asw-roc-bubble .asw-roc-wave span:nth-child(3) { height: 10px; animation-delay: 0.2s; }" +
+            ".asw-roc-bubble .asw-roc-wave span:nth-child(4) { height: 16px; animation-delay: 0.3s; }" +
+            ".asw-roc-bubble .asw-roc-wave span:nth-child(5) { height: 8px; animation-delay: 0.4s; }" +
+            ".asw-roc-bubble .asw-roc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60vw; }" +
+            "@keyframes asw-wave { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1.2); } }" +
+            "@keyframes asw-bubble-in { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }" +
+            "body.asw-roc-active { cursor: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%230848ca' opacity='0.15'/%3E%3Cpath d='M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z' fill='%230848ca'/%3E%3Cpath d='M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z' fill='%230848ca'/%3E%3C/svg%3E\") 16 16, pointer !important; }";
+          document.head.appendChild(rocStyle);
+        }
+        document.body.classList.add("asw-roc-active");
+
+        // Helper: show speech bubble
+        function showBubble(text) {
+          removeBubble();
+          var bubble = document.createElement("div");
+          bubble.className = "asw-roc-bubble";
+          bubble.id = "asw-roc-bubble";
+          var shortText = text.length > 80 ? text.substring(0, 80) + "..." : text;
+          bubble.innerHTML = '<div class="asw-roc-wave"><span></span><span></span><span></span><span></span><span></span></div><div class="asw-roc-text">' + shortText.replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</div>';
+          document.body.appendChild(bubble);
+        }
+        function removeBubble() {
+          var b = document.getElementById("asw-roc-bubble");
+          if (b) b.remove();
+        }
+
+        // Helper: highlight element
+        function highlightElement(el) {
+          clearHighlight();
+          el.classList.add("asw-roc-highlight");
+          window.__asw__highlightedEl = el;
+        }
+        function clearHighlight() {
+          if (window.__asw__highlightedEl) {
+            window.__asw__highlightedEl.classList.remove("asw-roc-highlight");
+            window.__asw__highlightedEl = null;
           }
         }
 
         window.__asw__readOnClickHandler = function (event) {
-          if (!event.target.closest(".asw-container")) {
-            // Play click sound first
-            try {
-              const audio = new Audio("click.mp3");
-              audio.volume = 0.5; // Moderate volume for click sound
-              audio
-                .play()
-                .catch((err) => console.warn("Click sound blocked:", err));
-            } catch (err) {
-              console.warn("Could not play click sound:", err);
-            }
+          if (event.target.closest(".asw-container") || event.target.closest(".asw-roc-bubble")) return;
 
-            const element = event.target;
-            const tagName = element.tagName.toLowerCase();
+          var element = event.target;
+          var tagName = element.tagName.toLowerCase();
 
-            // Get element description based on tag
-            let description = "";
-            switch (tagName) {
-              case "h1":
-              case "h2":
-              case "h3":
-              case "h4":
-              case "h5":
-              case "h6":
-                description = "Heading level " + tagName.charAt(1);
-                break;
-              case "a":
-                description = element.href ? "Link" : "Link";
-                break;
-              case "button":
-                description = "Button";
-                break;
-              case "img":
-                description = "Image";
-                break;
-              case "p":
-                description = "Paragraph";
-                break;
-              case "div":
-                description = "Section";
-                break;
-              case "span":
-                description = "Text span";
-                break;
-              case "li":
-                description = "List item";
-                break;
-              case "input":
-                const inputType = element.type || "text";
-                description = inputType + " input field";
-                break;
-              case "textarea":
-                description = "Text area";
-                break;
-              case "select":
-                description = "Dropdown menu";
-                break;
-              case "label":
-                description = "Form label";
-                break;
-              case "nav":
-                description = "Navigation";
-                break;
-              case "main":
-                description = "Main content";
-                break;
-              case "header":
-                description = "Header";
-                break;
-              case "footer":
-                description = "Footer";
-                break;
-              default:
-                description = "Element";
-            }
+          // Skip script/style/hidden elements
+          if (tagName === "script" || tagName === "style" || tagName === "noscript") return;
 
-            // Get text content
-            let text = element.innerText || element.textContent || "";
+          // Get element description based on tag
+          var description = "";
+          switch (tagName) {
+            case "h1": case "h2": case "h3": case "h4": case "h5": case "h6":
+              description = "Heading level " + tagName.charAt(1); break;
+            case "a": description = "Link"; break;
+            case "button": description = "Button"; break;
+            case "img": description = "Image"; break;
+            case "p": description = "Paragraph"; break;
+            case "div": description = "Section"; break;
+            case "span": description = "Text"; break;
+            case "li": description = "List item"; break;
+            case "input":
+              var iType = element.type || "text";
+              if (iType === "checkbox") description = (element.checked ? "Checked " : "Unchecked ") + "checkbox";
+              else if (iType === "radio") description = (element.checked ? "Selected " : "Unselected ") + "radio button";
+              else description = iType + " input field";
+              break;
+            case "textarea": description = "Text area"; break;
+            case "select": description = "Dropdown menu"; break;
+            case "label": description = "Label"; break;
+            case "nav": description = "Navigation"; break;
+            case "main": description = "Main content"; break;
+            case "header": description = "Page header"; break;
+            case "footer": description = "Page footer"; break;
+            case "table": description = "Table"; break;
+            case "tr": description = "Table row"; break;
+            case "td": case "th": description = "Table cell"; break;
+            case "video": description = "Video player"; break;
+            case "audio": description = "Audio player"; break;
+            case "figure": description = "Figure"; break;
+            case "figcaption": description = "Figure caption"; break;
+            case "blockquote": description = "Block quote"; break;
+            case "code": case "pre": description = "Code block"; break;
+            case "details": description = "Details section"; break;
+            case "summary": description = "Summary"; break;
+            case "dialog": description = "Dialog"; break;
+            default: description = "Element";
+          }
 
-            // For images, get alt text
-            if (tagName === "img") {
-              text = element.alt || "Image with no description";
-            }
-            // For links, handle specially to announce then navigate
-            if (tagName === "a" && element.href) {
-              event.preventDefault(); // Prevent immediate navigation
-              const linkText = text.trim() || "Link";
-              text = linkText;
-
-              // We'll handle navigation after speech
-              window.__asw__linkToNavigate = element.href;
-              window.__asw__isLink = true;
-            }
-
-            // For form elements, include labels
-            if (["input", "textarea", "select"].includes(tagName)) {
-              const label =
-                document.querySelector(`label[for="${element.id}"]`) ||
-                element.closest("label") ||
-                element.previousElementSibling;
-              if (label && label.tagName.toLowerCase() === "label") {
-                const labelText = label.innerText || label.textContent || "";
-                text =
-                  labelText +
-                  ", " +
-                  description +
-                  (text ? ", value: " + text : "");
-              } else {
-                text = description + (text ? ", value: " + text : "");
+          // Gather text content
+          var text = "";
+          if (tagName === "img") {
+            text = element.alt || element.title || "Image with no description";
+          } else if (tagName === "input") {
+            text = element.value || element.placeholder || "";
+          } else if (tagName === "select") {
+            var opt = element.options[element.selectedIndex];
+            text = opt ? opt.text : "";
+          } else {
+            // Get only direct text, not deeply nested children text (to avoid reading huge blocks)
+            var directText = "";
+            for (var ci = 0; ci < element.childNodes.length; ci++) {
+              if (element.childNodes[ci].nodeType === 3) {
+                directText += element.childNodes[ci].textContent;
               }
+            }
+            text = directText.trim() || element.innerText || element.textContent || "";
+            // Limit text length for speech
+            if (text.length > 300) text = text.substring(0, 300) + "... and more";
+          }
+
+          // For links, announce then navigate after speech
+          if (tagName === "a" && element.href) {
+            event.preventDefault();
+            text = (text.trim() || "Link") ;
+            window.__asw__linkToNavigate = element.href;
+            window.__asw__isLink = true;
+          }
+
+          // For form elements, include labels
+          if (["input", "textarea", "select"].includes(tagName)) {
+            var formLabel = element.id ? document.querySelector('label[for="' + element.id + '"]') : null;
+            if (!formLabel) formLabel = element.closest("label") || element.previousElementSibling;
+            if (formLabel && formLabel.tagName && formLabel.tagName.toLowerCase() === "label") {
+              var labelText = formLabel.innerText || formLabel.textContent || "";
+              text = labelText + ", " + description + (text ? ", value: " + text : "");
             } else {
-              text = text.trim();
+              text = description + (text ? ", value: " + text : "");
             }
+          } else {
+            text = text.trim();
+          }
 
-            // Create full message
-            let fullMessage = description;
-            if (text) {
-              fullMessage += ": " + text;
-            }
+          // Build full message
+          var fullMessage = description;
+          if (text) fullMessage += ": " + text;
 
-            // Use system speech synthesis directly with delay for click sound
-            if (fullMessage.trim()) {
-              setTimeout(function () {
-                if (window.speechSynthesis) {
-                  window.speechSynthesis.cancel();
+          if (!fullMessage.trim()) return;
 
-                  // Create speech utterance
-                  const utterance = new SpeechSynthesisUtterance(fullMessage);
+          // Visual feedback: highlight element + show bubble
+          highlightElement(element);
+          showBubble(fullMessage);
 
-                  // Set speech properties for better audibility
-                  utterance.rate = 0.9; // Slightly slower for clarity
-                  utterance.pitch = 1.0; // Normal pitch
-                  utterance.volume = 1.0; // Maximum volume
-                  // Use system default voice - get voices again to ensure they're loaded
-                  const voices = window.speechSynthesis.getVoices();
-                  if (voices.length > 0) {
-                    // Try to find the default system voice or use the first available
-                    const defaultVoice =
-                      voices.find((voice) => voice.default) || voices[0];
-                    utterance.voice = defaultVoice;
+          // Speak with female voice
+          if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            var utterance = new SpeechSynthesisUtterance(fullMessage);
+            utterance.rate = 0.92;
+            utterance.pitch = 1.1; // Slightly higher pitch for clarity
+            utterance.volume = 1.0;
+
+            // Apply preloaded female voice
+            if (window.__asw__femaleVoice) {
+              utterance.voice = window.__asw__femaleVoice;
+            } else {
+              // Retry voice selection
+              var voices = window.speechSynthesis.getVoices();
+              if (voices.length > 0) {
+                var femaleNames = ["zira", "hazel", "susan", "samantha", "karen", "female", "Google UK English Female"];
+                var picked = null;
+                for (var fi = 0; fi < femaleNames.length && !picked; fi++) {
+                  for (var vi = 0; vi < voices.length; vi++) {
+                    if (voices[vi].name.toLowerCase().indexOf(femaleNames[fi].toLowerCase()) !== -1) { picked = voices[vi]; break; }
                   }
-
-                  // Add event handler to navigate to link after speech ends
-                  utterance.onend = function () {
-                    if (window.__asw__linkToNavigate && window.__asw__isLink) {
-                      // Small delay to ensure speech has fully completed
-                      setTimeout(function () {
-                        try {
-                          window.location.href = window.__asw__linkToNavigate;
-                        } catch (error) {
-                          console.warn("Failed to navigate to link:", error);
-                          // Fallback: try opening in new tab
-                          window.open(window.__asw__linkToNavigate, "_blank");
-                        }
-                        // Clean up the stored link
-                        delete window.__asw__linkToNavigate;
-                        delete window.__asw__isLink;
-                      }, 100);
-                    }
-                  };
-
-                  // Handle speech errors
-                  utterance.onerror = function (event) {
-                    console.warn("Speech synthesis error:", event);
-                    // Still navigate to link even if speech fails
-                    if (window.__asw__linkToNavigate && window.__asw__isLink) {
-                      setTimeout(function () {
-                        try {
-                          window.location.href = window.__asw__linkToNavigate;
-                        } catch (error) {
-                          window.open(window.__asw__linkToNavigate, "_blank");
-                        }
-                        delete window.__asw__linkToNavigate;
-                        delete window.__asw__isLink;
-                      }, 100);
-                    }
-                  };
-
-                  // Speak the text
-                  window.speechSynthesis.speak(utterance);
                 }
-              }, 100); // Small delay to let click sound play first
+                utterance.voice = picked || voices[0];
+              }
             }
+
+            utterance.onend = function () {
+              clearHighlight();
+              removeBubble();
+              if (window.__asw__linkToNavigate && window.__asw__isLink) {
+                setTimeout(function () {
+                  try { window.location.href = window.__asw__linkToNavigate; }
+                  catch (err) { window.open(window.__asw__linkToNavigate, "_blank"); }
+                  delete window.__asw__linkToNavigate;
+                  delete window.__asw__isLink;
+                }, 150);
+              }
+            };
+            utterance.onerror = function () {
+              clearHighlight();
+              removeBubble();
+              if (window.__asw__linkToNavigate && window.__asw__isLink) {
+                setTimeout(function () {
+                  try { window.location.href = window.__asw__linkToNavigate; }
+                  catch (err) { window.open(window.__asw__linkToNavigate, "_blank"); }
+                  delete window.__asw__linkToNavigate;
+                  delete window.__asw__isLink;
+                }, 150);
+              }
+            };
+
+            window.speechSynthesis.speak(utterance);
           }
         };
-        document.addEventListener(
-          "click",
-          window.__asw__readOnClickHandler,
-          true
-        );
+
+        document.addEventListener("click", window.__asw__readOnClickHandler, true);
       }
     } else {
+      // Disable: cleanup everything
       if (window.__asw__readOnClickHandler) {
-        document.removeEventListener(
-          "click",
-          window.__asw__readOnClickHandler,
-          true
-        );
+        document.removeEventListener("click", window.__asw__readOnClickHandler, true);
         delete window.__asw__readOnClickHandler;
-
-        // Stop any ongoing speech when disabling
-        if (window.speechSynthesis) {
-          window.speechSynthesis.cancel();
-        }
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
       }
+      document.body.classList.remove("asw-roc-active");
+      var rocBubble = document.getElementById("asw-roc-bubble");
+      if (rocBubble) rocBubble.remove();
+      var rocHighlighted = document.querySelector(".asw-roc-highlight");
+      if (rocHighlighted) rocHighlighted.classList.remove("asw-roc-highlight");
+      delete window.__asw__femaleVoice;
+      delete window.__asw__highlightedEl;
     }
   }
 
@@ -642,18 +792,10 @@
       id: "focus-outline",
       selector: "html",
       styles: {},
-      css: `
-        *:focus {
-          outline: 3px solid #0066cc !important;
-          outline-offset: 2px !important;
-          box-shadow: 0 0 0 1px #ffffff !important;
-        }
-        
-        button:focus, input:focus, textarea:focus, select:focus, a:focus {
-          outline: 3px solid #0066cc !important;
-          outline-offset: 2px !important;
-        }
-      `,
+      css: "*:focus:not(.asw-menu *):not(.asw-container *) { outline: 3px solid #0848ca !important; outline-offset: 3px !important; box-shadow: 0 0 0 6px rgba(8,72,202,0.15) !important; border-radius: 4px; transition: outline 0.15s ease, box-shadow 0.15s ease; } " +
+        "button:focus:not(.asw-btn):not(.asw-menu button), input:focus:not(.asw-menu input), textarea:focus:not(.asw-menu textarea), select:focus:not(.asw-menu select), a:focus:not(.asw-menu a) { outline: 3px solid #0848ca !important; outline-offset: 3px !important; box-shadow: 0 0 0 6px rgba(8,72,202,0.15) !important; } " +
+        "*:focus:not(:focus-visible):not(.asw-menu *):not(.asw-container *) { outline: none !important; box-shadow: none !important; } " +
+        "*:focus-visible:not(.asw-menu *):not(.asw-container *) { outline: 3px solid #0848ca !important; outline-offset: 3px !important; box-shadow: 0 0 0 6px rgba(8,72,202,0.15) !important; }",
     };
     d(Object.assign({}, focusOutlineConfig, { enable: enabled }));
   }
@@ -749,7 +891,7 @@
     r((null == t ? void 0 : t.fontSize) || 1), P(), w();
   }
   const I =
-    '<style>.asw-menu,.asw-widget{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-weight:400;-webkit-font-smoothing:antialiased}.asw-menu *,.asw-widget *{box-sizing:border-box!important}.asw-menu-btn{position:fixed;z-index:500000;left:30px;bottom:30px;box-shadow:0 5px 15px 0 rgb(37 44 97 / 15%),0 2px 4px 0 rgb(93 100 148 / 20%);transition:transform .2s ease;border-radius:50%;align-items:center;justify-content:center;width:58px;height:58px;display:flex;cursor:pointer;border:3px solid #fff!important;outline:5px solid #0048ff!important;text-decoration:none!important;background:#326cff!important;background:linear-gradient(96deg,#326cff 0,#0048ff 100%)!important}.asw-menu-btn svg{width:36px;height:36px;min-height:36px;min-width:36px;max-width:36px;max-height:36px;background:0 0!important}.asw-menu-btn:hover{transform:scale(1.05)}@media only screen and (max-width:768px){.asw-menu-btn{width:42px;height:42px}.asw-menu-btn svg{width:26px;height:26px;min-height:26px;min-width:26px;max-width:26px;max-height:26px}}</style> <div class="asw-widget"> <a href="http://amitcodee.netlify.app/" target="_blank" class="asw-menu-btn" title="Open Accessibility Menu" role="button" aria-expanded="false"> <svg xmlns="http://www.w3.org/2000/svg" style="fill:white" viewBox="0 0 24 24" width="30px" height="30px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20.5 6c-2.61.7-5.67 1-8.5 1s-5.89-.3-8.5-1L3 8c1.86.5 4 .83 6 1v13h2v-6h2v6h2V9c2-.17 4.14-.5 6-1l-.5-2zM12 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg> </a> </div>';
+    '<style>.asw-menu,.asw-widget{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;font-weight:400;-webkit-font-smoothing:antialiased}.asw-menu *,.asw-widget *{box-sizing:border-box!important}.asw-menu-btn{position:fixed;z-index:500000;left:30px;bottom:30px;box-shadow:0 6px 24px rgba(8,72,202,0.35),0 2px 8px rgba(8,72,202,0.2);transition:all .3s cubic-bezier(.4,0,.2,1);border-radius:50%;align-items:center;justify-content:center;width:60px;height:60px;display:flex;cursor:pointer;border:3px solid rgba(255,255,255,0.9)!important;outline:none!important;text-decoration:none!important;background:linear-gradient(135deg,#4a7cff 0%,#0848ca 50%,#0035a0 100%)!important}.asw-menu-btn::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,0.2) 0%,transparent 50%);pointer-events:none}.asw-menu-btn::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(8,72,202,0.3);pointer-events:none;transition:all .3s ease}.asw-menu-btn svg{width:34px;height:34px;min-height:34px;min-width:34px;max-width:34px;max-height:34px;background:0 0!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.15))}.asw-menu-btn:hover{transform:scale(1.1) translateY(-2px);box-shadow:0 10px 36px rgba(8,72,202,0.45),0 4px 12px rgba(8,72,202,0.3)}.asw-menu-btn:hover::after{inset:-6px;border-color:rgba(8,72,202,0.5)}.asw-menu-btn:active{transform:scale(0.97)}@keyframes asw-pulse{0%{box-shadow:0 0 0 0 rgba(8,72,202,0.4)}70%{box-shadow:0 0 0 14px rgba(8,72,202,0)}100%{box-shadow:0 0 0 0 rgba(8,72,202,0)}}.asw-menu-btn{animation:asw-pulse 2.5s ease-in-out infinite}@media only screen and (max-width:768px){.asw-menu-btn{width:48px;height:48px}.asw-menu-btn svg{width:28px;height:28px;min-height:28px;min-width:28px;max-width:28px;max-height:28px}}</style> <div class="asw-widget"> <a class="asw-menu-btn" title="Open Accessibility Menu" role="button" aria-expanded="false" aria-label="Open Accessibility Menu"> <svg xmlns="http://www.w3.org/2000/svg" style="fill:white" viewBox="0 0 24 24" width="30px" height="30px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20.5 6c-2.61.7-5.67 1-8.5 1s-5.89-.3-8.5-1L3 8c1.86.5 4 .83 6 1v13h2v-6h2v6h2V9c2-.17 4.14-.5 6-1l-.5-2zM12 6c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg> </a> </div>';
   function N(t, e) {
     t.style.display =
       void 0 === e
@@ -761,7 +903,7 @@
         : "none";
   }
   const G =
-      '<style>.asw-menu{position:fixed;left:0;top:0;box-shadow:0 0 20px #00000080;opacity:1;transition:.3s;z-index:500000;overflow:hidden;background:#eff1f5;width:500px;line-height:1;font-size:16px;height:100%;letter-spacing:.015em}.asw-menu *{color:#000!important;font-family:inherit;padding:0;margin:0;line-height:1!important;letter-spacing:normal!important}.asw-menu-header{display:flex;align-items:center;justify-content:space-between;padding-left:18px;padding-right:18px;height:55px;font-weight:700!important;background-color:#0848ca!important}.asw-menu-title{font-size:16px!important;color:#fff!important}.asw-menu-header svg{fill:#0848ca!important;width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important}.asw-menu-header>div{display:flex}.asw-menu-header div[role=button]{padding:5px;background:#fff!important;cursor:pointer;border-radius:50%;transition:opacity .3s ease}.asw-menu-header div[role=button]:hover{opacity:.8}.asw-card{margin:0 15px 20px}.asw-card-title{font-size:14px!important;padding:15px 0;font-weight:600!important;opacity:.8}.asw-menu .asw-select{width:100%!important;padding:0 15px!important;font-size:16px!important;font-family:inherit!important;font-weight:600!important;border-radius:45px!important;background:#fff!important;border:none!important;min-height:45px!important;max-height:45px!important;height:45px!important;color:inherit!important}.asw-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.asw-btn{aspect-ratio:6/5;border-radius:12px;padding:0 15px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#333;font-size:16px!important;background:#fff!important;border:2px solid transparent!important;transition:border-color .2s ease;cursor:pointer;word-break:break-word;gap:10px;position:relative;width:auto!important;height:auto!important}.asw-adjust-font .asw-label div,.asw-btn .asw-translate{font-size:14px!important;font-weight:600!important}.asw-minus,.asw-plus{background-color:#eff1f5!important;border:2px solid transparent;transition:border .2s ease}.asw-minus:hover,.asw-plus:hover{border-color:#0848ca!important}.asw-amount{font-size:18px!important;font-weight:600!important}.asw-adjust-font svg{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important}.asw-btn svg{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;max-width:34px!important;max-height:34px!important}.asw-btn.asw-selected,.asw-btn:hover{border-color:#0848ca!important}.asw-btn.asw-selected span,.asw-btn.asw-selected svg{fill:#0848ca!important;color:#0848ca!important}.asw-btn.asw-selected:after{content:"\\2713";position:absolute;top:10px;right:10px;background-color:#0848ca!important;color:#fff;padding:6px;font-size:10px;width:18px;height:18px;border-radius:100%;line-height:6px}.asw-footer{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:20px;text-align:center;border-top:2px solid #eff1f5}.asw-footer a{font-size:16px!important;text-decoration:none!important;color:#000!important;background:0 0!important;font-weight:600!important}.asw-footer a:hover,.asw-footer a:hover span{color:#0848ca!important}.asw-menu-content{overflow:scroll;max-height:calc(100% - 80px);padding:30px 0 15px}.asw-adjust-font{background:#fff;padding:20px;margin-bottom:20px}.asw-adjust-font .asw-label{display:flex;justify-content:flex-start}.asw-adjust-font>div{display:flex;justify-content:space-between;margin-top:20px;align-items:center;font-size:15px}.asw-adjust-font .asw-label div{font-size:15px!important}.asw-adjust-font div[role=button]{background:#eff1f5!important;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer}.asw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000}@media only screen and (max-width:560px){.asw-menu{width:100%}}@media only screen and (max-width:420px){.asw-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}}</style> <div class="asw-menu"> <div class="asw-menu-header"> <div class="asw-menu-title asw-translate"> Accessibility Menu </div> <div style="gap:15px"> <div role="button" class="asw-menu-reset" title="Reset settings"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M12 4c2.1 0 4.1.8 5.6 2.3 3.1 3.1 3.1 8.2 0 11.3a7.78 7.78 0 0 1-6.7 2.3l.5-2c1.7.2 3.5-.4 4.8-1.7a6.1 6.1 0 0 0 0-8.5A6.07 6.07 0 0 0 12 6v4.6l-5-5 5-5V4M6.3 17.6C3.7 15 3.3 11 5.1 7.9l1.5 1.5c-1.1 2.2-.7 5 1.2 6.8.5.5 1.1.9 1.8 1.2l-.6 2a8 8 0 0 1-2.7-1.8Z"/> </svg> </div> <div role="button" class="asw-menu-close" title="Close"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/> </svg> </div> </div> </div> <div class="asw-menu-content"> <div class="asw-card"> <select id="asw-language" title="Language" class="asw-select"></select> </div> <div class="asw-card"> <div class="asw-card-title"> Content Adjustments </div> <div class="asw-adjust-font"> <div class="asw-label" style="margin:0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="margin-right:15px"> <path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/> </svg> <div class="asw-translate"> Adjust Font Size </div> </div> <div> <div class="asw-minus" data-key="font-size" role="button" aria-pressed="false" title="Decrease Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13H5v-2h14v2Z"/> </svg> </div> <div class="asw-amount"> 100% </div> <div class="asw-plus" data-key="font-size" role="button" aria-pressed="false" title="Increase Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/> </svg> </div> </div> </div> <div class="asw-items content"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Color Adjustments </div> <div class="asw-items contrast"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Hidden Content </div> <div class="asw-items hiddencontent"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Tools </div> <div class="asw-items tools"> </div> </div> </div> <div class="asw-footer"> <a href="" target="_blank">Web Accessibility By <span style="font-weight:700;color:inherit">Anthromorphe</span></a> </div> </div> <div class="asw-overlay"> </div>',
+      '<style>.asw-menu{position:fixed;left:0;top:0;box-shadow:8px 0 40px rgba(0,0,0,0.12),2px 0 8px rgba(0,0,0,0.06);opacity:1;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .3s ease;z-index:500000;overflow:hidden;background:#f7f8fc;width:480px;line-height:1;font-size:16px;height:100%;letter-spacing:.015em;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}.asw-menu *{color:#1a1a2e!important;font-family:inherit;padding:0;margin:0;line-height:1!important;letter-spacing:normal!important}.asw-menu-header{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px;font-weight:700!important;background:linear-gradient(135deg,#0848ca 0%,#2563eb 50%,#3b82f6 100%)!important;box-shadow:0 2px 12px rgba(8,72,202,0.25)}.asw-menu-title{font-size:17px!important;color:#fff!important;letter-spacing:0.02em!important;text-shadow:0 1px 2px rgba(0,0,0,0.1)}.asw-menu-header svg{fill:#0848ca!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important}.asw-menu-header>div{display:flex}.asw-menu-header div[role=button]{padding:6px;background:rgba(255,255,255,0.95)!important;cursor:pointer;border-radius:50%;transition:all .25s ease;box-shadow:0 1px 4px rgba(0,0,0,0.1)}.asw-menu-header div[role=button]:hover{background:#fff!important;transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,0.15)}.asw-card{margin:0 16px 22px}.asw-card-title{font-size:13px!important;padding:16px 0 10px;font-weight:700!important;text-transform:uppercase;letter-spacing:0.08em!important;color:#64748b!important;opacity:1}.asw-menu .asw-select{width:100%!important;padding:0 16px!important;font-size:15px!important;font-family:inherit!important;font-weight:600!important;border-radius:14px!important;background:#fff!important;border:1.5px solid #e2e8f0!important;min-height:48px!important;max-height:48px!important;height:48px!important;color:inherit!important;transition:border-color .2s ease,box-shadow .2s ease;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\'%3E%3Cpath fill=\'%2364748b\' d=\'M1.41 0L6 4.58 10.59 0 12 1.41 6 7.41 0 1.41z\'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 16px center!important}.asw-menu .asw-select:focus{border-color:#0848ca!important;box-shadow:0 0 0 3px rgba(8,72,202,0.12)!important;outline:none!important}.asw-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.asw-btn{aspect-ratio:1/1;border-radius:16px;padding:12px 10px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#475569;font-size:16px!important;background:#fff!important;border:2px solid #e8ecf4!important;transition:all .25s cubic-bezier(.4,0,.2,1);cursor:pointer;word-break:break-word;gap:8px;position:relative;width:auto!important;height:auto!important;box-shadow:0 1px 3px rgba(0,0,0,0.04)}.asw-adjust-font .asw-label div,.asw-btn .asw-translate{font-size:12px!important;font-weight:600!important;line-height:1.3!important;color:#475569!important}.asw-minus,.asw-plus{background-color:#f1f5f9!important;border:2px solid transparent;transition:all .2s ease}.asw-minus:hover,.asw-plus:hover{border-color:#0848ca!important;background-color:#e8ecf4!important;transform:scale(1.05)}.asw-amount{font-size:20px!important;font-weight:700!important;color:#0848ca!important}.asw-adjust-font svg{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;max-width:24px!important;max-height:24px!important;fill:#475569!important}.asw-btn svg{width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;max-width:32px!important;max-height:32px!important;fill:#64748b!important;transition:all .25s ease}.asw-btn:hover{border-color:#0848ca!important;background:#f0f4ff!important;transform:translateY(-2px);box-shadow:0 4px 16px rgba(8,72,202,0.12)}.asw-btn:hover svg{fill:#0848ca!important}.asw-btn:hover .asw-translate{color:#0848ca!important}.asw-btn:active{transform:translateY(0)}.asw-btn.asw-selected{border-color:#0848ca!important;background:linear-gradient(135deg,#f0f4ff 0%,#e8efff 100%)!important;box-shadow:0 2px 12px rgba(8,72,202,0.15)}.asw-btn.asw-selected span,.asw-btn.asw-selected svg{fill:#0848ca!important;color:#0848ca!important}.asw-btn.asw-selected:after{content:"\\2713";position:absolute;top:8px;right:8px;background:linear-gradient(135deg,#0848ca,#2563eb)!important;color:#fff;padding:0;font-size:9px;width:20px;height:20px;border-radius:50%;line-height:20px;text-align:center;box-shadow:0 2px 6px rgba(8,72,202,0.3)}.asw-footer{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:16px 20px;text-align:center;border-top:1px solid #e8ecf4}.asw-footer a{font-size:13px!important;text-decoration:none!important;color:#94a3b8!important;background:0 0!important;font-weight:500!important;letter-spacing:0.02em!important;transition:color .2s ease}.asw-footer a:hover,.asw-footer a:hover span{color:#0848ca!important}.asw-menu-content{overflow-y:auto;overflow-x:hidden;max-height:calc(100% - 80px);padding:20px 0 80px;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent}.asw-menu-content::-webkit-scrollbar{width:6px}.asw-menu-content::-webkit-scrollbar-track{background:transparent}.asw-menu-content::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}.asw-menu-content::-webkit-scrollbar-thumb:hover{background:#94a3b8}.asw-adjust-font{background:#fff;padding:20px;margin-bottom:16px;border-radius:16px;border:1.5px solid #e8ecf4;box-shadow:0 1px 3px rgba(0,0,0,0.04)}.asw-adjust-font .asw-label{display:flex;justify-content:flex-start;align-items:center}.asw-adjust-font>div{display:flex;justify-content:space-between;margin-top:18px;align-items:center;font-size:15px}.asw-adjust-font .asw-label div{font-size:15px!important;font-weight:600!important;color:#334155!important}.asw-adjust-font div[role=button]{background:#f1f5f9!important;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease;border:1.5px solid transparent}.asw-adjust-font div[role=button]:hover{background:#e8ecf4!important;border-color:#0848ca}.asw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;background:rgba(0,0,0,0.15);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transition:opacity .3s ease}@media only screen and (max-width:560px){.asw-menu{width:100%}}@media only screen and (max-width:420px){.asw-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.asw-btn{border-radius:12px;padding:10px 8px}}</style> <div class="asw-menu"> <div class="asw-menu-header"> <div class="asw-menu-title asw-translate"> Accessibility Menu </div> <div style="gap:12px"> <div role="button" class="asw-menu-reset" title="Reset settings"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M12 4c2.1 0 4.1.8 5.6 2.3 3.1 3.1 3.1 8.2 0 11.3a7.78 7.78 0 0 1-6.7 2.3l.5-2c1.7.2 3.5-.4 4.8-1.7a6.1 6.1 0 0 0 0-8.5A6.07 6.07 0 0 0 12 6v4.6l-5-5 5-5V4M6.3 17.6C3.7 15 3.3 11 5.1 7.9l1.5 1.5c-1.1 2.2-.7 5 1.2 6.8.5.5 1.1.9 1.8 1.2l-.6 2a8 8 0 0 1-2.7-1.8Z"/> </svg> </div> <div role="button" class="asw-menu-close" title="Close"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/> </svg> </div> </div> </div> <div class="asw-menu-content"> <div class="asw-card"> <select id="asw-language" title="Language" class="asw-select"></select> </div> <div class="asw-card"> <div class="asw-card-title"> Content Adjustments </div> <div class="asw-adjust-font"> <div class="asw-label" style="margin:0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="margin-right:14px"> <path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/> </svg> <div class="asw-translate"> Adjust Font Size </div> </div> <div> <div class="asw-minus" data-key="font-size" role="button" aria-pressed="false" title="Decrease Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13H5v-2h14v2Z"/> </svg> </div> <div class="asw-amount"> 100% </div> <div class="asw-plus" data-key="font-size" role="button" aria-pressed="false" title="Increase Font Size" tabindex="0"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"> <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/> </svg> </div> </div> </div> <div class="asw-items content"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Color Adjustments </div> <div class="asw-items contrast"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Hidden Content </div> <div class="asw-items hiddencontent"> </div> </div> <div class="asw-card"> <div class="asw-card-title"> Tools </div> <div class="asw-items tools"> </div> </div> </div> <div class="asw-footer"> <a href="" target="_blank">Web Accessibility By <span style="font-weight:700;color:inherit">Anthromorphe</span></a> </div> </div> <div class="asw-overlay"> </div>',
     E = [
       {
         label: "Monochrome",
